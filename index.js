@@ -1,8 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 
-fdsj(
-
 try {
   const configs = [
     'datadog-key',

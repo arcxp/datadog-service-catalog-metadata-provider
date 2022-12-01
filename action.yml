@@ -39,4 +39,3 @@ inputs:
   docs:
     description: 'The documentation for the service'
     required: false
-outputs:
