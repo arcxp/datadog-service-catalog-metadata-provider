@@ -1,0 +1,42 @@
+---
+name: 'DataDog Service Catalog Metadata Provider'
+description: 'This is an action which allows you to provide your DataDog Service Catalog metadata to the DataDog Service Catalog'
+author: 'Arc XP'
+runs:
+  using: node16
+  main: index.js
+inputs:
+  datadog-key:
+    description: 'The DataDog API key'
+    required: true
+  service-name:
+    description: 'The name of the service'
+    required: true
+  team:
+    description: 'The team responsible for the service'
+    required: true
+  email:
+    description: 'The email address of the team responsible for the service'
+    required: true
+  slack-support-channel:
+    description: 'The slack support channel for the service'
+    required: false
+  repo:
+    description: 'The repository URL for the service. This is a convenience input for when you only have one repository for the service.'
+    required: false
+  contacts:
+    description: 'The contacts for the service'
+    required: false
+  repos:
+    description: 'The repositories for the service'
+    required: true
+  tags:
+    description: 'The tags to apply to the service'
+    required: false
+  links:
+    description: 'The links to related to the service'
+    required: false
+  docs:
+    description: 'The documentation for the service'
+    required: false
+outputs:

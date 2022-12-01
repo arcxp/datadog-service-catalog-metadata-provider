@@ -1,0 +1,18 @@
+---
+
+on:
+  workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DD-service-catalog
+        uses: ./action.yml
+        with:
+          datadog-key: ${{ secrets.DATADOG_API_KEY }}
+          service-name: hello-world
+          team: Global Greetings
+          email: global.greetings@fake-email-host.com
+          slack-support-channel: '#global-greetings-support'
+          repo: https://github.com/arcxp/datadog-service-catalog-metadata-provider
