@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: DD-service-catalog
-        uses: ../../
+        uses: ./
         with:
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           service-name: hello-world
