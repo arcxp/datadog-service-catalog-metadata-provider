@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: DD-service-catalog
-        uses: ./action.yml
+        uses: ../../
         with:
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           service-name: hello-world
@@ -16,3 +16,12 @@ jobs:
           email: global.greetings@fake-email-host.com
           slack-support-channel: '#global-greetings-support'
           repo: https://github.com/arcxp/datadog-service-catalog-metadata-provider
+          # repos: |
+          #   - name: hello-world
+          #     url: https://github.com/fake-org/hello-world
+          #   - name: foo
+          #     url: https://github.com/fake-org/foo
+          # tags: |
+          #   - foo:bar
+          #   - bar:baz
+        run: echo "Hello."
