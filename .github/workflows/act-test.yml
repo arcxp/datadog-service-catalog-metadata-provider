@@ -24,4 +24,3 @@ jobs:
           # tags: |
           #   - foo:bar
           #   - bar:baz
-        run: echo "Hello."
