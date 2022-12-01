@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/arcxp/datadog-service-catalog-metadata-provider#readme",
   "dependencies": {
-    "@actions/core": "^1.10.0"
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1"
   }
 }
