@@ -15,7 +15,6 @@ Here's a simplified list of the metadata fields that are supported by the Datado
 | `email` | The email address of the team that owns the service. | Yes | |
 | `slack-support-channel` | The Slack channel where folks can get support for the service. **This must be a Slack URL.** | Yes | |
 | `repo` | The GitHub repository where the service is hosted. This is a convenience input for when you only have one repository for the service. You must either have this value, or you must have values specified in the `repos` object. | No | |
-| `service-catalog-yaml-file` | If you'd prefer to use the native DataDog YAML file format, you can specify the path to the file here. If you supply this file, only this file will be used and all other values here are not. | No | |
 
 Here's a larger set of metadata fields that are supported by the Datadog Service Catalog Metadata Provider:
 
