@@ -28,7 +28,7 @@ Here's a larger set of metadata fields that are supported by the Datadog Service
 | `repos` | The list of GitHub repositories that are part of the service. You must supply at least one repository. The repositories are supplied as objects, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | Yes | `[]` |
 | `repos[].name` | The name of the repository. | Yes | |
 | `repos[].url` | The URL of the repository. | Yes | |
-| `repos[].provider` | The provider of the repository. Acceptable values are: `Github`. | No | `Github` |
+| `repos[].provider` | The provider of the repository. Acceptable values are: `Github`. | No | |
 | `tags` | The list of tags that are associated with the service. This should be a list of key-value pairs separated by colons. | No | |
 | `links` | A list of links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` |
 | `links[].name` | The name of the link. | Yes | |
