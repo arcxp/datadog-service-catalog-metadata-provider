@@ -14,9 +14,9 @@ try {
     'tags',
     'links',
     'docs',
-  ].reduce((value) => {
-    const config = core.getInput(value)
-    return config ? { ...configs, [value]: config } : configs
+  ].reduce((agg, inputName) => {
+    const config = core.getInput(inputName)
+    return !agg[inputName] ? Object.assign(agg, { [inputName]: config }) : agg
   }, {})
 
   core.info('All of the configs:', configs)
