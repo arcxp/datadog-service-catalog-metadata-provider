@@ -40,9 +40,9 @@ const registerWithDataDog = async (apiKey, appKey, configJsonStr) => {
       'Content-Type': 'application/json',
     },
   )
-  const statusCode = response.message
+  const statusCode = response.message.statusCode
   const body = await response.readBody()
-  core.debug(`Response status code: ${JSON.stringify(statusCode)}, with body: ${body}`)
+  core.debug(`Response status code: ${statusCode}, with body: ${body}`)
 
   if (statusCode !== 200) {
     core.setFailed(
