@@ -25,6 +25,7 @@ const expandObjectInputs = (str) => {
  * @param {string} config - The config JSON string.
  **/
 const registerWithDataDog = async (apiKey, appKey, configJsonStr) => {
+  core.debug(`JSON: ${configJsonStr}`)
   // Prep the auth
   const client = new HttpClient(
     'nodejs - GitHub Actions - arcxp/datadog-service-catalog-metadata-provider',
@@ -36,6 +37,7 @@ const registerWithDataDog = async (apiKey, appKey, configJsonStr) => {
     {
       'DD-API-KEY': apiKey,
       'DD-APPLICATION-KEY': appKey,
+      'Content-Type': 'application/json',
     },
   )
   const statusCode = response.message
