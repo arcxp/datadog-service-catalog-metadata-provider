@@ -42,3 +42,6 @@ inputs:
   docs:
     description: 'The documentation for the service'
     required: false
+  integrations:
+    description: 'The integrations for the service'
+    required: false
