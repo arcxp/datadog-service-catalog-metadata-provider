@@ -76,8 +76,8 @@ const run = async () => {
       type: 'slack',
       contact: core.getInput('slack-support-channel'),
     }
-    configs.contacts = Array.isArray(config.contacts)
-      ? [teamContactEmail, teamContactSlack, ...config.contacts]
+    configs.contacts = Array.isArray(configs.contacts)
+      ? [teamContactEmail, teamContactSlack, ...configs.contacts]
       : [teamContactEmail, teamContactSlack]
 
     const serviceRepo = {
@@ -85,7 +85,7 @@ const run = async () => {
       provider: 'Github',
       url: core.getInput('repo'),
     }
-    configs.repos = Array.isArray(config.repos) ? [serviceRepo, ...config.repos] : [serviceRepo]
+    configs.repos = Array.isArray(configs.repos) ? [serviceRepo, ...configs.repos] : [serviceRepo]
 
     // Rename `service-name` to `dd-service`
     configs['dd-service'] = core.getInput('service-name')
