@@ -72,6 +72,10 @@ jobs:
               region: US
 ```
 
+## Quick note on triggers
+
+While there are a number of triggers you can use for this workflow, I recommend that you limit the triggers here to `workflow_dispatch` and `push` for your primary branch. Keep in mind that DataDog is going to always overwrite the service catalog definition whenever you run this action.
+
 ## References
 
 - [DataDog Service Definition API](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/)
