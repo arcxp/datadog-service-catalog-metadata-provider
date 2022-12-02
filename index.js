@@ -112,6 +112,9 @@ const run = async () => {
     // Extract the API key for DataDog
     const apiKey = core.getInput('datadog-key')
     const appKey = core.getInput('datadog-app-key')
+    if (!apiKey || !appKey) {
+      return core.setFailed('Both `datadog-key` and `datadog-app-key` are required.')
+    }
 
     // Debug all of the info
     core.debug(`All of the configs: ${JSON.stringify(configs, undefined, 2)}`)
