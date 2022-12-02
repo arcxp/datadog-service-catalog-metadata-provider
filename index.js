@@ -60,6 +60,7 @@ const run = async () => {
       'tags',
       'links',
       'docs',
+      'integrations',
     ].reduce((agg, inputName) => {
       const inputValue = core.getInput(inputName)
       return Object.assign(agg, { [inputName]: expandObjectInputs(inputValue) })
@@ -106,6 +107,7 @@ const run = async () => {
     configs.tags = Array.isArray(configs.tags) ? configs.tags : []
     configs.docs = Array.isArray(configs.docs) ? configs.docs : []
     configs.links = Array.isArray(configs.links) ? configs.links : []
+    configs.integrations = typeof configs.integrations === 'object' ? configs.integrations : {}
 
     // Extract the API key for DataDog
     const apiKey = core.getInput('datadog-key')

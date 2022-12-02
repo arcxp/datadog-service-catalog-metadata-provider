@@ -38,6 +38,10 @@ Here's a larger set of metadata fields that are supported by the Datadog Service
 | `docs[].name` | The name of the document. | Yes | |
 | `docs[].url` | The URL of the document. | Yes | |
 | `docs[].provider` | The provider for where the documentation lives. Acceptable values are: `Confluence`, `GoogleDocs`, `Github`, `Jira`, `OneNote`, `SharePoint`, and `Dropbox` | No | |
+| `integrations` | Integrations associated with the service. These integrations are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | |
+| `integrations.opsgenie` | The OpsGenie details for the service. | No | |
+| `integrations.opsgenie.service_url` | The service URL for the OpsGenie integration. | Yes | |
+| `integrations.opsgenie.region` | The region for the OpsGenie integration. Acceptable values are `US` and `EU`. | No | |
 
 ## Example
 
@@ -53,7 +57,7 @@ jobs:
           service-name: hello-world
           team: Global Greetings
           email: global.greetings@fake-email-host.com
-          slack-support-channel: '#global-greetings-support'
+          slack-support-channel: 'https://team-name-here.slack.com/archives/ABC123'
           repos: |
             - name: hello-world
               url: https://github.com/fake-org/hello-world
@@ -62,6 +66,10 @@ jobs:
             - name: outage-runbook
               url: https://fake-org.github.io/hello-world-outage-runbook
               provider: github
+          integrations: |
+            opsgenie:
+              service_url: https://fake-org.hello-world.opsgenie.com
+              region: US
 ```
 
 ## References
