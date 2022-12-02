@@ -15,11 +15,11 @@ try {
     'links',
     'docs',
   ].reduce((agg, inputName) => {
-    const config = core.getInput(inputName)
-    return Object.assign(agg, { [inputName]: config })
+    const inputValue = core.getInput(inputName)
+    return Object.assign(agg, { [inputName]: inputValue })
   }, {})
 
-  core.debug('All of the configs: ', JSON.stringify(configs, undefined, 2))
+  core.debug(`All of the configs: ${JSON.stringify(configs, undefined, 2)}`)
 } catch (error) {
   console.error(error)
   core.setFailed(error.message)
