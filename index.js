@@ -16,10 +16,10 @@ try {
     'docs',
   ].reduce((agg, inputName) => {
     const config = core.getInput(inputName)
-    return !agg[inputName] ? Object.assign(agg, { [inputName]: config }) : agg
+    return Object.assign(agg, { [inputName]: config })
   }, {})
 
-  core.debug('All of the configs:', configs)
+  core.debug('All of the configs: ', JSON.stringify(configs, undefined, 2))
 } catch (error) {
   console.error(error)
   core.setFailed(error.message)
