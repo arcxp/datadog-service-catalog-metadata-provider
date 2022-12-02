@@ -9,6 +9,7 @@ Here's a simplified list of the metadata fields that are supported by the Datado
 | Field | Description | Required | Default |
 | --- | --- | --- | --- |
 | `datadog-key` | The Datadog API key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
+| `datadog-app-key` | The Datadog Application key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
 | `service-name` | The name of the service. This must be unique across all services. | Yes | |
 | `team` | The team that owns the service. | Yes | |
 | `email` | The email address of the team that owns the service. | Yes | |
@@ -48,15 +49,16 @@ jobs:
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
+          datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
           service-name: hello-world
           team: Global Greetings
           email: global.greetings@fake-email-host.com
           slack-support-channel: '#global-greetings-support'
-          repos:
+          repos: |
             - name: hello-world
               url: https://github.com/fake-org/hello-world
               provider: github
-          docs:
+          docs: |
             - name: outage-runbook
               url: https://fake-org.github.io/hello-world-outage-runbook
               provider: github

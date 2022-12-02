@@ -9,6 +9,9 @@ inputs:
   datadog-key:
     description: 'The DataDog API key'
     required: true
+  datadog-app-key:
+    description: 'The DataDog Application key'
+    required: true
   service-name:
     description: 'The name of the service'
     required: true
