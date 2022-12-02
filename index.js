@@ -42,7 +42,7 @@ const registerWithDataDog = async (apiKey, appKey, configJsonStr) => {
   )
   const statusCode = response.message
   const body = await response.readBody()
-  core.debug(`Response status code: ${statusCode}, with body: ${body}`)
+  core.debug(`Response status code: ${JSON.stringify(statusCode)}, with body: ${body}`)
 
   if (statusCode !== 200) {
     core.setFailed(
