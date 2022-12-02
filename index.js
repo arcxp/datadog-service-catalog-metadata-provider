@@ -80,16 +80,32 @@ const run = async () => {
       ? [teamContactEmail, teamContactSlack, ...configs.contacts]
       : [teamContactEmail, teamContactSlack]
 
-    const serviceRepo = {
-      name: 'Service Repository',
-      provider: 'Github',
-      url: core.getInput('repo'),
+    if (core.getInput('repo')) {
+      const serviceRepo = {
+        name: 'Service Repository',
+        provider: 'Github',
+        url: core.getInput('repo'),
+      }
+      configs.repos = Array.isArray(configs.repos)
+        ? [serviceRepo, ...configs.repos]
+        : [serviceRepo]
+    } else {
+      configs.repos = Array.isArray(configs.repos) ? configs.repos : []
     }
-    configs.repos = Array.isArray(configs.repos) ? [serviceRepo, ...configs.repos] : [serviceRepo]
+
+    // Make sure we have at least one repository.
+    if (configs.repos.length === 0) {
+      return core.setFailed('No repos provided. At least one repo is required.')
+    }
 
     // Rename `service-name` to `dd-service`
     configs['dd-service'] = core.getInput('service-name')
     configs['schema-version'] = 'v2'
+
+    // These items don't have any convenience items, but they _must_ be arrays.
+    configs.tags = Array.isArray(configs.tags) ? configs.tags : []
+    configs.docs = Array.isArray(configs.docs) ? configs.docs : []
+    configs.links = Array.isArray(configs.links) ? configs.links : []
 
     // Extract the API key for DataDog
     const apiKey = core.getInput('datadog-key')
