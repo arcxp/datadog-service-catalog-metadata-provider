@@ -21,5 +21,6 @@ try {
 
   core.info('All of the configs:', configs)
 } catch (error) {
+  console.error(error)
   core.setFailed(error.message)
 }
