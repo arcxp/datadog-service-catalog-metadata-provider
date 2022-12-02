@@ -55,9 +55,6 @@ const run = async () => {
   try {
     const configs = [
       'team',
-      'email',
-      'slack-support-channel',
-      'repo',
       'contacts',
       'repos',
       'tags',
@@ -67,6 +64,28 @@ const run = async () => {
       const inputValue = core.getInput(inputName)
       return Object.assign(agg, { [inputName]: expandObjectInputs(inputValue) })
     }, {})
+
+    // Prep the team email contact
+    const teamContactEmail = {
+      name: 'Team Email',
+      type: 'email',
+      contact: core.getInput('email'),
+    }
+    const teamContactSlack = {
+      name: 'Support Slack Channel',
+      type: 'slack',
+      contact: core.getInput('slack-support-channel'),
+    }
+    configs.contacts = Array.isArray(config.contacts)
+      ? [teamContactEmail, teamContactSlack, ...config.contacts]
+      : [teamContactEmail, teamContactSlack]
+
+    const serviceRepo = {
+      name: 'Service Repository',
+      provider: 'Github',
+      url: core.getInput('repo'),
+    }
+    configs.repos = Array.isArray(config.repos) ? [serviceRepo, ...config.repos] : [serviceRepo]
 
     // Rename `service-name` to `dd-service`
     configs['dd-service'] = core.getInput('service-name')
