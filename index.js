@@ -19,7 +19,7 @@ try {
     return !agg[inputName] ? Object.assign(agg, { [inputName]: config }) : agg
   }, {})
 
-  core.info('All of the configs:', configs)
+  core.debug('All of the configs:', configs)
 } catch (error) {
   console.error(error)
   core.setFailed(error.message)
