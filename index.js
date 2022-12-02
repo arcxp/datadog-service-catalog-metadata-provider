@@ -2,9 +2,6 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const YAML = require('yaml')
 const { HttpClient } = require('@actions/http-client')
-const {
-  PersonalAccessTokenCredentialHandler,
-} = require('@actions/http-client/auth')
 
 /**
  * This function takes inputs encoded as strings and expands them to
