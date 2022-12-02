@@ -31,7 +31,7 @@ const registerWithDataDog = async (apiKey, appKey, configJsonStr) => {
   )
 
   const response = await client.post(
-    'https://datadoghq.com/api/v2/services/definitions',
+    'https://api.datadoghq.com/api/v2/services/definitions',
     configJsonStr,
     {
       'DD-API-KEY': apiKey,
