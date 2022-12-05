@@ -13,7 +13,7 @@ Here's a simplified list of the metadata fields that are supported by the Datado
 | `service-name` | The name of the service. This must be unique across all services. | Yes | |
 | `team` | The team that owns the service. | Yes | |
 | `email` | The email address of the team that owns the service. | Yes | |
-| `slack-support-channel` | The Slack channel where folks can get support for the service. **This must be a Slack URL.** | Yes | |
+| `slack-support-channel` | The Slack channel where folks can get support for the service. **This must be a Slack URL.** | No | |
 | `repo` | The GitHub repository where the service is hosted. This is a convenience input for when you only have one repository for the service. You must either have this value, or you must have values specified in the `repos` object. | No | |
 
 Here's a larger set of metadata fields that are supported by the Datadog Service Catalog Metadata Provider:
