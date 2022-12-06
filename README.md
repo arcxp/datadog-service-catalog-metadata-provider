@@ -45,6 +45,31 @@ Here's a larger set of metadata fields that are supported by the Datadog Service
 
 ## Example
 
+### Simples possible example
+
+Here I have a simple example of a service that has a single repository, and the least amount of metadata possible.
+
+```yaml
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: DataDog/service-catalog-metadata-provider@v1
+        with:
+          datadog-key: ${{ secrets.DATADOG_KEY }}
+          datadog-app-key: ${{ secrets.DATADOG_APP_KEY }}
+          service-name: my-service
+          team: my-team
+          email: my-team@my-organization-which-totally-exists.com
+```
+
+### Simpler service with more metadata
+
+In this example, you can see that my team is called "Global Greetings," and I have a single repository for my service. I also have a single document, and a single link.
+
+My slack support channel is listed by URL, and the email address is present. At the bottom you can also see the OpsGenie integration details.
+
 ```yaml
 jobs:
   deploy:
@@ -61,6 +86,40 @@ jobs:
           repos: |
             - name: hello-world
               url: https://github.com/fake-org/hello-world
+              provider: github
+          docs: |
+            - name: outage-runbook
+              url: https://fake-org.github.io/hello-world-outage-runbook
+              provider: github
+          integrations: |
+            opsgenie:
+              service_url: https://fake-org.hello-world.opsgenie.com
+              region: US
+```
+
+### Example with multiple repositories
+
+This example is the same as above, except that I have a multiple repositories involved.
+
+```yaml
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: arcxp/datadog-service-catalog-metadata-provider@v1
+        with:
+          datadog-key: ${{ secrets.DATADOG_API_KEY }}
+          datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          service-name: hello-world
+          team: Global Greetings
+          email: global.greetings@fake-email-host.com
+          slack-support-channel: 'https://team-name-here.slack.com/archives/ABC123'
+          repos: |
+            - name: hello-world
+              url: https://github.com/fake-org/hello-world
+              provider: github
+            - name: some-library
+              url: https://github.com/fake-org/some-library
               provider: github
           docs: |
             - name: outage-runbook
