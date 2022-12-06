@@ -2,9 +2,33 @@
 
 Welcome to the Datadog Service Catalog Metadata Provider!
 
+The DataDog Service catalog is a marvelous new way to track which services are in production. Your telemetry data is presented in the Service Catalog in a way where you can see the health of your services, and the health of the services that depend on them, all in one place. Most importantly, the Service Catalog helps you support your services in any environment.
+
+With the Service Catalog registration API, you can supply the Service Catalog with all of the support information you might want:
+
+- The name of the service
+- The team which supports and maintains the service
+- The email address of the team
+- The URL of the service's documentation, which has a special subtype for runbooks (we _all_ need more runbooks)
+- The URL of the service's source code
+- The URL of the service's dashboards and performance metrics
+- Integration information for important services like Slack, MS Teams, PagerDuty, and Opsgenie
+
+You can use this to register your services with the Service Catalog, and then use the Service Catalog to find the information you need to support your services.
+
+Supporting services can be tricky, and the DataDog Service Catalog can make it easier for team members who aren't familiar with your service to support it. The Service Catalog can also help you find the information you need to support your services, and help you find the right people to support your services.
+
+## Wait, but why?
+
+DataDog already has methods for supplying this information. Why do we need another one? The answer is pretty simple: constraints.
+
+DataDog has a super useful GitHub integration which allows you to register your service with a simple JSON file in your repository, after you install their GitHub plugin and give it read access to your repository. This is great, but if you're using GitOps for deployments and such, sometimes more integrations and webhooks can be concerning.
+
+In order to get the benefits of the Service Catalog without having to open GitHub up to those integrations, this GitHub Action will allow you to register your services with the Service Catalog using a GitHub Action, which then allows you to have full control and visibility over this process. It also gives you full control over when this information is sent to DataDog.
+
 ## Supported Metadata Fields
 
-Here's a simplified list of the metadata fields that are supported by the Datadog Service Catalog Metadata Provider:
+The registration API's links are below, and it takes input per its own JSON schema (also below), but this Action seeks to make things simpler and easier still! Here's a simplified list of the metadata fields that are supported by the Datadog Service Catalog Metadata Provider:
 
 | Field | Description | Required | Default |
 | --- | --- | --- | --- |
@@ -45,7 +69,7 @@ Here's a larger set of metadata fields that are supported by the Datadog Service
 
 ## Example
 
-### Simples possible example
+### Simplest possible example
 
 Here I have a simple example of a service that has a single repository, and the least amount of metadata possible.
 
@@ -129,6 +153,85 @@ jobs:
             opsgenie:
               service_url: https://fake-org.hello-world.opsgenie.com
               region: US
+```
+
+### The whole enchilada
+
+This is the maximal configuration you could use, in a complete workflow that you could copy-and-paste. It's a bit verbose, but it shows you all the options you have complete with "why."
+
+```yaml
+---
+name: DataDog Service Catalog Metadata Provider
+
+on:
+  # This will make my service definition get pushed any time I push a change
+  # to the main branch of my repository.
+  push:
+    branches:
+      - main
+  # This trigger will allow me to manually run the Action in GitHub.
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # This uses the custom action to push the service definition to DataDog.
+      - uses: arcxp/datadog-service-catalog-metadata-provider@v1
+        with:
+          # You should use GitHub's encrypted secrets feature to manage secrets for DataDog.
+          # Don't store your secrets in your workflow files, and don't do anything fancy to get them.
+          # GitHub already gave us a great tool for managing secrets, and it's super easy to use.
+          datadog-key: ${{ secrets.DATADOG_API_KEY }}
+          datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
+
+          # This maps to the `dd-service` field in DataDog, it's just the name of your service.
+          service-name: hello-world
+          
+          # The name of the team which owns and/or supports the service.
+          team: Global Greetings
+
+          # The email address of the team which owns and/or supports the service.
+          email: global.greetings@fake-email-host.com
+          
+          # The URL of the Slack channel where support for the service is handled.
+          # Keep in mind, this _must_ be a URL. To get the URL, right-click on the channel
+          # in the Slack app, and select "Copy link" in the "Copy" submenu.
+          slack-support-channel: 'https://team-name-here.slack.com/archives/ABC123'
+          
+          # For repos, you'll obviously want to have the repository for your service. If your service
+          # is made up of multiple repositories, you can add them here as well. Note that we're using a multi-line string here. That multi-line string will be parsed as YAML, I didn't typo.
+          repos: |
+            - name: hello-world (primary service repo)
+              url: https://github.com/fake-org/hello-world
+              provider: github
+            - name: some-library
+              url: https://github.com/fake-org/some-library
+              provider: github
+          
+          # Docs contain anything that you might need when supporting the service.
+          docs: |
+            - name: API Docs
+              url: https://fake-org.github.io/hello-world-api-docs
+              provider: github
+          
+          # Links are great for runbooks, other documentation, other services which
+          # could be helpful, as well as dashboards.
+          links: |
+            - name: outage-runbook
+              url: https://fake-org.github.io/hello-world-outage-runbook
+              type: runbook
+            - name: hello-world dashboard
+              url: https://app.datadoghq.com/dashboard/1234567890
+              type: dashboard
+          
+          # These integrations allow folks to be able to see who's on-call for the
+          # service right from the DataDog Service Catalog.
+          integrations: |
+            opsgenie:
+              service_url: https://fake-org.hello-world.opsgenie.com
+              region: US
+            pagerduty: https://fake-org.hello-world.pagerduty.com
 ```
 
 ## Quick note on triggers
