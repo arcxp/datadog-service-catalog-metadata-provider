@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-To report a vulnerability to this project, please use the report button on the Security tab.
+To report a vulnerability to this project, please use the report button on the Security tab: https://github.com/arcxp/datadog-service-catalog-metadata-provider/security/advisories
