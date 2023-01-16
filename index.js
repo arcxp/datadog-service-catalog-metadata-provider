@@ -2,23 +2,6 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const YAML = require('yaml')
 const { HttpClient } = require('@actions/http-client')
-
-/**
- * This function takes inputs encoded as strings and expands them to
- * the full array of objects.
- * @param {string} str - The input value.
- * @returns {Object} The input value with all object inputs expanded.
- **/
-const expandObjectInputs = (str) => {
-  try {
-    return YAML.parse(str)
-  } catch (error) {
-    core.debug(`Input as <<${str}>> is not a valid YAML object.`)
-    core.error(error)
-    core.setFailed(error.message)
-  }
-}
-
 /**
  * This function takes the config JSON string and registers the service with
  * DataDog.
