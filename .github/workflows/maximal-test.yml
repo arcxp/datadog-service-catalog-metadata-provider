@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  testy-mctestface:
     runs-on: ubuntu-latest
     steps:
 

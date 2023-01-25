@@ -4,12 +4,12 @@ on:
   push:
   workflow_dispatch:
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say "Hello"
-        run: |
-          echo "Hello, world!"
-          pwd
-          ls -ltr
+runs:
+  using: "composite"
+  steps:
+    - name: Say "Hello"
+      shell: bash
+      run: |
+        echo "Hello, world!"
+        pwd
+        ls -ltr
