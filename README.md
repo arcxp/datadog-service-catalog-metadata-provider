@@ -1,8 +1,8 @@
-# DataDog Service Catalog Metadata Provider
+# Datadog Service Catalog Metadata Provider
 
 Welcome to the Datadog Service Catalog Metadata Provider!
 
-The DataDog Service catalog is a marvelous new way to track which services are in production. Your telemetry data is presented in the Service Catalog in a way where you can see the health of your services, and the health of the services that depend on them, all in one place. Most importantly, the Service Catalog helps you support your services in any environment.
+The Datadog Service catalog is a marvelous new way to track which services are in production. Your telemetry data is presented in the Service Catalog in a way where you can see the health of your services, and the health of the services that depend on them, all in one place. Most importantly, the Service Catalog helps you support your services in any environment.
 
 With the Service Catalog registration API, you can supply the Service Catalog with all of the support information you might want:
 
@@ -16,15 +16,15 @@ With the Service Catalog registration API, you can supply the Service Catalog wi
 
 You can use this to register your services with the Service Catalog, and then use the Service Catalog to find the information you need to support your services.
 
-Supporting services can be tricky, and the DataDog Service Catalog can make it easier for team members who aren't familiar with your service to support it. The Service Catalog can also help you find the information you need to support your services, and help you find the right people to support your services.
+Supporting services can be tricky, and the Datadog Service Catalog can make it easier for team members who aren't familiar with your service to support it. The Service Catalog can also help you find the information you need to support your services, and help you find the right people to support your services.
 
 ## Wait, but why?
 
-DataDog already has methods for supplying this information. Why do we need another one? The answer is pretty simple: constraints.
+Datadog already has methods for supplying this information. Why do we need another one? The answer is pretty simple: constraints.
 
-DataDog has a super useful GitHub integration which allows you to register your service with a simple JSON file in your repository, after you install their GitHub plugin and give it read access to your repository. This is great, but if you're using GitOps for deployments and such, sometimes more integrations and webhooks can be concerning.
+Datadog has a super useful GitHub integration which allows you to register your service with a simple JSON file in your repository, after you install their GitHub plugin and give it read access to your repository. This is great, but if you're using GitOps for deployments and such, sometimes more integrations and webhooks can be concerning.
 
-In order to get the benefits of the Service Catalog without having to open GitHub up to those integrations, this GitHub Action will allow you to register your services with the Service Catalog using a GitHub Action, which then allows you to have full control and visibility over this process. It also gives you full control over when this information is sent to DataDog.
+In order to get the benefits of the Service Catalog without having to open GitHub up to those integrations, this GitHub Action will allow you to register your services with the Service Catalog using a GitHub Action, which then allows you to have full control and visibility over this process. It also gives you full control over when this information is sent to Datadog.
 
 ## Supported Metadata Fields
 
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: DataDog/service-catalog-metadata-provider@v1
+      - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
           datadog-key: ${{ secrets.DATADOG_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APP_KEY }}
@@ -161,7 +161,7 @@ This is the maximal configuration you could use, in a complete workflow that you
 
 ```yaml
 ---
-name: DataDog Service Catalog Metadata Provider
+name: Datadog Service Catalog Metadata Provider
 
 on:
   # This will make my service definition get pushed any time I push a change
@@ -176,16 +176,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # This uses the custom action to push the service definition to DataDog.
+      # This uses the custom action to push the service definition to Datadog.
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
-          # You should use GitHub's encrypted secrets feature to manage secrets for DataDog.
+          # You should use GitHub's encrypted secrets feature to manage secrets for Datadog.
           # Don't store your secrets in your workflow files, and don't do anything fancy to get them.
           # GitHub already gave us a great tool for managing secrets, and it's super easy to use.
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
 
-          # This maps to the `dd-service` field in DataDog, it's just the name of your service.
+          # This maps to the `dd-service` field in Datadog, it's just the name of your service.
           service-name: hello-world
           
           # The name of the team which owns and/or supports the service.
@@ -226,7 +226,7 @@ jobs:
               type: dashboard
           
           # These integrations allow folks to be able to see who's on-call for the
-          # service right from the DataDog Service Catalog.
+          # service right from the Datadog Service Catalog.
           integrations: |
             opsgenie:
               service_url: https://fake-org.hello-world.opsgenie.com
@@ -236,9 +236,9 @@ jobs:
 
 ## Quick note on triggers
 
-While there are a number of triggers you can use for this workflow, I recommend that you limit the triggers here to `workflow_dispatch` and `push` for your primary branch. Keep in mind that DataDog is going to always overwrite the service catalog definition whenever you run this action.
+While there are a number of triggers you can use for this workflow, I recommend that you limit the triggers here to `workflow_dispatch` and `push` for your primary branch. Keep in mind that Datadog is going to always overwrite the service catalog definition whenever you run this action.
 
 ## References
 
-- [DataDog Service Definition API](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/)
-- [JSON Schema for the DataDog Service Definition](https://github.com/DataDog/schema/blob/main/service-catalog/v2/schema.json)
+- [Datadog Service Definition API](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/)
+- [JSON Schema for the Datadog Service Definition](https://github.com/Datadog/schema/blob/main/service-catalog/v2/schema.json)
