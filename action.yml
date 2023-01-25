@@ -6,7 +6,7 @@ runs:
   using: node16
   main: index.js
 inputs:
-  datadog-key:
+ datadog-key:
     description: 'The DataDog API key'
     required: true
   datadog-app-key:
@@ -44,4 +44,7 @@ inputs:
     required: false
   integrations:
     description: 'The integrations for the service'
+    required: false
+  write-test-data:
+    description: 'Whether to write test data to a file inside the action for more tests.'
     required: false

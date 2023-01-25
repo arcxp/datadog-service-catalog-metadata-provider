@@ -9,16 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Pre-checkout
-        run: |
-          ls -ltr
-
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Post-checkout
-        run: |
-          ls -ltr
 
       - name: DD-service-catalog-maximal
         uses: ./test-actions/maximal/
@@ -51,3 +43,9 @@ jobs:
             opsgenie:
               service-url: https://yourorghere.app.opsgenie.com/teams/dashboard/00000000-0000-0000-0000-000000000000/main
               region: US
+          write-test-data: ./test-data-maximal.json
+
+      - name: inner-action-test
+        run: |
+          echo "Performing test on maximal config"
+          jest ./test-actions/inner-action-test.test.js

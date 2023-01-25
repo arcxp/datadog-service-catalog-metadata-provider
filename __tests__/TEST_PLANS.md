@@ -46,24 +46,6 @@ sequenceDiagram
 
 This is great, because it tells us where we can put shims. The first and most obvious place to place the shim is to just add more actions in a different folder.
 
-```mermaid
-sequenceDiagram
-  participant A as ./github/workflows/workflow-name-here.yml
-  participant B as ./action.yml (entrypoint)
-  participant C as ./index.js
-  participant D as ./test-actions/test-name/action.yml (entrypoint)
-  participant E as ./test-actions/test-name/index.js
-
-  A->>B: "uses: ./"
-  B->>C: "runs: ./index.js"
-  C->>B: "return"
-  B->>A: "return"
-  A->>D: "uses: ./test-actions/test-name"
-  D->>E: "runs: ./test-actions/test-name/index.js"
-  E->>D: "return"
-  D->>A: "return"
-```
-
-The way I will run the test on the output of the primary action, `./action.yml`, is by using a hidden `write-test-data` input which causes all properties to be written to a `./test-data.json` file. This file will be read by the test action, `./test-actions/test-name/action.yml`, and then the test action will run the tests.
+The way I will run the test on the output of the primary action, `./action.yml`, is by using the `write-test-data` input which causes all properties to be written to a file named the value of this property. This file will be read by the test by way of environment variable, and then the test will do its thing.
 
 **It's important to note that for security, all of the inputs to the primary action which could contain sensitive information will be redacted from the `./test-data.json` file, and the inputs from other actions will be omitted completely.**
