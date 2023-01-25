@@ -63,7 +63,7 @@ Here's a larger set of metadata fields that are supported by the Datadog Service
 | `docs[].provider` | The provider for where the documentation lives. Acceptable values are: `Confluence`, `GoogleDocs`, `Github`, `Jira`, `OneNote`, `SharePoint`, and `Dropbox` | No | |
 | `integrations` | Integrations associated with the service. These integrations are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `{}` |
 | `integrations.opsgenie` | The OpsGenie details for the service. | No | |
-| `integrations.opsgenie.service_url` | The service URL for the OpsGenie integration. Make sure that this URL is to a service, not a team. | Yes | |
+| `integrations.opsgenie.service_url` | The service URL for the OpsGenie integration. A team URL will work, but if you want on-call metadata then make sure that this URL is to a service, not a team. | Yes | |
 | `integrations.opsgenie.region` | The region for the OpsGenie integration. Acceptable values are `US` and `EU`. | No | |
 | `integrations.pagerduty` | The PagerDuty URL for the service. | No | |
 
