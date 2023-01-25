@@ -9,8 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Pre-checkout
+        run: |
+          ls -ltr
+
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Post-checkout
+        run: |
+          ls -ltr
 
       - name: DD-service-catalog-maximal
         uses: ./maximal/
