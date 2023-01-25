@@ -1,3 +1,4 @@
+const ajv = require('ajv')
 const { expandObjectInputs } = require('../input-expander')
 
 describe('input-expander.js', () => {
@@ -67,7 +68,9 @@ nested-yaml:
       }
     )
   })
+})
 
+describe('Making sure that inputs match the schema.', () => {
   // Do some tests which will validate the schema against the parsed
   // input object.
   test('#expandObjectInputs() - small schema validation', () => {
