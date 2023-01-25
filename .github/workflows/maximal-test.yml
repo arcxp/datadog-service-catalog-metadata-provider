@@ -21,7 +21,7 @@ jobs:
           ls -ltr
 
       - name: DD-service-catalog-maximal
-        uses: ./maximal/
+        uses: ./test-actions/maximal/
         with:
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
