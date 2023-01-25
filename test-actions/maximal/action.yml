@@ -8,13 +8,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: DD-service-catalog-maximal
-        uses: ./test-runner.js
-        with:
-          service-name: test-config-maximal
-          team: Team Maximal
-          tags: |
-            - 'application:Maximal Config Test'
-            - env:prod
-            - infrastructure:serverless
-            - language:nodejs
+      - name: Say "Hello"
+        run: |
+          echo "Hello, world!"
+          pwd
+          ls -ltr
