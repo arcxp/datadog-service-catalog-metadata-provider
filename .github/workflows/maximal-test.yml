@@ -1,0 +1,41 @@
+---
+name: DataDog Service Catalog
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DD-service-catalog-maximal
+        uses: ./maximal/
+        with:
+          datadog-key: ${{ secrets.DATADOG_API_KEY }}
+          datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          service-name: test-config-maximal
+          team: Team Maximal
+          email: team-maximal@fakeemaildomainthatdoesntexist.com
+          slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000000'
+          repo: https://github.com/arcxp/datadog-service-catalog-metadata-provider
+          tags: |
+            - 'application:Maximal Config Test'
+            - env:prod
+            - infrastructure:serverless
+            - language:nodejs
+          repos: |
+            - url: https://github.com/actions/toolkit
+              provider: Github
+              name: @actions/toolkit
+          links: |
+            - name: AMI Version Status Dashboard
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
+              type: dashboard
+          docs: |
+            - name: GitHub Actions!
+              url: https://github.com/features/actions
+              provider: Github
+          integrations: |
+            opsgenie:
+              service-url: https://yourorghere.app.opsgenie.com/teams/dashboard/00000000-0000-0000-0000-000000000000/main
+              region: US

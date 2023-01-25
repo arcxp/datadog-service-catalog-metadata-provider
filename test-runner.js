@@ -1,6 +1,6 @@
-#!/usr/bin/env node
-
-const process = require('process')
-
-console.log("This is a test!")
-console.debug(process.env)
+module.exports = {
+  runner: (env) => {
+    console.log("This is a test!")
+    console.debug(env)
+  }
+}
