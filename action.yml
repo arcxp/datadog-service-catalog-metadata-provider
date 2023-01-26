@@ -2,6 +2,9 @@
 name: 'Datadog Service Catalog Metadata Provider'
 description: 'This is an action which allows you to provide your Datadog Service Catalog metadata to the Datadog Service Catalog'
 author: 'Arc XP'
+branding:
+  icon: 'monitor'
+  color: 'blue'
 runs:
   using: node16
   main: index.js
