@@ -1,5 +1,7 @@
 # Datadog Service Catalog Metadata Provider
 
+[![DataDog Service Catalog](https://github.com/arcxp/datadog-service-catalog-metadata-provider/actions/workflows/automated-testing.yml/badge.svg)](https://github.com/arcxp/datadog-service-catalog-metadata-provider/actions/workflows/automated-testing.yml)
+
 Welcome to the Datadog Service Catalog Metadata Provider!
 
 The Datadog Service catalog is a marvelous new way to track which services are in production. Your telemetry data is presented in the Service Catalog in a way where you can see the health of your services, and the health of the services that depend on them, all in one place. Most importantly, the Service Catalog helps you support your services in any environment.
@@ -32,7 +34,7 @@ The registration API's links are below, and it takes input per its own JSON sche
 
 | Field | Description | Required | Default |
 | --- | --- | --- | --- |
-| `datadog-hostname` | The Datadog host to use for the integration, which varies by Datadog customer. [See here for more details:](https://docs.datadoghq.com/getting_started/site/) <https://docs.datadoghq.com/getting_started/site/> | Yes | `https://api.datadoghq.com` |
+| `datadog-hostname` | The Datadog host to use for the integration, which varies by Datadog customer. [See here for more details:](https://docs.datadoghq.com/getting_started/site/) <https://docs.datadoghq.com/getting_started/site/>. Please make sure that you are sure about this value. You'll get an error if it's incorrect. | Yes | `https://api.datadoghq.com` |
 | `datadog-key` | The Datadog API key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
 | `datadog-app-key` | The Datadog Application key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
 | `service-name` | The name of the service. This must be unique across all services. | Yes | |
@@ -82,6 +84,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
+          datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APP_KEY }}
           service-name: my-service
@@ -102,6 +105,7 @@ jobs:
     steps:
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
+          datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
           service-name: hello-world
@@ -133,6 +137,7 @@ jobs:
     steps:
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
+          datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
           service-name: hello-world
@@ -183,6 +188,7 @@ jobs:
           # You should use GitHub's encrypted secrets feature to manage secrets for Datadog.
           # Don't store your secrets in your workflow files, and don't do anything fancy to get them.
           # GitHub already gave us a great tool for managing secrets, and it's super easy to use.
+          datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
 
@@ -238,6 +244,19 @@ jobs:
 ## Quick note on triggers
 
 While there are a number of triggers you can use for this workflow, I recommend that you limit the triggers here to `workflow_dispatch` and `push` for your primary branch. Keep in mind that Datadog is going to always overwrite the service catalog definition whenever you run this action.
+
+## Troubleshooting
+
+| Error | Common Causes | Potential Solutions |
+| --- | --- | --- |
+| `Error: The Datadog API key is required.` | You didn't set the `datadog-key` input. | Set the `datadog-key` input. |
+| `Error: The Datadog application key is required.` | You didn't set the `datadog-app-key` input. | Set the `datadog-app-key` input. |
+| `Error: The Datadog hostname is required.` | You didn't set the `datadog-hostname` input. | Set the `datadog-hostname` input. |
+| `Error: The service name is required.` | You didn't set the `service-name` input. | Set the `service-name` input. |
+| `Error: The team name is required.` | You didn't set the `team` input. | Set the `team` input. |
+| `Error: The team email is required.` | You didn't set the `email` input. | Set the `email` input. |
+| Datadog gives a 403 when you try to push the service definition. | You didn't set the `datadog-key` or `datadog-app-key` inputs correctly, or you've got the wrong `datadog-hostname` value for your account. | Check the `datadog-hostname` first, that's easier to check since GitHub Actions secrets will not show the value to you. After you've verified that, if you still have a 403, verify that you set the `datadog-key` and `datadog-app-key` inputs correctly. If that continues to cause trouble, you may want to visit the [API documentation for the API that this Action uses](https://docs.datadoghq.com/api/latest/service-definition/?code-lang=curl#create-or-update-service-definition) and make sure that it's functional with the host name and credentials you've provided. |
+
 
 ## References
 
