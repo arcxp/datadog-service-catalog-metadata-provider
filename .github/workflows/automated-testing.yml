@@ -9,6 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -37,7 +41,7 @@ jobs:
             - env:prod
             - infrastructure:serverless
             - language:nodejs
-            - updated:${{ date }}
+            - updated:${{ steps.date.outputs.date }}
           repos: |
             - url: https://github.com/actions/toolkit
               provider: Github
