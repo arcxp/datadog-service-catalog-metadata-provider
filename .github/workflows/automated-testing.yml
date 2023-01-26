@@ -24,6 +24,7 @@ jobs:
       - name: Datadog Service Catalog Metadata Provider Manual Test
         uses: ./
         with:
+          datadog-host: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
           service-name: test-config-maximal
