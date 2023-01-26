@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: inner-action-test
+      - name: Run CI Tests
         env:
           DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
           DATADOG_APPLICATION_KEY: ${{ secrets.DATADOG_APPLICATION_KEY }}
@@ -21,7 +21,7 @@ jobs:
           npm install
           npm run test
 
-      - name: DD-service-catalog-maximal
+      - name: Datadog Service Catalog Metadata Provider Manual Test
         uses: ./
         with:
           datadog-key: ${{ secrets.DATADOG_API_KEY }}

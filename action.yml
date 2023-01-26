@@ -6,7 +6,7 @@ runs:
   using: node16
   main: index.js
 inputs:
- datadog-key:
+  datadog-key:
     description: 'The DataDog API key'
     required: true
   datadog-app-key:
