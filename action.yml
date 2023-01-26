@@ -45,6 +45,3 @@ inputs:
   integrations:
     description: 'The integrations for the service'
     required: false
-  write-test-data:
-    description: 'Whether to write test data to a file inside the action for more tests.'
-    required: false

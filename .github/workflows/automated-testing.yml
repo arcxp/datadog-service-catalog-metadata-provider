@@ -12,6 +12,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: inner-action-test
+        env:
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          DATADOG_APPLICATION_KEY: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          TEST_ENV: 'true'
+        run: |
+          npm install
+          npm run test
+
       - name: DD-service-catalog-maximal
         uses: ./test-actions/maximal/
         with:
@@ -41,11 +50,5 @@ jobs:
               provider: Github
           integrations: |
             opsgenie:
-              service-url: https://yourorghere.app.opsgenie.com/teams/dashboard/00000000-0000-0000-0000-000000000000/main
+              service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
               region: US
-          write-test-data: ./test-data-maximal.json
-
-      - name: inner-action-test
-        run: |
-          echo "Performing test on maximal config"
-          jest ./test-actions/inner-action-test.test.js

@@ -1,5 +1,4 @@
-const ajv = require('ajv')
-const { expandObjectInputs } = require('../input-expander')
+const { expandObjectInputs } = require('../../lib/input-expander')
 
 describe('input-expander.js', () => {
   test('#expandObjectInputs() - empty input', () => {
@@ -7,7 +6,7 @@ describe('input-expander.js', () => {
     const testText = ''
     const testParsed = expandObjectInputs(testText)
     console.log(testParsed)
-    expect(testParsed).toStrictEqual("")
+    expect(testParsed).toStrictEqual('')
   })
 
   test('#expandObjectInputs() - just a number', () => {
@@ -38,7 +37,7 @@ describe('input-expander.js', () => {
 foo: bar
 `
     const testParsed = expandObjectInputs(testText)
-    expect(testParsed).toStrictEqual({ foo: "bar" })
+    expect(testParsed).toStrictEqual({ foo: 'bar' })
   })
 
   test('#expandObjectInputs()', () => {
@@ -59,14 +58,12 @@ nested-yaml:
     - c
     `
     const testParsed = expandObjectInputs(testText)
-    expect(testParsed).toEqual(
-      {
-        'plain-yaml': ['a', 'b', 'c'],
-        'nested-yaml': {
-          subtree: ['a', { b: [1, true, null] }, 'c']
-        }
-      }
-    )
+    expect(testParsed).toEqual({
+      'plain-yaml': ['a', 'b', 'c'],
+      'nested-yaml': {
+        subtree: ['a', { b: [1, true, null] }, 'c'],
+      },
+    })
   })
 })
 

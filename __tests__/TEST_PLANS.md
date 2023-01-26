@@ -46,6 +46,4 @@ sequenceDiagram
 
 This is great, because it tells us where we can put shims. The first and most obvious place to place the shim is to just add more actions in a different folder.
 
-The way I will run the test on the output of the primary action, `./action.yml`, is by using the `write-test-data` input which causes all properties to be written to a file named the value of this property. This file will be read by the test by way of environment variable, and then the test will do its thing.
-
-**It's important to note that for security, all of the inputs to the primary action which could contain sensitive information will be redacted from the `./test-data.json` file, and the inputs from other actions will be omitted completely.**
+In order to test this module, I'm going to use a mock for `@actions/core` so that I can evaluate the parameters that we're running. This isn't perfect test coverage, but we're not going for perfect, we're going for reliable. At least for now, this is a great start.
