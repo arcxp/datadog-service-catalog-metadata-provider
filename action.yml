@@ -7,7 +7,7 @@ branding:
   color: 'blue'
 runs:
   using: node16
-  main: index.js
+  main: dist/index.js
 inputs:
   datadog-hostname:
     description: 'The Datadog API hostname (this varies by Datadog customer!)'

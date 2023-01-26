@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.0.2] - 2023-01-26
+
+## Fixed
+
+- Dependencies issue which was causing jobs to fail.
+
 ## [1.0.0] - 2023-01-26
 
 ### Added
