@@ -18,13 +18,13 @@ describe('input-to-registry-document.js', () => {
 ---
 datadog-key: FAKE_KEY
 datadog-app-key: FAKE_KEY
-service-name: test-config-maximal
-team: Team Maximal
-email: 'team-maximal@fakeemaildomainthatdoesntexist.com'
+service-name: datadog-service-catalog-metadata-provider-test
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000000'
 repo: https://github.com/arcxp/datadog-service-catalog-metadata-provider
 tags: |
-  - 'application:Maximal Config Test'
+  - 'application:GitHub Action Config Test'
   - env:prod
   - infrastructure:serverless
   - language:nodejs
