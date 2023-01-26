@@ -21,9 +21,11 @@ For this we're going to have three data files that we'll experiment with:
 - Minimal config
 - Maximal config
 
-- [ ] Test that the data parsed from various config files matches the schema
+- [x] Test that the data parsed from various config files matches the schema
 
 ## Communication of various fields out to Datadog
+
+These are tests I'd like to add, but they need more thought still. I'm mostly leaving this in the documentation so that if someone else comes up with a new idea, they can add it here. It'll also remind me to check back later.
 
 - [ ] Test that the data is correctly sent to Datadog
 - [ ] Test that the data is correctly sent to Datadog with case and special characters accounted for
