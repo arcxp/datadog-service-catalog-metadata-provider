@@ -49,7 +49,7 @@ const run = async (configs) => {
     }
 
     // Fetch and verify the host.
-    const ddHost = core.getInput('datadog-host')
+    const ddHost = core.getInput('datadog-hostname')
     if (!ddHost || !ddHost.match(/^[a-z0-9.-]+\.datadoghq\.(com|eu|us)$/)) {
       return core.setFailed(
         `Invalid DataDog host: ${ddHost}. See here for more details: https://docs.datadoghq.com/getting_started/site/`,
