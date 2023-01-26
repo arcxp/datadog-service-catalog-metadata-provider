@@ -5,9 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.0.3] - 2023-01-26
+
+### Fixed
+
+- Fixed an issue where lists which should have been empty were actually lists containing single empty string.
+
 ## [1.0.2] - 2023-01-26
 
-## Fixed
+### Fixed
 
 - Dependencies issue which was causing jobs to fail.
 

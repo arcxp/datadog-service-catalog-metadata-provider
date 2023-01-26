@@ -1,6 +1,58 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`input-to-registry-document.js #inputsToRegistryDocument() - minimal input 1`] = `
+exports[`input-to-registry-document.js #inputsToRegistryDocument() - less input 1`] = `
+{
+  "contacts": [
+    {
+      "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "Team Email",
+      "type": "email",
+    },
+    {
+      "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "name": "Support Slack Channel",
+      "type": "slack",
+    },
+  ],
+  "dd-service": "datadog-service-catalog-metadata-provider-test",
+  "docs": [
+    {
+      "name": "GitHub Actions!",
+      "provider": "Github",
+      "url": "https://github.com/features/actions",
+    },
+  ],
+  "integrations": {
+    "opsgenie": {
+      "region": "US",
+      "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
+    },
+  },
+  "links": [],
+  "repos": [
+    {
+      "name": "Service Repository",
+      "provider": "Github",
+      "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
+    },
+    {
+      "name": "@actions/toolkit",
+      "provider": "Github",
+      "url": "https://github.com/actions/toolkit",
+    },
+  ],
+  "schema-version": "v2",
+  "tags": [
+    "application:GitHub Action Config Test",
+    "env:prod",
+    "infrastructure:serverless",
+    "language:nodejs",
+  ],
+  "team": "Team Name Here",
+}
+`;
+
+exports[`input-to-registry-document.js #inputsToRegistryDocument() - normal input 1`] = `
 {
   "contacts": [
     {
