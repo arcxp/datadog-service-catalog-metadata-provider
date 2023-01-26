@@ -37,6 +37,7 @@ jobs:
             - env:prod
             - infrastructure:serverless
             - language:nodejs
+            - updated:${{ date }}
           repos: |
             - url: https://github.com/actions/toolkit
               provider: Github
