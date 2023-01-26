@@ -67,6 +67,5 @@ const run = async (configs) => {
   }
 }
 
-if (require.main === module) {
-  run(inputsToRegistryDocument())
-}
+// Grab the inputs and then run with them!
+inputsToRegistryDocument().then((configs) => run(configs))
