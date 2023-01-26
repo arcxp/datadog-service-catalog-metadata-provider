@@ -32,6 +32,7 @@ The registration API's links are below, and it takes input per its own JSON sche
 
 | Field | Description | Required | Default |
 | --- | --- | --- | --- |
+| `datadog-hostname` | The Datadog host to use for the integration, which varies by Datadog customer. [See here for more details:](https://docs.datadoghq.com/getting_started/site/) <https://docs.datadoghq.com/getting_started/site/> | Yes | `https://api.datadoghq.com` |
 | `datadog-key` | The Datadog API key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
 | `datadog-app-key` | The Datadog Application key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
 | `service-name` | The name of the service. This must be unique across all services. | Yes | |
