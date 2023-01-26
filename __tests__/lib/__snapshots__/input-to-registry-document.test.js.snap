@@ -15,13 +15,7 @@ exports[`input-to-registry-document.js #inputsToRegistryDocument() - less input 
     },
   ],
   "dd-service": "datadog-service-catalog-metadata-provider-test",
-  "docs": [
-    {
-      "name": "GitHub Actions!",
-      "provider": "Github",
-      "url": "https://github.com/features/actions",
-    },
-  ],
+  "docs": [],
   "integrations": {
     "opsgenie": {
       "region": "US",
@@ -34,11 +28,6 @@ exports[`input-to-registry-document.js #inputsToRegistryDocument() - less input 
       "name": "Service Repository",
       "provider": "Github",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
-    },
-    {
-      "name": "@actions/toolkit",
-      "provider": "Github",
-      "url": "https://github.com/actions/toolkit",
     },
   ],
   "schema-version": "v2",

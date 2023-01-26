@@ -89,7 +89,8 @@ const { expandObjectInputs } = __nccwpck_require__(8454)
  * @private
  * @function
  */
-const forceArray = (input) => (Array.isArray(input) ? input : [input])
+const forceArray = (input) =>
+  Array.isArray(input) ? input : input && input.length > 0 ? [input] : []
 
 /**
  * This function takes an input and forces it to be an object.

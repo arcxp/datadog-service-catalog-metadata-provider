@@ -68,14 +68,6 @@ tags: |
   - env:prod
   - infrastructure:serverless
   - language:nodejs
-repos: |
-  - url: https://github.com/actions/toolkit
-    provider: Github
-    name: "@actions/toolkit"
-docs: |
-  - name: GitHub Actions!
-    url: https://github.com/features/actions
-    provider: Github
 integrations: |
   opsgenie:
     service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
@@ -87,5 +79,9 @@ integrations: |
     expect(validate(inputs)).toStrictEqual(true)
     expect(validate.errors).toBeNull()
     expect(inputs).toMatchSnapshot()
+    expect(Array.isArray(inputs.links)).toBeTruthy()
+    expect(Array.isArray(inputs.docs)).toBeTruthy()
+    expect(inputs.links.length).toEqual(0)
+    expect(inputs.docs.length).toEqual(0)
   })
 })
