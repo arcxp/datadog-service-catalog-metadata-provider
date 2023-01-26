@@ -22,7 +22,7 @@ const registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
     configJsonStr,
     {
       'DD-API-KEY': apiKey,
-      // 'DD-APPLICATION-KEY': appKey,
+      'DD-APPLICATION-KEY': appKey,
       'Content-Type': 'application/json',
     },
   )
