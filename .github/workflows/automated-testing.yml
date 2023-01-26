@@ -1,0 +1,56 @@
+---
+name: DataDog Service Catalog
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  testy-mctestface:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d -- %s')"
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run CI Tests
+        run: |
+          npm install
+          npm run test
+
+      - name: Datadog Service Catalog Metadata Provider Manual Test
+        uses: ./
+        with:
+          datadog-hostname: api.us5.datadoghq.com
+          datadog-key: ${{ secrets.DATADOG_API_KEY }}
+          datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          service-name: datadog-service-catalog-metadata-provider-test
+          team: Team Name Here
+          email: team-name-here@fakeemaildomainthatdoesntexist.com
+          slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000000'
+          repo: https://github.com/arcxp/datadog-service-catalog-metadata-provider
+          tags: |
+            - 'application:GitHub Action Config Test'
+            - env:prod
+            - infrastructure:serverless
+            - language:nodejs
+            - updated:${{ steps.date.outputs.date }}
+          repos: |
+            - url: https://github.com/actions/toolkit
+              provider: Github
+              name: @actions/toolkit
+          links: |
+            - name: AMI Version Status Dashboard
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
+              type: dashboard
+          docs: |
+            - name: GitHub Actions!
+              url: https://github.com/features/actions
+              provider: Github
+          integrations: |
+            opsgenie:
+              service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
+              region: US

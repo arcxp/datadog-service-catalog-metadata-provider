@@ -1,16 +1,20 @@
 ---
-name: 'DataDog Service Catalog Metadata Provider'
-description: 'This is an action which allows you to provide your DataDog Service Catalog metadata to the DataDog Service Catalog'
+name: 'Datadog Service Catalog Metadata Provider'
+description: 'This is an action which allows you to provide your Datadog Service Catalog metadata to the Datadog Service Catalog'
 author: 'Arc XP'
 runs:
   using: node16
   main: index.js
 inputs:
+  datadog-hostname:
+    description: 'The Datadog API hostname (this varies by Datadog customer!)'
+    required: true
+    default: 'api.datadoghq.com'
   datadog-key:
-    description: 'The DataDog API key'
+    description: 'The Datadog API key'
     required: true
   datadog-app-key:
-    description: 'The DataDog Application key'
+    description: 'The Datadog Application key'
     required: true
   service-name:
     description: 'The name of the service'
