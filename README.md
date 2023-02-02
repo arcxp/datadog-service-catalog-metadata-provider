@@ -4,7 +4,7 @@
 
 Welcome to the Datadog Service Catalog Metadata Provider!
 
-The Datadog Service catalog is a marvelous new way to track which services are in production. Your telemetry data is presented in the Service Catalog in a way where you can see the health of your services, and the health of the services that depend on them, all in one place. Most importantly, the Service Catalog helps you support your services in any environment.
+The Datadog Service Catalog is a marvelous new way to track which services are in production. Your telemetry data is presented in the Service Catalog in a way where you can see the health of your services, and the health of the services that depend on them, all in one place. Most importantly, the Service Catalog helps you support your services in any environment.
 
 With the Service Catalog registration API, you can supply the Service Catalog with all of the support information you might want:
 
@@ -243,7 +243,7 @@ jobs:
 
 ## Quick note on triggers
 
-While there are a number of triggers you can use for this workflow, I recommend that you limit the triggers here to `workflow_dispatch` and `push` for your primary branch. Keep in mind that Datadog is going to always overwrite the service catalog definition whenever you run this action.
+While there are a number of triggers you can use for this workflow, I recommend that you limit the triggers here to `workflow_dispatch` and `push` for your primary branch. Keep in mind that Datadog is going to always overwrite the Service Catalog definition whenever you run this action.
 
 ## Troubleshooting
 
