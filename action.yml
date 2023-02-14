@@ -9,6 +9,9 @@ runs:
   using: node16
   main: dist/index.js
 inputs:
+  github-token:
+    description: 'The GitHub token to use for the action; default is `secrets.GITHUB_TOKEN`'
+    required: false
   datadog-hostname:
     description: 'The Datadog API hostname (this varies by Datadog customer!)'
     required: true
