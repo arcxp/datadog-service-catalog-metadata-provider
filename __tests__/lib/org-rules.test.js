@@ -10,12 +10,26 @@ process.env.GITHUB_REPOSITORY =
 // Pulling this in here activates the mocking of the github module
 const github = require('@actions/github')
 
+// Need to use inputs for some of our parameters
+const core = require('@actions/core')
+
 // This is our test subject
 const { applyOrgRules } = require('../../lib/org-rules')
 
 describe('org-rules.js', () => {
-  test('#getOrgRules() - normal input', async () => {
-    await applyOrgRules()
-    expect(1).toBeTruthy()
+  // Reset inputs before each test
+  beforeEach(() => {
+    core.__resetInputsObject()
+  })
+
+  test('#getOrgRules() - default case: no org rules file', async () => {
+    core.__setInputsObject({
+      'org-rules-file': 'org-rule-test-file-not-found.yml',
+    })
+    expect(await applyOrgRules({})).resolves
+  })
+
+  test('#getOrgRules() - default case: has org rules file', async () => {
+    expect(await applyOrgRules({})).resolves
   })
 })

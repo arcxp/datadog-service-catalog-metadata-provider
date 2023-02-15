@@ -12,6 +12,9 @@ inputs:
   github-token:
     description: 'The GitHub token to use for the action; default is `secrets.GITHUB_TOKEN`'
     required: false
+  org-rules-file:
+    description: 'The path to the org rules file; default is repository `ORG-NAME-HERE/.github` and the `service-catalog-rules.yml` file is expected in the root of that repository.'
+    required: false
   datadog-hostname:
     description: 'The Datadog API hostname (this varies by Datadog customer!)'
     required: true
