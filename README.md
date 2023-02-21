@@ -37,7 +37,7 @@ The registration API's links are below, and it takes input per its own JSON sche
 | Field | Description | Required | Default |
 | --- | --- | --- | --- |
 | `github-token` | This action will use the built-in `GITHUB_TOKEN` for all GitHub access. If you would prefer to use a different GitHub token for the action, please specify it here. | No | `GITHUB_TOKEN` |
-| `org-rules-file` | If you would prefer to use a different location for your organization rules file, you can specify it here. Please make sure that your org rules file is accessible to whichever token you use (either `GITHUB_TOKEN` or the `github-token` input value). | No | `.github/service-catalog-rules.yml` |
+| `org-rules-file` | If you would prefer to use a different name for your Org Rules File, you can specify it here. This parameter only supports a different file name within the `.github` repository, it will not support an alternate repository. Please make sure that your Org Rules File is accessible to whichever token you use (either `GITHUB_TOKEN` or the `github-token` input value). | No | `.github/service-catalog-rules.yml` |
 | `datadog-hostname` | The Datadog host to use for the integration, which varies by Datadog customer. [See here for more details:](https://docs.datadoghq.com/getting_started/site/) <https://docs.datadoghq.com/getting_started/site/>. Please make sure that you are sure about this value. You'll get an error if it's incorrect. | Yes | `https://api.datadoghq.com` |
 | `datadog-key` | The Datadog API key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
 | `datadog-app-key` | The Datadog Application key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
@@ -293,8 +293,17 @@ rules:
 | `Error: The team email is required.` | You didn't set the `email` input. | Set the `email` input. |
 | Datadog gives a 403 when you try to push the service definition. | You didn't set the `datadog-key` or `datadog-app-key` inputs correctly, or you've got the wrong `datadog-hostname` value for your account. | Check the `datadog-hostname` first, that's easier to check since GitHub Actions secrets will not show the value to you. After you've verified that, if you still have a 403, verify that you set the `datadog-key` and `datadog-app-key` inputs correctly. If that continues to cause trouble, you may want to visit the [API documentation for the API that this Action uses](https://docs.datadoghq.com/api/latest/service-definition/?code-lang=curl#create-or-update-service-definition) and make sure that it's functional with the host name and credentials you've provided. |
 
+## Design Decisions
+
+As with any other application, there are a number of decisions that were made in the design of this Action. Here are some of the more important ones:
+
+- For the Org Rules File, only the `.github` repository in the same GitHub org as the repository being processed will be used. This is to prevent a naughty user from trying to play around too much with the repositories and finding a toehold to do something malicious.
+- If there is no Org Rules file, the action will still run, but it will not enforce any rules.
+- If there _is_ a file, but it does not parse, the action will fail. This is to prevent a user from accidentally breaking the Org Rules File, and then not knowing why the action is failing, but also to make sure that if someone intended for rules to be followed, we respect that.
+- If there is an Org Rules File, but it does not contain any rules, the action will still run, but it will not enforce any rules (because there aren't any).
+
 ## References
 
 - [Datadog Service Definition API](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/)
 - [JSON Schema for the Datadog Service Definition](https://github.com/Datadog/schema/blob/main/service-catalog/v2/schema.json)
-- [Working example for the org rules file](https://github.com/arcxp/.github/blob/main/service-catalog-rules.yml)
+- [Working example for the Org Rules File](https://github.com/arcxp/.github/blob/main/service-catalog-rules.yml)

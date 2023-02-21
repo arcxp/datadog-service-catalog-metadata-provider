@@ -14,22 +14,55 @@ const github = require('@actions/github')
 const core = require('@actions/core')
 
 // This is our test subject
-const { applyOrgRules } = require('../../lib/org-rules')
+const {
+  applyOrgRules,
+  _test: { fetchRemoteRules, ghHandle },
+} = require('../../lib/org-rules')
 
 describe('org-rules.js', () => {
+  let gh = undefined
+
+  beforeAll(async () => {
+    gh = await ghHandle()
+  })
+
   // Reset inputs before each test
   beforeEach(() => {
     core.__resetInputsObject()
   })
 
-  test('#getOrgRules() - default case: no org rules file', async () => {
-    core.__setInputsObject({
-      'org-rules-file': 'org-rule-test-file-not-found.yml',
+  test('#fetchRemoteRules() - default case: no org rules file', async () => {
+    const result = await fetchRemoteRules(
+      gh,
+      'org-rule-test-file-not-found.yml',
+    )
+    expect(result).toMatchObject({
+      org: 'arcxp',
+      rules: expect.arrayContaining([]),
     })
-    expect(await applyOrgRules({})).resolves
   })
 
-  test('#getOrgRules() - default case: has org rules file', async () => {
-    expect(await applyOrgRules({})).resolves
+  test('#fetchRemoteRules() - default case: has org rules file', async () => {
+    const result = await fetchRemoteRules(gh)
+    expect(result).toMatchObject({
+      org: 'arcxp',
+      rules: expect.arrayContaining([]),
+    })
+    // Yay for snapshot testing!
+    expect(result).toMatchSnapshot()
+  })
+
+  test('#fetchRemoteRules() - exception case: failed to parse', async () => {
+    const orig_core_setFailed = core.setFailed
+    core.setFailed = jest.fn((x) => console.debug('SETFAILED CALLED: ', x))
+    const result = await fetchRemoteRules(
+      gh,
+      'broken-service-catalog-rules.yml',
+    )
+    expect(core.setFailed).toBeCalledTimes(1)
+    expect(core.setFailed).toBeCalledWith(
+      'Org Rules File "broken-service-catalog-rules.yml" failed to parse.',
+    )
+    expect(result).toBeUndefined()
   })
 })
