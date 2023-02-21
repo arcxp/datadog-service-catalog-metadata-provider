@@ -28,12 +28,16 @@ Datadog has a super useful GitHub integration which allows you to register your 
 
 In order to get the benefits of the Service Catalog without having to open GitHub up to those integrations, this GitHub Action will allow you to register your services with the Service Catalog using a GitHub Action, which then allows you to have full control and visibility over this process. It also gives you full control over when this information is sent to Datadog.
 
+Another reason to use this Action is that it permits your organization to establish controls on what must be present in your service metadata. For example, you might require that all services running in production have a runbook, or that all services have an environment tag which says where they're run. This Action gives you a way to add some controls without having to chase down every service owner and ask them to add the information. For more information on this functionality, see the section on [Organization Controls](#organization-controls) below.
+
 ## Supported Metadata Fields
 
 The registration API's links are below, and it takes input per its own JSON schema (also below), but this Action seeks to make things simpler and easier still! Here's a simplified list of the metadata fields that are supported by the Datadog Service Catalog Metadata Provider:
 
 | Field | Description | Required | Default |
 | --- | --- | --- | --- |
+| `github-token` | This action will use the built-in `GITHUB_TOKEN` for all GitHub access. If you would prefer to use a different GitHub token for the action, please specify it here. | No | `GITHUB_TOKEN` |
+| `org-rules-file` | If you would prefer to use a different location for your organization rules file, you can specify it here. Please make sure that your org rules file is accessible to whichever token you use (either `GITHUB_TOKEN` or the `github-token` input value). | No | `.github/service-catalog-rules.yml` |
 | `datadog-hostname` | The Datadog host to use for the integration, which varies by Datadog customer. [See here for more details:](https://docs.datadoghq.com/getting_started/site/) <https://docs.datadoghq.com/getting_started/site/>. Please make sure that you are sure about this value. You'll get an error if it's incorrect. | Yes | `https://api.datadoghq.com` |
 | `datadog-key` | The Datadog API key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
 | `datadog-app-key` | The Datadog Application key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
@@ -245,6 +249,38 @@ jobs:
 
 While there are a number of triggers you can use for this workflow, I recommend that you limit the triggers here to `workflow_dispatch` and `push` for your primary branch. Keep in mind that Datadog is going to always overwrite the Service Catalog definition whenever you run this action.
 
+## Organizational Controls
+
+One of the challenges of running a large set of services is keeping track of what belongs to who, and enforcing all of the rules associated with that. With this GitHub Action you can use your organization's `.github` repository to configure controls that this Action will enforce for you. Combine that with branch rules, and you can prevent merges which would break the rules.
+
+### The organization rules YAML file
+
+The place where you will configure your organization's rules is `.github/service-catalog-rules.yml` in your organization's `.github` repository. This file will be a YAML file which contains a list of rules. The syntax of this file is simple YAML, and the rules are simple as well. Here's an example:
+
+```yaml
+---
+
+org: arcxp
+
+rules:
+  # This should require all service catalog definitions to
+  # contain an `env` tag.
+  - name: Simple Requirements
+    selection: all
+    requirements:
+      - tags:
+        - env
+
+  # Everything that runs in production must have a runbook
+  - name: Prod needs a runbook
+    selection:
+      - tags:
+        - env: "prod"
+    requirements:
+      - links:
+        - type: "runbook"
+```
+
 ## Troubleshooting
 
 | Error | Common Causes | Potential Solutions |
@@ -257,8 +293,8 @@ While there are a number of triggers you can use for this workflow, I recommend 
 | `Error: The team email is required.` | You didn't set the `email` input. | Set the `email` input. |
 | Datadog gives a 403 when you try to push the service definition. | You didn't set the `datadog-key` or `datadog-app-key` inputs correctly, or you've got the wrong `datadog-hostname` value for your account. | Check the `datadog-hostname` first, that's easier to check since GitHub Actions secrets will not show the value to you. After you've verified that, if you still have a 403, verify that you set the `datadog-key` and `datadog-app-key` inputs correctly. If that continues to cause trouble, you may want to visit the [API documentation for the API that this Action uses](https://docs.datadoghq.com/api/latest/service-definition/?code-lang=curl#create-or-update-service-definition) and make sure that it's functional with the host name and credentials you've provided. |
 
-
 ## References
 
 - [Datadog Service Definition API](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/)
 - [JSON Schema for the Datadog Service Definition](https://github.com/Datadog/schema/blob/main/service-catalog/v2/schema.json)
+- [Working example for the org rules file](https://github.com/arcxp/.github/blob/main/service-catalog-rules.yml)
