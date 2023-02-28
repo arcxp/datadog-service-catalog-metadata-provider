@@ -281,6 +281,104 @@ rules:
         - type: "runbook"
 ```
 
+#### The `org` key
+
+This is the key of your org. There are two reasons why we have this key:
+
+- It helps to have a key in here to remember which org the Org Rules File applies to.
+- It's a sanity check to make sure that you're not accidentally running this Action against the wrong org. More of a misunderstanding mitigation device than anything else. If the `org` value doesn't match the org that the Action is running in, the Action will fail.
+
+#### The `rules` fields
+
+The Org Rules File is pretty light-weight, here's a breakdown of the fields:
+
+| Field | Description | Required? | Default Value |
+| --- | --- | --- |
+| `name` | The name of the rule. This is just for your own reference, it's not used by the Action. | `false` | `undefined` |
+| `selection` | The selection criteria for the rule. This is a list of criteria which will be used to select the services which the rule applies to. The word `all` for the value of this field indicates that it is applicable to all definitions for the whole org. This field must be a list, except for the case of `all`. | `true` | No default |
+| `selection[].tags` | These are the tags which you can use as selection criteria for this rule. These key-value pairs allow the Metadata Provider to choose which rules will apply. | `false` | `{}` |
+| `selection[].service-name` | This is the name of the service which you can use as selection criteria for this rule. | `false` | `undefined` |
+| `selection[].team` | This is the name of the team which you can use as selection criteria for this rule. | `false` | `undefined` |
+| `requirements` | These are the requirements which must be met for the rule to pass. More details for this field are below in "On Requirements." | `true` | No default |
+
+##### On Selection
+
+The `selection` structure allows the Metadata Provider to choose which rules will apply to which services. The `selection` field is a list of criteria which will be used to select the services which the rule applies to. The word `all` for the value of this field indicates that it is applicable to all definitions for the whole org. This field must be a list, except for the case of `all`.
+
+You can select on a small handful of fields on the greater service definition. These fields are:
+
+- Tags
+- Service Name
+- Team Name
+
+Wildcards are _not_ supported, so all values must be exact matches. Wildcards may be supported in the future.
+
+##### On Requirements
+
+The `requirements` section of the Org Rules file is where you will define the requirements which must be met for the rule to pass. The requirements are a list of requirements, and each requirement is a list of fields which must be present in the service definition. The fields which you can require are:
+
+- `tags`
+  - You can require that a service have a specific tag, and you can further constrain that to a list of values.
+- `links`
+  - You can require that a service have a link with a specific name, and you can further constrain that to a list of types.
+- `docs`
+  - You can require that a service have a doc with a specific name, and you can further constrain that to a list of providers.
+- `contacts`
+  - You can require that a service have a contact with a specific name or type, and you can further constrain that to a list of types.
+- `repos`
+  - You can require that a service have a repo with a specific name. No further constraints are supported for repos.
+- `integrations(.opsgenie|.pagerduty)`
+  - You can require that a service have an integration for a specific provider. No further constraints are supported for integrations.
+
+The syntax for these requirements is as follows:
+
+```yaml
+rules:
+  selection:
+    - tags:
+      - env: "prod"
+  requirements:
+    - tags:
+      - data-sensitivity:
+        - critical
+        - high
+        - medium
+        - low
+        - public
+    - links:
+      - type: "runbook"
+    - docs:
+      - name: "design"
+        provider: "confluence"
+    - contacts:
+      - name: "oncall"
+        type: "email"
+      - type: "slack"
+    - repos:
+      - name: "primary"
+    - integrations:
+     - pagerduty
+```
+
+This is a maximal set of requirements, but here's what it means:
+
+- The rule applies only to services which have the `env` tag, and the value of that tag is `prod`.
+- The service is required to have a tag named `data-sensitivity`, and the value of that tag must be one of `critical`, `high`, `medium`, `low`, or `public`.
+- The rule requires that the service have at least one `links` entry with the type `runbook`.
+- The rule requires that the service have at least one `docs` entry with the name `design` and the provider `confluence`.
+- The rule requires that the service have at least one `contacts` entry with the name `oncall` and the type `email`.
+- The rule requires that the service also have a second `contacts` entry with the type `slack`.
+- The rule requires that the service have at least one `repos` entry with the name `primary`.
+- The rule requires that the service have at least one `integrations` entry called `pagerduty`.
+
+It's encouraged to be judicious in how these are required. Restrictions are inherently, well, restrictive. If you're not careful, you can end up with a situation where you're not able to add new services to your org because they don't meet the requirements of a rule. It's a good idea to start with a minimal set of requirements, and then add more as you go.
+
+## Weird stuff
+
+- Datadog will _always_ force your tag names and values to lowercase. The use of lower-case characters in all tags is encouraged, in order to avoid inconsistencies between your definitions and Datadog's.
+- Datadog will replace any whitespace in your tag values with a `-`. please keep that in mind, too.
+- For both of the above reasons, I encourage a more picky use of quotation marks in your YAML, just to avoid any potential parser misunderstandings.
+
 ## Troubleshooting
 
 | Error | Common Causes | Potential Solutions |
@@ -307,3 +405,12 @@ As with any other application, there are a number of decisions that were made in
 - [Datadog Service Definition API](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/)
 - [JSON Schema for the Datadog Service Definition](https://github.com/Datadog/schema/blob/main/service-catalog/v2/schema.json)
 - [Working example for the Org Rules File](https://github.com/arcxp/.github/blob/main/service-catalog-rules.yml)
+
+## Thanks
+
+- GitHub Copilot was exceptionally helpful in the writing of tests and documentation for this program.
+- Datadog personnel have been instrumental in helping me understand the API and the schema, and have been very helpful in getting this Action to a place where it's ready for public consumption.
+- My own leadership, especially Jason Taylor and Jason Bartz, have been highly supportive of this project, and have provided invaluable peer review.
+- Anybody who has contributed to this project, either through code, documentation, creating issues, or testing.
+
+Thanks everybody!
