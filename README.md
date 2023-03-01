@@ -293,7 +293,7 @@ This is the key of your org. There are two reasons why we have this key:
 The Org Rules File is pretty light-weight, here's a breakdown of the fields:
 
 | Field | Description | Required? | Default Value |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | `name` | The name of the rule. This is just for your own reference, it's not used by the Action. | `false` | `undefined` |
 | `selection` | The selection criteria for the rule. This is a list of criteria which will be used to select the services which the rule applies to. The word `all` for the value of this field indicates that it is applicable to all definitions for the whole org. This field must be a list, except for the case of `all`. | `true` | No default |
 | `selection[].tags` | These are the tags which you can use as selection criteria for this rule. These key-value pairs allow the Metadata Provider to choose which rules will apply. | `false` | `{}` |
@@ -334,30 +334,31 @@ The syntax for these requirements is as follows:
 
 ```yaml
 rules:
-  selection:
-    - tags:
-      - env: "prod"
-  requirements:
-    - tags:
-      - data-sensitivity:
-        - critical
-        - high
-        - medium
-        - low
-        - public
-    - links:
-      - type: "runbook"
-    - docs:
-      - name: "design"
-        provider: "confluence"
-    - contacts:
-      - name: "oncall"
-        type: "email"
-      - type: "slack"
-    - repos:
-      - name: "primary"
-    - integrations:
-     - pagerduty
+  - name: "This is a test."
+    selection:
+      - tags:
+        - env: "prod"
+    requirements:
+      - tags:
+        - data-sensitivity:
+          - critical
+          - high
+          - medium
+          - low
+          - public
+      - links:
+        - type: "runbook"
+      - docs:
+        - name: "design"
+          provider: "confluence"
+      - contacts:
+        - name: "oncall"
+          type: "email"
+        - type: "slack"
+      - repos:
+        - name: "primary"
+      - integrations:
+      - pagerduty
 ```
 
 This is a maximal set of requirements, but here's what it means:

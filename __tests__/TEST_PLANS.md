@@ -55,6 +55,12 @@ In order to test this module, I'm going to use a mock for `@actions/core` so tha
 - [x] Verify that the org rules file can be obtained successfully using `GITHUB_TOKEN` in the `.github` repo.
 - [x] Verify that we can handle a missing file scenario.
 - [x] Test that the org rules file is parsed correctly
-- [ ] Test that the org rules file causes a predictable failure if parsing fails
-- [ ] Verify that enforcement works properly with `all` as the selector.
-- [ ] Verify that enforcement works properly with selector criteria.
+- [x] Test that the org rules file causes a predictable failure if parsing fails
+- [x] Verify that selection works properly with `all` as the selector.
+- [ ] Verify that selection works properly with selector criteria.
+- [ ] Verify that `tags` requirements are enforced
+- [ ] Verify that `links` enforcement works
+- [ ] Verify that `docs` enforcement works
+- [ ] Verify that `contacts` enforcement works
+- [ ] Verify that `repos` enforcement works
+- [ ] Verify that `integrations` enforcement works
