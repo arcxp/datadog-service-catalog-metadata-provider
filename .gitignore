@@ -1,3 +1,4 @@
 **/*.secrets
 tags
 node_modules/*
+coverage

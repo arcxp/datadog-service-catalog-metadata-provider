@@ -28,7 +28,7 @@ Datadog has a super useful GitHub integration which allows you to register your 
 
 In order to get the benefits of the Service Catalog without having to open GitHub up to those integrations, this GitHub Action will allow you to register your services with the Service Catalog using a GitHub Action, which then allows you to have full control and visibility over this process. It also gives you full control over when this information is sent to Datadog.
 
-Another reason to use this Action is that it permits your organization to establish controls on what must be present in your service metadata. For example, you might require that all services running in production have a runbook, or that all services have an environment tag which says where they're run. This Action gives you a way to add some controls without having to chase down every service owner and ask them to add the information. For more information on this functionality, see the section on [Organization Controls](#organization-controls) below.
+Another reason to use this Action is that it permits your organization to establish controls on what must be present in your service metadata. For example, you might require that all services running in production have a runbook, or that all services have a specific tag which says where they're run. This Action gives you a way to add some controls without having to chase down every service owner and ask them to add the information. For more information on this functionality, see the section on [Organization Controls](#organization-controls) below.
 
 ## Supported Metadata Fields
 
@@ -210,6 +210,10 @@ jobs:
           # in the Slack app, and select "Copy link" in the "Copy" submenu.
           slack-support-channel: 'https://team-name-here.slack.com/archives/ABC123'
           
+          tags: |
+            - isprod:true
+            - lang:nodejs
+          
           # For repos, you'll obviously want to have the repository for your service. If your service
           # is made up of multiple repositories, you can add them here as well. Note that we're using a multi-line string here. That multi-line string will be parsed as YAML, I didn't typo.
           repos: |
@@ -264,22 +268,26 @@ org: arcxp
 
 rules:
   # This should require all service catalog definitions to
-  # contain an `env` tag.
+  # contain an `isprod` tag.
   - name: Simple Requirements
     selection: all
     requirements:
       - tags:
-        - env
+        - isprod
 
   # Everything that runs in production must have a runbook
   - name: Prod needs a runbook
     selection:
-      - tags:
-        - env: "prod"
+      tags:
+        isprod: "true"
     requirements:
       - links:
         - type: "runbook"
 ```
+
+It should be noted that _all_ of the key-value pairs for rules and selection criteria in an Org Rules File are case-insensitive for the values. All values will be converted to locale-sensitive lowercase before being evaluated. Keys are still case-sensitive though.
+
+For tags, all things are lower-case.
 
 #### The `org` key
 
@@ -300,6 +308,21 @@ The Org Rules File is pretty light-weight, here's a breakdown of the fields:
 | `selection[].service-name` | This is the name of the service which you can use as selection criteria for this rule. | `false` | `undefined` |
 | `selection[].team` | This is the name of the team which you can use as selection criteria for this rule. | `false` | `undefined` |
 | `requirements` | These are the requirements which must be met for the rule to pass. More details for this field are below in "On Requirements." | `true` | No default |
+| `requirements[].tags` | These are the tags which you can require for this rule. | `false` | `undefined` |
+| `requirements[].tags.<tag-name>` | These are the tag values which you can require for this rule. If you only wish to validate the presence of the tag, use the value `ANY` to indicate that any value is valid. | `false` | `undefined` |
+| `requirements[].tags.<tag-name>.[]` | You may supply a list of acceptable values as a sequence. Keep in mind that outside of special values (such as `ANY`), all value checks are forced to locale-sensitive lower case. | `false` | `undefined` |
+| `requirements[].links` | This structure allows you to have requirements surrounding the `links` section. | `false` | `undefined` |
+| `requirements[].links.count` | Require at least this many `links` entries. If you require at least 1 link, you'd put a value here. | `false` | `undefined` |
+| `requirements[].links.type` | Require at least one of the `links` entry to have a specific type. If you need more than one, please use two rules, one for each type. | `false` | `undefined` |
+| `requirements[].docs` | This structure allows you to have requirements surrounding the `docs` section. | `false` | `undefined` |
+| `requirements[].docs.count` | Require at least this many `docs` entries. If you require at least 1 doc, you'd put a value here. | `false` | `undefined` |
+| `requirements[].contacts` | This structure allows you to have requirements surrounding the `contacts` section. | `false` | `undefined` |
+| `requirements[].contacts.count` | Require at least this many `contacts` entries. If you require at least 1 link, you'd put a value here. | `false` | `undefined` |
+| `requirements[].contacts.type` | Require at least one of the `contacts` entry to have a specific type. If you need more than one, please use two rules, one for each type. | `false` | `undefined` |
+| `requirements[].repos` | This structure allows you to have requirements surrounding the `repos` section. | `false` | `undefined` |
+| `requirements[].repos.count` | Require at least this many `repos` entries. If you require at least 1 repo, you'd put a value here. | `false` | `undefined` |
+| `requirements[].integrations` | This structure allows you to have requirements surrounding the `integrations` section. | `false` | `undefined` |
+| `requirements[].integrations[(opsgenie|pagerduty)]` | With this requirement you can require either an OpsGenie or a PagerDuty integration. | `false` | `[]` |
 
 ##### On Selection
 
@@ -320,13 +343,13 @@ The `requirements` section of the Org Rules file is where you will define the re
 - `tags`
   - You can require that a service have a specific tag, and you can further constrain that to a list of values.
 - `links`
-  - You can require that a service have a link with a specific name, and you can further constrain that to a list of types.
+  - You can require that a service have a minimum count of links, and you can further constrain that to a type.
 - `docs`
-  - You can require that a service have a doc with a specific name, and you can further constrain that to a list of providers.
+  - You can require that a service have a at least a certain number of docs.
 - `contacts`
-  - You can require that a service have a contact with a specific name or type, and you can further constrain that to a list of types.
+  - You can require that a service have a minimum count of contacts, and you can further constrain that to a type.
 - `repos`
-  - You can require that a service have a repo with a specific name. No further constraints are supported for repos.
+  - You can require that a service have a minimum count of repos.
 - `integrations(.opsgenie|.pagerduty)`
   - You can require that a service have an integration for a specific provider. No further constraints are supported for integrations.
 
@@ -337,7 +360,7 @@ rules:
   - name: "This is a test."
     selection:
       - tags:
-        - env: "prod"
+        - isprod: "true"
     requirements:
       - tags:
         - data-sensitivity:
@@ -346,24 +369,23 @@ rules:
           - medium
           - low
           - public
+        - isprod: ANY
       - links:
-        - type: "runbook"
+          type: "runbook"
       - docs:
-        - name: "design"
-          provider: "confluence"
+          count: 1
       - contacts:
-        - name: "oncall"
           type: "email"
-        - type: "slack"
+          count: 2
       - repos:
-        - name: "primary"
+          count: 1
       - integrations:
-      - pagerduty
+          - pagerduty
 ```
 
 This is a maximal set of requirements, but here's what it means:
 
-- The rule applies only to services which have the `env` tag, and the value of that tag is `prod`.
+- The rule applies only to services which have the `isprod` tag, and the value of that tag is `true`.
 - The service is required to have a tag named `data-sensitivity`, and the value of that tag must be one of `critical`, `high`, `medium`, `low`, or `public`.
 - The rule requires that the service have at least one `links` entry with the type `runbook`.
 - The rule requires that the service have at least one `docs` entry with the name `design` and the provider `confluence`.

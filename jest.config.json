@@ -1,0 +1,8 @@
+{
+  "collectCoverage": true,
+  "coverageDirectory": "coverage",
+  "collectCoverageFrom": [
+    "*.{js,jsx}",
+    "**/lib/**/*.js"
+  ]
+}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`org-rules.js #fetchRemoteRules() - default case: has org rules file 1`] = `
+exports[`org-rules.js Org Rules File acquisition #fetchRemoteRules() - default case: has org rules file 1`] = `
 {
   "org": "arcxp",
   "rules": [
@@ -9,7 +9,7 @@ exports[`org-rules.js #fetchRemoteRules() - default case: has org rules file 1`]
       "requirements": [
         {
           "tags": [
-            "env",
+            "internet_accessible",
           ],
         },
       ],
@@ -30,7 +30,7 @@ exports[`org-rules.js #fetchRemoteRules() - default case: has org rules file 1`]
         {
           "tags": [
             {
-              "env": "prod",
+              "internet_accessible": "yes",
             },
           ],
         },

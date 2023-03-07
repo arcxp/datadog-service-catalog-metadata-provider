@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [Unreleased]
+
+### Added
+
+- Added the ability to add requirements and restrictions from the `ORG-NAME/.github/datadog-service-catalog.yml` file. This file is optional, and if it doesn't exist, the action will just use the defaults.
+- Added a bunch of documentation to the README.md file for the Org Rules File.
+- Added test coverage to Jest so we can track changes in coverage.
+
+### Fixed
+
+- Fixed an issue which added a Slack link to the registry, even if there wasn't one provided. It was just showing up as "undefined".
+- Fixed an issue where sometimes tags would be interpreted as an Array of Objects rather than just an Array of Strings.
+
 ## [1.0.4] - 2023-01-26
 
 ### Fixed
