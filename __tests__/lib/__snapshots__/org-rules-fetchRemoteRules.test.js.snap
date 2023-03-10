@@ -6,35 +6,25 @@ exports[`org-rules.js Org Rules File acquisition #fetchRemoteRules() - default c
   "rules": [
     {
       "name": "Simple Requirements",
-      "requirements": [
-        {
-          "tags": [
-            "internet_accessible",
-          ],
+      "requirements": {
+        "tags": {
+          "internet_accessible": "ANY",
         },
-      ],
+      },
       "selection": "all",
     },
     {
       "name": "Prod needs a runbook",
-      "requirements": [
-        {
-          "links": [
-            {
-              "type": "runbook",
-            },
-          ],
+      "requirements": {
+        "links": {
+          "type": "runbook",
         },
-      ],
-      "selection": [
-        {
-          "tags": [
-            {
-              "internet_accessible": "yes",
-            },
-          ],
+      },
+      "selection": {
+        "tags": {
+          "internet_accessible": "yes",
         },
-      ],
+      },
     },
   ],
 }

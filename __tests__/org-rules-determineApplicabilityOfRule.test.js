@@ -179,7 +179,7 @@ rules:
   - name: "All services"
     selection:
       tags:
-        env: "dev"
+        intended-env: "dev"
     requirements:
       links:
       - type: "runbook"
@@ -191,7 +191,7 @@ rules:
   - name: "All services"
     selection:
       tags:
-        env: "prod"
+        intended-env: "prod"
     requirements:
       links:
       - type: "runbook"
@@ -206,7 +206,7 @@ team: Team Name Here
 email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 repo: foo
 tags: |
-  - env: prod
+  - intended-env: prod
     `),
     )
     const serviceDefinition = await inputsToRegistryDocument()
@@ -233,7 +233,7 @@ rules:
   - name: "All services"
     selection:
       tags:
-        env: "dev"
+        intended-env: "dev"
         missing: missing
     requirements:
       links:
@@ -246,7 +246,7 @@ rules:
   - name: "All services"
     selection:
       tags:
-        env: "prod"
+        intended-env: "prod"
         lang: nodejs
     requirements:
       - links:
@@ -262,7 +262,7 @@ team: Team Name Here
 email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 repo: foo
 tags: |
-  - env: prod
+  - intended-env: prod
   - lang:nodejs
     `),
     )
@@ -291,7 +291,7 @@ rules:
     selection:
       team: "hiya"
       tags:
-        env: "dev"
+        intended-env: "dev"
     requirements:
       links:
       - type: "runbook"
@@ -304,7 +304,7 @@ rules:
     selection:
       team: "hiya"
       tags:
-        env: "prod"
+        intended-env: "prod"
     requirements:
       links:
       - type: "runbook"
@@ -319,7 +319,7 @@ team: hiya
 email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 repo: foo
 tags: |
-  - env: prod
+  - intended-env: prod
   - lang:nodejs
     `),
     )
@@ -347,7 +347,7 @@ rules:
   - name: "All services"
     selection:
       tags:
-        env: "dev"
+        intended-env: "dev"
         missing: missing
     requirements:
       links:

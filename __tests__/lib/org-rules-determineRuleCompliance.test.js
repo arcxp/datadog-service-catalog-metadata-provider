@@ -44,7 +44,7 @@ rules:
     selection: all
     requirements:
       tags:
-      - env: ANY
+      - intended-env: ANY
     `)
     core.__setInputsObject(
       YAML.parse(`
@@ -56,7 +56,7 @@ team: Team Name Here
 email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 repo: foo
 tags: |
-  - env: prod
+  - intended-env: prod
     `),
     )
     const serviceDefinition = await inputsToRegistryDocument()
@@ -75,7 +75,7 @@ rules:
     selection: all
     requirements:
       tags:
-      - env: ANY
+      - intended-env: ANY
     `)
     core.__setInputsObject(
       YAML.parse(`
@@ -104,7 +104,7 @@ rules:
     selection: all
     requirements:
       tags:
-      - env:
+      - intended-env:
         - prod
         - staging
         - dev
@@ -119,7 +119,7 @@ team: Team Name Here
 email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 repo: foo
 tags: |
-  - env: prod
+  - intended-env: prod
     `),
     )
     const serviceDefinition = await inputsToRegistryDocument()

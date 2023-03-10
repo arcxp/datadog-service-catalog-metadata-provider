@@ -16,7 +16,7 @@ const {
 
 // This is our test subject
 const {
-  applyOrgRules,
+  fetchAndApplyOrgRules,
   _test: {
     fetchRemoteRules,
     ghHandle,
@@ -24,6 +24,7 @@ const {
     dotGitHubRepo,
     determineApplicabilityOfRule,
     determineRuleCompliance,
+    applyOrgRules,
   },
 } = require('../../lib/org-rules')
 
@@ -106,11 +107,257 @@ describe('org-rules.js Org Rules File applied', () => {
     core.__resetInputsObject()
   })
 
-  test.skip('#applyOrgRules() - default case: no org rules file', async () => {
-    const result = await applyOrgRules(gh, 'org-rule-test-file-not-found.yml')
-    expect(result).toMatchObject({
-      org: 'arcxp',
-      rules: expect.arrayContaining([]),
-    })
+  test('#applyOrgRules() -  org rules file, one rule, passes', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      integrations:
+        - opsgenie
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+integrations: |
+  opsgenie:
+    service_url: https://example.com
+    region: US
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    const result = await applyOrgRules(serviceDefinition, ruleDefinition)
+    expect(result).toBeTruthy()
+  })
+
+  test('#applyOrgRules() -  org rules file, one rule, fails', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      integrations:
+        - opsgenie
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    const result = await applyOrgRules(serviceDefinition, ruleDefinition)
+    expect(result).toBeFalsy()
+  })
+
+  test('#applyOrgRules() -  org rules file, multiple complex rules, passes', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      integrations:
+        - opsgenie
+  - name: "Anything belonging to the payments team must have sensitivity of critical."
+    selection:
+      team: payments
+    requirements:
+      tags:
+        - data-sensitivity:critical
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: payments
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+tags: |
+  - data-sensitivity: critical
+integrations: |
+  opsgenie:
+    service_url: https://example.com
+    region: US
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    const result = await applyOrgRules(serviceDefinition, ruleDefinition)
+    expect(result).toBeTruthy()
+  })
+
+  test('#applyOrgRules() -  org rules file, multiple complex rules, fails (opsgenie missing)', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      integrations:
+        - opsgenie
+  - name: "Anything belonging to the payments team must have sensitivity of critical."
+    selection:
+      team: payments
+    requirements:
+      tags:
+        - data-sensitivity:critical
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: payments
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+tags: |
+  - data-sensitivity:critical
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    const result = await applyOrgRules(serviceDefinition, ruleDefinition)
+    expect(result).toBeFalsy()
+  })
+
+  test('#applyOrgRules() -  org rules file, multiple complex rules, fails (tag incorrect value)', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      integrations:
+        - opsgenie
+  - name: "Anything belonging to the payments team must have sensitivity of critical."
+    selection:
+      team: payments
+    requirements:
+      tags:
+        - data-sensitivity: critical
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: payments
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+tags: |
+  - data-sensitivity:public
+integrations: |
+  opsgenie:
+    service_url: https://example.com
+    region: US
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    const result = await applyOrgRules(serviceDefinition, ruleDefinition)
+    expect(result).toBeFalsy()
+  })
+
+  test('#applyOrgRules() -  org rules file, multiple complex rules, fails (tag missing)', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      integrations:
+        - opsgenie
+  - name: "Anything belonging to the payments team must have sensitivity of critical."
+    selection:
+      team: payments
+    requirements:
+      tags:
+        - data-sensitivity: critical
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: payments
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+integrations: |
+  opsgenie:
+    service_url: https://example.com
+    region: US
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    const result = await applyOrgRules(serviceDefinition, ruleDefinition)
+    expect(result).toBeFalsy()
+  })
+
+  test('#applyOrgRules() -  org rules file, multiple complex rules, passes (not payments team)', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      integrations:
+        - opsgenie
+  - name: "Anything belonging to the payments team must have sensitivity of critical."
+    selection:
+      team: payments
+    requirements:
+      tags:
+        - data-sensitivity: critical
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: reporting
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+tags: |
+  - data-sensitivity:medium
+integrations: |
+  opsgenie:
+    service_url: https://example.com
+    region: US
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    const result = await applyOrgRules(serviceDefinition, ruleDefinition)
+    expect(result).toBeTruthy()
   })
 })
