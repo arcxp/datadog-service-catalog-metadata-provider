@@ -276,8 +276,8 @@ rules:
   - name: Simple Requirements
     selection: all
     requirements:
-      - tags:
-        - isprod
+      tags:
+      - isprod: ANY
 
   # Everything that runs in production must have a runbook
   - name: Prod needs a runbook
@@ -285,8 +285,8 @@ rules:
       tags:
         isprod: "true"
     requirements:
-      - links:
-        - type: "runbook"
+      links:
+        type: "runbook"
 ```
 
 It should be noted that _all_ of the key-value pairs for rules and selection criteria in an Org Rules File are case-insensitive for the values. All values will be converted to locale-sensitive lowercase before being evaluated. Keys are still case-sensitive though.
@@ -308,7 +308,7 @@ The Org Rules File is pretty light-weight, here's a breakdown of the fields:
 | --- | --- | --- | --- |
 | `name` | The name of the rule. This is just for your own reference, it's not used by the Action. | `false` | `undefined` |
 | `selection` | The selection criteria for the rule. This is a list of criteria which will be used to select the services which the rule applies to. The word `all` for the value of this field indicates that it is applicable to all definitions for the whole org. This field must be a list, except for the case of `all`. | `true` | No default |
-| `selection[].tags` | These are the tags which you can use as selection criteria for this rule. These key-value pairs allow the Metadata Provider to choose which rules will apply. | `false` | `{}` |
+| `selection[].tags` | These are the tags which you can use as selection criteria for this rule. These key-value pairs allow the Metadata Provider to choose which rules will apply. See examples below. | `false` | `{}` |
 | `selection[].service-name` | This is the name of the service which you can use as selection criteria for this rule. | `false` | `undefined` |
 | `selection[].team` | This is the name of the team which you can use as selection criteria for this rule. | `false` | `undefined` |
 | `requirements` | These are the requirements which must be met for the rule to pass. More details for this field are below in "On Requirements." | `true` | No default |
@@ -366,25 +366,26 @@ rules:
       - tags:
         - isprod: "true"
     requirements:
-      - tags:
-        - data-sensitivity:
-          - critical
-          - high
-          - medium
-          - low
-          - public
-        - isprod: ANY
-      - links:
-          type: "runbook"
-      - docs:
-          count: 1
-      - contacts:
-          type: "email"
-          count: 2
-      - repos:
-          count: 1
-      - integrations:
-          - pagerduty
+      tags:
+      - data-sensitivity:
+        - critical
+        - high
+        - medium
+        - low
+        - public
+      - isprod: ANY
+      links:
+        count: 1
+        type: "runbook"
+      docs:
+        count: 1
+      contacts:
+        type: "email"
+        count: 2
+      repos:
+        count: 1
+      integrations:
+        - pagerduty
 ```
 
 This is a maximal set of requirements, but here's what it means:
