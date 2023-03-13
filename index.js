@@ -53,13 +53,13 @@ const run = async (configs) => {
     const ddHost = validateDatadogHostname(core.getInput('datadog-hostname'))
 
     // Verify the org config
-    await applyOrgRules(configs)
+    if (await applyOrgRules(configs)) {
+      // Debug all of the info
+      core.debug(`All of the configs: ${JSON.stringify(configs, undefined, 2)}`)
 
-    // Debug all of the info
-    core.debug(`All of the configs: ${JSON.stringify(configs, undefined, 2)}`)
-
-    // Register the service with DataDog
-    await registerWithDataDog(apiKey, appKey, ddHost, JSON.stringify(configs))
+      // Register the service with DataDog
+      await registerWithDataDog(apiKey, appKey, ddHost, JSON.stringify(configs))
+    }
   } catch (error) {
     console.error(error)
     core.setFailed(error.message)

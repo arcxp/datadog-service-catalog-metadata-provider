@@ -24,6 +24,7 @@ jobs:
       - name: Datadog Service Catalog Metadata Provider Manual Test
         uses: ./
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
@@ -34,7 +35,7 @@ jobs:
           repo: https://github.com/arcxp/datadog-service-catalog-metadata-provider
           tags: |
             - 'application:GitHub Action Config Test'
-            - env:prod
+            - intended-env:prod
             - infrastructure:serverless
             - language:nodejs
             - updated:${{ steps.date.outputs.date }}
