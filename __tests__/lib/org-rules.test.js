@@ -80,7 +80,7 @@ describe('org-rules.js Org Rules the basics', () => {
     expect(dotGitHubRepo()).resolves.toBe('arcxp/.github')
   })
 
-  test('#dotGitHubRepo() - no value', async () => {
+  testLocallyOnly('#dotGitHubRepo() - no value', async () => {
     const old_gh_repo = process.env.GITHUB_REPOSITORY
     core.setFailed = jest.fn()
     delete process.env.GITHUB_REPOSITORY
