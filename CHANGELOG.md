@@ -5,13 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [Unreleased]
+## [1.1.0] - 2023-03-13
 
 ### Added
 
 - Added the ability to add requirements and restrictions from the `ORG-NAME/.github/datadog-service-catalog.yml` file. This file is optional, and if it doesn't exist, the action will just use the defaults.
 - Added a bunch of documentation to the README.md file for the Org Rules File.
 - Added test coverage to Jest so we can track changes in coverage.
+- The tests now run and pass in GitHub Actions!
 
 ### Fixed
 

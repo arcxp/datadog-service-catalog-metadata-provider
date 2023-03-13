@@ -253,6 +253,10 @@ jobs:
 
 While there are a number of triggers you can use for this workflow, I recommend that you limit the triggers here to `workflow_dispatch` and `push` for your primary branch. Keep in mind that Datadog is going to always overwrite the Service Catalog definition whenever you run this action.
 
+**WARNING:** If your workflow triggers trigger this Action when it's not needed, you may not only waste minutes in GitHub Actions, but you may experience rate-limiting by Datadog. If you experience rate-limiting, you may wish to restrict your triggers to only `workflow_dispatch` and `push` for your primary branch.
+
+**ANOTHER WARNING:** Keep in mind that this is pushing your data up to Datadog. Please only use this Action when it's time to tell Datadog. If you're using this Action to test your configuration, you probably want to use a different Action for your live services, each with different triggers. If you don't do this, you may end up publishing service definitions which conflict with one another.
+
 ## Organizational Controls
 
 One of the challenges of running a large set of services is keeping track of what belongs to who, and enforcing all of the rules associated with that. With this GitHub Action you can use your organization's `.github` repository to configure controls that this Action will enforce for you. Combine that with branch rules, and you can prevent merges which would break the rules.
