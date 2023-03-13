@@ -9,6 +9,8 @@ const github = require('@actions/github')
 // Need to use inputs for some of our parameters
 const core = require('@actions/core')
 
+const testLocallyOnly = require('../test-locally-only')
+
 const {
   applyOrgRules,
   _test: {
@@ -74,7 +76,7 @@ describe('org-rules.js Org Rules File acquisition', () => {
     core.setFailed = orig_core_setFailed
   })
 
-  test('#fetchRemoteRules() - no discernable org', async () => {
+  testLocallyOnly('#fetchRemoteRules() - no discernable org', async () => {
     const old_gh_repo = process.env.GITHUB_REPOSITORY
     delete process.env.GITHUB_REPOSITORY
     core.setFailed = jest.fn()

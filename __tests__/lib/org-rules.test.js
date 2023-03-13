@@ -14,6 +14,8 @@ const {
   inputsToRegistryDocument,
 } = require('../../lib/input-to-registry-document')
 
+const testLocallyOnly = require('../test-locally-only')
+
 // This is our test subject
 const {
   fetchAndApplyOrgRules,
@@ -60,7 +62,8 @@ describe('org-rules.js Org Rules the basics', () => {
     expect(currentOrg()).resolves.toBe('arcxp')
   })
 
-  test('#currentOrg() - no value', async () => {
+  // This test is only run locally, not in GH Actions CI
+  testLocallyOnly('#currentOrg() - no value', async () => {
     const old_gh_repo = process.env.GITHUB_REPOSITORY
     core.setFailed = jest.fn()
     delete process.env.GITHUB_REPOSITORY
