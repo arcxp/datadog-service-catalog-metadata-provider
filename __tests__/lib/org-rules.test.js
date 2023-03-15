@@ -23,7 +23,6 @@ const {
     fetchRemoteRules,
     ghHandle,
     currentOrg,
-    dotGitHubRepo,
     determineApplicabilityOfRule,
     determineRuleCompliance,
     applyOrgRules,
@@ -49,11 +48,13 @@ describe('org-rules.js Org Rules the basics', () => {
 
   test('#ghHandle() - no token in env', async () => {
     const GH_TOKEN = process.env.GITHUB_TOKEN
-    core.setFailed = jest.fn()
+    core.warning = jest.fn()
     delete process.env.GITHUB_TOKEN
     const gh = await ghHandle()
 
-    expect(core.setFailed).toHaveBeenCalledWith('No GitHub token found.')
+    expect(core.warning).toHaveBeenCalledWith(
+      'No GitHub token found, org rules cannot be applied.',
+    )
     expect(gh).toBeUndefined()
     process.env.GITHUB_TOKEN = GH_TOKEN
   })
@@ -68,23 +69,6 @@ describe('org-rules.js Org Rules the basics', () => {
     core.setFailed = jest.fn()
     delete process.env.GITHUB_REPOSITORY
     const result = await currentOrg()
-    expect(core.setFailed).toHaveBeenCalledWith(
-      'This GitHub Actions environment does not have a valid context.',
-    )
-    expect(result).toBeUndefined()
-
-    process.env.GITHUB_REPOSITORY = old_gh_repo
-  })
-
-  test('#dotGitHubRepo() - got value', async () => {
-    expect(dotGitHubRepo()).resolves.toBe('arcxp/.github')
-  })
-
-  testLocallyOnly('#dotGitHubRepo() - no value', async () => {
-    const old_gh_repo = process.env.GITHUB_REPOSITORY
-    core.setFailed = jest.fn()
-    delete process.env.GITHUB_REPOSITORY
-    const result = await dotGitHubRepo()
     expect(core.setFailed).toHaveBeenCalledWith(
       'This GitHub Actions environment does not have a valid context.',
     )

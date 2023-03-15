@@ -5,7 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [1.1.0] - 2023-03-13
+## [1.1.1] - 2023-03-15
+
+### Added
+
+- Added the ability to restrict the provider on the `docs` node.
+
+### Removed
+
+- Removed the private `dotGitHubRepo()` function as it was unused. The Actions toolkit kinda renders that function unnecessary.
+
+### Correction
+
+- The prior version of this `CHANGELOG.md` file had the incorrect release date of `v1.1.0`. It was in fact 2023-03-15, not 2023-03-13.
+
+## [1.1.0] - 2023-03-15
 
 ### Changed
 
