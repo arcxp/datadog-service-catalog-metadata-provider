@@ -43,6 +43,7 @@ jobs:
             - infrastructure:serverless
             - language:nodejs
             - updated:${{ steps.date.outputs.date }}
+            - internet_accessible: false
           repos: |
             - url: https://github.com/actions/toolkit
               provider: Github
