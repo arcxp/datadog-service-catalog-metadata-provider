@@ -20,6 +20,8 @@ You can use this to register your services with the Service Catalog, and then us
 
 Supporting services can be tricky, and the Datadog Service Catalog can make it easier for team members who aren't familiar with your service to support it. The Service Catalog can also help you find the information you need to support your services, and help you find the right people to support your services.
 
+**NOTE ABOUT VERSIONING:** This GitHub Action uses the [Service Catalog Definition APIs](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/#post-a-service-definition) at version 2. Datadog is always working to improve their APIs, and this Action will be updated to support the newer versions of the API as they become available.
+
 ## Wait, but why?
 
 Datadog already has methods for supplying this information. Why do we need another one? The answer is pretty simple: constraints.
@@ -434,8 +436,15 @@ As with any other application, there are a number of decisions that were made in
 - [JSON Schema for the Datadog Service Definition](https://github.com/Datadog/schema/blob/main/service-catalog/v2/schema.json)
 - [Working example for the Org Rules File](https://github.com/arcxp/.github/blob/main/service-catalog-rules.yml)
 
+## Authors
+
+Unless otherwise specified, none of the authors of this project are affiliated with Datadog, Inc.
+
+- [Mike Stemle](https://github.com/manchicken)
+
 ## Thanks
 
+- Thanks to The Washington Post and Arc XP for letting me work on this really cool project.
 - GitHub Copilot was exceptionally helpful in the writing of tests and documentation for this program.
 - Datadog personnel have been instrumental in helping me understand the API and the schema, and have been very helpful in getting this Action to a place where it's ready for public consumption.
 - My own leadership, especially Jason Taylor and Jason Bartz, have been highly supportive of this project, and have provided invaluable peer review.
