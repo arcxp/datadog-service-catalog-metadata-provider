@@ -38344,7 +38344,7 @@ const { HttpClient } = __nccwpck_require__(6255)
 
 const { inputsToRegistryDocument } = __nccwpck_require__(339)
 const { validateDatadogHostname } = __nccwpck_require__(1196)
-const { applyOrgRules } = __nccwpck_require__(5947)
+const { fetchAndApplyOrgRules } = __nccwpck_require__(5947)
 
 /**
  * This function takes the config JSON string and registers the service with
@@ -38393,7 +38393,7 @@ const run = async (configs) => {
     const ddHost = validateDatadogHostname(core.getInput('datadog-hostname'))
 
     // Verify the org config
-    if (await applyOrgRules(configs)) {
+    if (await fetchAndApplyOrgRules(configs)) {
       // Debug all of the info
       core.debug(`All of the configs: ${JSON.stringify(configs, undefined, 2)}`)
 

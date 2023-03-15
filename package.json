@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "ncc build . --license licenses.txt"
+    "build": "ncc build index.js --license licenses.txt"
   },
   "repository": {
     "type": "git",

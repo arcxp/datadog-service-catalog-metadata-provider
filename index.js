@@ -4,7 +4,7 @@ const { HttpClient } = require('@actions/http-client')
 
 const { inputsToRegistryDocument } = require('./lib/input-to-registry-document')
 const { validateDatadogHostname } = require('./lib/input-validation')
-const { applyOrgRules } = require('./lib/org-rules')
+const { fetchAndApplyOrgRules } = require('./lib/org-rules')
 
 /**
  * This function takes the config JSON string and registers the service with
@@ -53,7 +53,7 @@ const run = async (configs) => {
     const ddHost = validateDatadogHostname(core.getInput('datadog-hostname'))
 
     // Verify the org config
-    if (await applyOrgRules(configs)) {
+    if (await fetchAndApplyOrgRules(configs)) {
       // Debug all of the info
       core.debug(`All of the configs: ${JSON.stringify(configs, undefined, 2)}`)
 
