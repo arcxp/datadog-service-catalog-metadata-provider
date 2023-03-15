@@ -252,7 +252,7 @@ const ghHandle = async (token = undefined) =>
     .then((token) =>
       !!token && token.length > 0
         ? github.getOctokit(token, {})
-        : core.setFailed('No GitHub token found.'),
+        : core.warning('No GitHub token found, org rules cannot be applied.'),
     )
 
 /**
@@ -274,20 +274,6 @@ const currentOrg = async (gh = undefined) =>
     })
 
 /**
- * Fetch the name of the `.github` repository for the current organization.
- * @param {Octokit} gh - An authenticated Octokit instance (default is the GITHUB_TOKEN from the environment).
- * @returns {string} - The name of the `.github` repository with the org prepended.
- * @private
- * @function
- * @async
- */
-const dotGitHubRepo = (gh = undefined) =>
-  Promise.resolve()
-    .then(() => gh || ghHandle())
-    .then((gh) => currentOrg(gh))
-    .then((orgName) => (orgName ? `${orgName}/.github` : undefined))
-
-/**
  * Fetch the contents of the Org Rules File from the org's `.github` repository.
  * @param {Octokit} gh - An authenticated Octokit instance (default is the GITHUB_TOKEN from the environment).
  * @param {string} rulesFileName - The name of the rules file in the `.github` repository (default is `service-catalog-rules.yml`).
@@ -302,6 +288,11 @@ const fetchRemoteRules = async (
 ) => {
   try {
     const octokit = gh ?? (await ghHandle())
+
+    if (!octokit) {
+      return
+    }
+
     const orgName = await currentOrg(octokit)
     const defaultPayload = { org: orgName || 'UNKNOWN', rules: [] }
 
@@ -651,7 +642,13 @@ const determineRuleCompliance = (rule, serviceDescription) => {
       'type',
       'links.length',
     ),
-    docs: makeComplianceCheck_countOnly('count', 'docs.length'),
+    docs: makeComplianceCheck_valueMatchAndCount(
+      'provider',
+      'count',
+      'docs',
+      'provider',
+      'docs.length',
+    ),
     contacts: makeComplianceCheck_valueMatchAndCount(
       'type',
       'count',
@@ -736,7 +733,11 @@ const fetchAndApplyOrgRules = (serviceDescription) =>
         core.getInput('org-rules-file') || DEFAULT_RULES_NAME,
       ),
     )
-    .then((remoteOrgRules) => applyOrgRules(serviceDescription, remoteOrgRules))
+    .then((remoteOrgRules) =>
+      !!remoteOrgRules
+        ? applyOrgRules(serviceDescription, remoteOrgRules)
+        : true,
+    )
 
 module.exports = {
   fetchAndApplyOrgRules,
@@ -747,7 +748,6 @@ if (process.env['JEST_WORKER_ID']) {
   module.exports._test = {
     fetchRemoteRules,
     applyOrgRules,
-    dotGitHubRepo,
     currentOrg,
     ghHandle,
     determineApplicabilityOfRule,

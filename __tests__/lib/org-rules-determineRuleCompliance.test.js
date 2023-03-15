@@ -368,6 +368,39 @@ links: |
     ).toBeFalsy()
   })
 
+  test('#determineRuleCompliance() - docs provider pass', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      docs:
+        provider: confluence
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+docs: |
+  - name: Test Runbook
+    url: https://example.com
+    provider: confluence
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    expect(
+      determineRuleCompliance(ruleDefinition.rules[0], serviceDefinition),
+    ).toBeTruthy()
+  })
+
   test('#determineRuleCompliance() - docs count pass', async () => {
     const ruleDefinition = YAML.parse(`
 ---
@@ -421,6 +454,39 @@ service-name: test1
 team: Team Name Here
 email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 repo: foo
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    expect(
+      determineRuleCompliance(ruleDefinition.rules[0], serviceDefinition),
+    ).toBeFalsy()
+  })
+
+  test('#determineRuleCompliance() - docs provider fail', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      docs:
+        provider: jira
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+repo: foo
+docs: |
+  - name: Test Runbook
+    url: https://example.com
+    provider: github
     `),
     )
     const serviceDefinition = await inputsToRegistryDocument()

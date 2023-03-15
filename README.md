@@ -321,6 +321,7 @@ The Org Rules File is pretty light-weight, here's a breakdown of the fields:
 | `requirements[].links.count` | Require at least this many `links` entries. If you require at least 1 link, you'd put a value here. | `false` | `undefined` |
 | `requirements[].links.type` | Require at least one of the `links` entry to have a specific type. If you need more than one, please use two rules, one for each type. | `false` | `undefined` |
 | `requirements[].docs` | This structure allows you to have requirements surrounding the `docs` section. | `false` | `undefined` |
+| `requirements[].docs.provider` | Require at least one of the `docs` entry to have a specific provider. If you need more than one, please use two rules, one for each provider. **PLEASE NOTE**: This is check is case-sensitive. | `false` | `undefined` |
 | `requirements[].docs.count` | Require at least this many `docs` entries. If you require at least 1 doc, you'd put a value here. | `false` | `undefined` |
 | `requirements[].contacts` | This structure allows you to have requirements surrounding the `contacts` section. | `false` | `undefined` |
 | `requirements[].contacts.count` | Require at least this many `contacts` entries. If you require at least 1 link, you'd put a value here. | `false` | `undefined` |
