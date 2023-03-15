@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [1.1.0] - 2023-03-13
 
+### Changed
+
+- Updated dependencies to latest versions.
+
 ### Added
 
 - Added the ability to add requirements and restrictions from the `ORG-NAME/.github/datadog-service-catalog.yml` file. This file is optional, and if it doesn't exist, the action will just use the defaults.
