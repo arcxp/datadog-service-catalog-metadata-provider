@@ -1,9 +1,10 @@
 const core = require('@actions/core')
-const github = require('@actions/github')
 const YAML = require('yaml')
 const { HttpClient } = require('@actions/http-client')
 
 const { inputsToRegistryDocument } = require('./lib/input-to-registry-document')
+const { validateDatadogHostname } = require('./lib/input-validation')
+const { fetchAndApplyOrgRules } = require('./lib/org-rules')
 
 /**
  * This function takes the config JSON string and registers the service with
@@ -49,18 +50,16 @@ const run = async (configs) => {
     }
 
     // Fetch and verify the host.
-    const ddHost = core.getInput('datadog-hostname')
-    if (!ddHost || !ddHost.match(/^[a-z0-9.-]+\.datadoghq\.(com|eu|us)$/)) {
-      return core.setFailed(
-        `Invalid DataDog host: ${ddHost}. See here for more details: https://docs.datadoghq.com/getting_started/site/`,
-      )
+    const ddHost = validateDatadogHostname(core.getInput('datadog-hostname'))
+
+    // Verify the org config
+    if (await fetchAndApplyOrgRules(configs)) {
+      // Debug all of the info
+      core.debug(`All of the configs: ${JSON.stringify(configs, undefined, 2)}`)
+
+      // Register the service with DataDog
+      await registerWithDataDog(apiKey, appKey, ddHost, JSON.stringify(configs))
     }
-
-    // Debug all of the info
-    core.debug(`All of the configs: ${JSON.stringify(configs, undefined, 2)}`)
-
-    // Register the service with DataDog
-    await registerWithDataDog(apiKey, appKey, ddHost, JSON.stringify(configs))
   } catch (error) {
     console.error(error)
     core.setFailed(error.message)

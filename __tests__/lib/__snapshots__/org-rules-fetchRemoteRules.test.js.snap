@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`org-rules.js Org Rules File acquisition #fetchRemoteRules() - default case: has org rules file 1`] = `
+{
+  "org": "arcxp",
+  "rules": [
+    {
+      "name": "Simple Requirements",
+      "requirements": {
+        "tags": {
+          "internet_accessible": "ANY",
+        },
+      },
+      "selection": "all",
+    },
+    {
+      "name": "Prod needs a runbook",
+      "requirements": {
+        "links": {
+          "type": "runbook",
+        },
+      },
+      "selection": {
+        "tags": {
+          "internet_accessible": "yes",
+        },
+      },
+    },
+  ],
+}
+`;

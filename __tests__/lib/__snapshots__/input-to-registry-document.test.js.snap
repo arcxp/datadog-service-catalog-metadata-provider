@@ -94,6 +94,7 @@ exports[`input-to-registry-document.js #inputsToRegistryDocument() - normal inpu
     "env:prod",
     "infrastructure:serverless",
     "language:nodejs",
+    "other:value",
   ],
   "team": "Team Name Here",
 }

@@ -7,7 +7,6 @@ const validate = new Ajv({ strict: false, validateFormats: false }).compile(
   ddSchema,
 )
 
-const { expandObjectInputs } = require('../../lib/input-expander')
 const {
   inputsToRegistryDocument,
 } = require('../../lib/input-to-registry-document')
@@ -28,6 +27,7 @@ tags: |
   - env:prod
   - infrastructure:serverless
   - language:nodejs
+  - other :   value    
 repos: |
   - url: https://github.com/actions/toolkit
     provider: Github
