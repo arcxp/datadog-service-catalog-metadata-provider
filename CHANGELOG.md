@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.1.2] - 2023-03-16
+
+### Fixed
+
+- Org rule file was not being read correctly. This has been fixed.
+
 ## [1.1.1] - 2023-03-15
 
 ### Added
