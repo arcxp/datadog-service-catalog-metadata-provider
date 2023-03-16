@@ -59,16 +59,16 @@ describe('org-rules.js Org Rules the basics', () => {
     process.env.GITHUB_TOKEN = GH_TOKEN
   })
 
-  test('#currentOrg() - got value', async () => {
-    expect(currentOrg()).resolves.toBe('arcxp')
+  test('#currentOrg() - got value', () => {
+    expect(currentOrg()).toBe('arcxp')
   })
 
   // This test is only run locally, not in GH Actions CI
-  testLocallyOnly('#currentOrg() - no value', async () => {
+  testLocallyOnly('#currentOrg() - no value', () => {
     const old_gh_repo = process.env.GITHUB_REPOSITORY
     core.setFailed = jest.fn()
     delete process.env.GITHUB_REPOSITORY
-    const result = await currentOrg()
+    const result = currentOrg()
     expect(core.setFailed).toHaveBeenCalledWith(
       'This GitHub Actions environment does not have a valid context.',
     )
