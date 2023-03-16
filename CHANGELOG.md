@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.1.2] - 2023-03-16
+
+### Fixed
+
+- Org rule file was not being read correctly. This has been fixed.
+- The org name comparison shouldn't have been case-sensitive. This has been fixed.
+
+### Changed
+
+- The `currentOrg()` function is no longer `async` as it doesn't need to be.
+
 ## [1.1.1] - 2023-03-15
 
 ### Added

@@ -263,15 +263,18 @@ const ghHandle = async (token = undefined) =>
  * @function
  * @async
  */
-const currentOrg = async (gh = undefined) =>
-  Promise.resolve()
-    .then((ghub) => github.context.repo?.owner)
-    .catch((err) => {
-      console.warn(err)
-      return core.setFailed(
-        'This GitHub Actions environment does not have a valid context.',
-      )
-    })
+const currentOrg = (gh = undefined) => {
+  try {
+    return github.context.repo?.owner
+  } catch (err) {
+    core.error(`Unable to determine current organization or owner: ${err}`)
+    core.setFailed(
+      'This GitHub Actions environment does not have a valid context.',
+    )
+  }
+
+  return
+}
 
 /**
  * Fetch the contents of the Org Rules File from the org's `.github` repository.
@@ -293,7 +296,7 @@ const fetchRemoteRules = async (
       return
     }
 
-    const orgName = await currentOrg(octokit)
+    const orgName = currentOrg(octokit)
     const defaultPayload = { org: orgName || 'UNKNOWN', rules: [] }
 
     if (!orgName) {
@@ -307,14 +310,33 @@ const fetchRemoteRules = async (
         repo: '.github',
         path: rulesFileName,
       })
-      .then((res) => (res?.data ? res : { data: undefined }))
+      .then((res) => {
+        core.debug(`Result of fetching remote rules: ${JSON.stringify(res)}`)
+        return res?.data ? res : { data: undefined }
+      })
       .catch((err) => {
+        core.debug(`Caught exception fetching remote rules: ${err}`)
         return Promise.resolve({ data: undefined })
       })
     if (!data) {
+      core.debug(
+        `The Org Rules File "${rulesFileName}" in the «${orgName}/.github» repository appears to contain no content.`,
+      )
       return defaultPayload
     }
 
+    // Debugging
+    if (!!process.env['RUNNER_DEBUG']) {
+      core.debug(
+        `Org Rules File "${rulesFileName}" contents: ${JSON.stringify(
+          data,
+          undefined,
+          2,
+        )}`,
+      )
+    }
+
+    // Start parsing the rules file.
     const orgRulesFileContents = YAML.parse(
       decodeURIComponent(
         Buffer.from(data.content, data.encoding ?? 'base64').toString(),
@@ -327,7 +349,10 @@ const fetchRemoteRules = async (
       )
     }
 
-    if (orgRulesFileContents?.org !== orgName) {
+    if (
+      orgRulesFileContents?.org?.toLocaleLowerCase() !==
+      orgName?.toLocaleLowerCase()
+    ) {
       return core.warning(
         `Org ${orgName} does not match the org in the Org Rules File. This isn't fatal, but it might be an indication that you're using the wrong Org Rules File.`,
       )
@@ -733,11 +758,29 @@ const fetchAndApplyOrgRules = (serviceDescription) =>
         core.getInput('org-rules-file') || DEFAULT_RULES_NAME,
       ),
     )
+    .then((remoteOrgRules) => {
+      if (!remoteOrgRules) {
+        core.warning(`No rules found for the organization "${currentOrg()}".`)
+      } else {
+        core.debug(
+          `Rules found for the organization "${currentOrg()}": ${JSON.stringify(
+            remoteOrgRules,
+            undefined,
+            2,
+          )}`,
+        )
+      }
+      return remoteOrgRules
+    })
     .then((remoteOrgRules) =>
       !!remoteOrgRules
         ? applyOrgRules(serviceDescription, remoteOrgRules)
         : true,
     )
+    .catch((err) => {
+      core.warning('Failing with error: ' + err)
+      return Promise.reject(err)
+    })
 
 module.exports = {
   fetchAndApplyOrgRules,
