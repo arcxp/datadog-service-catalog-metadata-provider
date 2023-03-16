@@ -307,11 +307,17 @@ const fetchRemoteRules = async (
         repo: '.github',
         path: rulesFileName,
       })
-      .then((res) => (res?.data ? res : { data: undefined }))
+      .then((res) => {
+        core.debug(`Result of fetching remote rules: ${JSON.stringify(res)}`)
+        return res?.data ? res : { data: undefined }
+      })
       .catch((err) => {
         return Promise.resolve({ data: undefined })
       })
     if (!data) {
+      core.debug(
+        `The Org Rules File "${rulesFileName}" in the «${orgName}/.github» repository appears to contain no content.`,
+      )
       return defaultPayload
     }
 
@@ -766,6 +772,10 @@ const fetchAndApplyOrgRules = (serviceDescription) =>
         ? applyOrgRules(serviceDescription, remoteOrgRules)
         : true,
     )
+    .catch((err) => {
+      core.warning("Failing with error: " + err)
+      return Promise.reject(err)
+    })
 
 module.exports = {
   fetchAndApplyOrgRules,
