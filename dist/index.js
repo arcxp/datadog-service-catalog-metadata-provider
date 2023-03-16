@@ -315,6 +315,18 @@ const fetchRemoteRules = async (
       return defaultPayload
     }
 
+    // Debugging
+    if (!!process.env['RUNNER_DEBUG']) {
+      core.debug(
+        `Org Rules File "${rulesFileName}" contents: ${JSON.stringify(
+          data,
+          undefined,
+          2,
+        )}`,
+      )
+    }
+
+    // Start parsing the rules file.
     const orgRulesFileContents = YAML.parse(
       decodeURIComponent(
         Buffer.from(data.content, data.encoding ?? 'base64').toString(),
@@ -733,12 +745,14 @@ const fetchAndApplyOrgRules = (serviceDescription) =>
         core.getInput('org-rules-file') || DEFAULT_RULES_NAME,
       ),
     )
-    .then((remoteOrgRules) => {
+    .then(async (remoteOrgRules) => {
       if (!remoteOrgRules) {
-        core.warning(`No rules found for the organization "${currentOrg()}".`)
+        core.warning(
+          `No rules found for the organization "${await currentOrg()}".`,
+        )
       } else {
         core.info(
-          `Rules found for the organization "${currentOrg()}": ${JSON.stringify(
+          `Rules found for the organization "${await currentOrg()}": ${JSON.stringify(
             remoteOrgRules,
             undefined,
             2,
