@@ -312,6 +312,7 @@ const fetchRemoteRules = async (
         return res?.data ? res : { data: undefined }
       })
       .catch((err) => {
+        core.debug(`Caught exception fetching remote rules: ${err}`)
         return Promise.resolve({ data: undefined })
       })
     if (!data) {
