@@ -102,7 +102,7 @@ jobs:
 
 In this example, you can see that my team is called "Global Greetings," and I have a single repository for my service. I also have a single document, and a single link.
 
-My slack support channel is listed by URL, and the email address is present. At the bottom you can also see the OpsGenie integration details.
+My Slack support channel is listed by URL, and the email address is present. At the bottom you can also see the OpsGenie integration details.
 
 ```yaml
 jobs:
