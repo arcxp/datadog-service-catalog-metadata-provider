@@ -2,3 +2,4 @@
 tags
 node_modules/*
 coverage
+.nova

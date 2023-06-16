@@ -9,6 +9,8 @@ runs:
   using: node16
   main: dist/index.js
 inputs:
+
+
   github-token:
     description: 'The GitHub token to use for the action; default is `secrets.GITHUB_TOKEN`'
     required: false
@@ -25,12 +27,28 @@ inputs:
   datadog-app-key:
     description: 'The Datadog Application key'
     required: true
+  schema-version:
+    description: 'The version of the Datadog Service Catalog Schema. The default is v2. Valid values are `v2` and `v2.1`.'
+    required: false
+    default: 'v2'
   service-name:
     description: 'The name of the service'
     required: true
   team:
     description: 'The team responsible for the service'
     required: true
+  application:
+    description: '(v2.1 only) The name of the application that the service belongs to.'
+    required: false
+  description:
+    description: '(v2.1 only) A description of the service.'
+    required: false
+  tier:
+    description: '(v2.1 only) A representation of how important this service is. You can use any string that conveys meaning for you or your organization.'
+    required: false
+  lifecycle:
+    description: '(v2.1 only) The current life cycle phase of the service. For example: sandbox, staging, production, deprecated'
+    required: false
   email:
     description: 'The email address of the team responsible for the service'
     required: true

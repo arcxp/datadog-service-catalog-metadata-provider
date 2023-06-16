@@ -2,9 +2,9 @@ const YAML = require('yaml')
 const core = require('@actions/core')
 
 const Ajv = require('ajv')
-const ddSchema = require('../data/datadog-service-catalog-schema.json')
+const ddSchema_v2 = require('../data/datadog-service-catalog-schema-v2.json')
 const validate = new Ajv({ strict: false, validateFormats: false }).compile(
-  ddSchema,
+  ddSchema_v2,
 )
 
 const {
@@ -27,7 +27,7 @@ tags: |
   - env:prod
   - infrastructure:serverless
   - language:nodejs
-  - other :   value    
+  - other :   value
 repos: |
   - url: https://github.com/actions/toolkit
     provider: Github
