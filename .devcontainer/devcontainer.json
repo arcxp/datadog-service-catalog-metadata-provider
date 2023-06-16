@@ -1,0 +1,7 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/prettier:1": {"version":"latest"},
+    "ghcr.io/devcontainers-contrib/features/jest:2": {"version":"latest"}
+  }
+}
