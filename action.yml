@@ -9,14 +9,15 @@ runs:
   using: node16
   main: dist/index.js
 inputs:
-
-
+  # Stuff we need for this action
   github-token:
     description: 'The GitHub token to use for the action; default is `secrets.GITHUB_TOKEN`'
     required: false
   org-rules-file:
     description: 'The path to the org rules file; default is repository `ORG-NAME-HERE/.github` and the `service-catalog-rules.yml` file is expected in the root of that repository.'
     required: false
+  
+  # Stuff we need for the Datadog API
   datadog-hostname:
     description: 'The Datadog API hostname (this varies by Datadog customer!)'
     required: true
@@ -27,6 +28,8 @@ inputs:
   datadog-app-key:
     description: 'The Datadog Application key'
     required: true
+  
+  # Fields which are common to all schema versions
   schema-version:
     description: 'The version of the Datadog Service Catalog Schema. The default is v2. Valid values are `v2` and `v2.1`.'
     required: false
@@ -36,7 +39,29 @@ inputs:
     required: true
   team:
     description: 'The team responsible for the service'
-    required: true
+    required: false
+  contacts:
+    description: 'The contacts for the service'
+    required: false
+  tags:
+    description: 'The tags to apply to the service'
+    required: false
+  links:
+    description: 'The links to related to the service'
+    required: false
+  integrations:
+    description: 'The integrations for the service'
+    required: false
+  
+  # Fields which are unique to v2
+  docs:
+    description: 'The documentation for the service'
+    required: false
+  repos:
+    description: 'The repositories for the service'
+    required: false
+  
+  # Fields which are unique to v2.1
   application:
     description: '(v2.1 only) The name of the application that the service belongs to.'
     required: false
@@ -49,6 +74,8 @@ inputs:
   lifecycle:
     description: '(v2.1 only) The current life cycle phase of the service. For example: sandbox, staging, production, deprecated'
     required: false
+
+  # These are convenience inputs which are unique to this action.
   email:
     description: 'The email address of the team responsible for the service'
     required: true
@@ -57,22 +84,4 @@ inputs:
     required: false
   repo:
     description: 'The repository URL for the service. This is a convenience input for when you only have one repository for the service.'
-    required: false
-  contacts:
-    description: 'The contacts for the service'
-    required: false
-  repos:
-    description: 'The repositories for the service'
-    required: true
-  tags:
-    description: 'The tags to apply to the service'
-    required: false
-  links:
-    description: 'The links to related to the service'
-    required: false
-  docs:
-    description: 'The documentation for the service'
-    required: false
-  integrations:
-    description: 'The integrations for the service'
     required: false
