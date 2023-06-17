@@ -1,8 +1,14 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20-buster",
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {"version":"18"},
-    "ghcr.io/devcontainers-contrib/features/prettier:1": {"version":"latest"},
-    "ghcr.io/devcontainers-contrib/features/jest:2": {"version":"latest"}
+    "ghcr.io/devcontainers-contrib/features/prettier:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-contrib/features/jest:2": { "version": "latest" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["Orta.vscode-jest", "esbenp.prettier-vscode"]
+    }
   }
 }
