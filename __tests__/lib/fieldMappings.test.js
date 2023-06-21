@@ -246,6 +246,113 @@ opsgenie:
     input: 'app-name',
     value: { application: 'app-name' },
   },
+  {
+    version: 'v2',
+    field: 'description',
+    input: 'some description',
+    value: {
+      error:
+        'Sorry, but the «description» field is not avaiable in version v2 of the Datadog Service Catalog schema; this field is only available in version(s): v2.1',
+    },
+  },
+  {
+    version: 'v2.1',
+    field: 'description',
+    input: 'some description',
+    value: { description: 'some description' },
+  },
+  {
+    version: 'v2',
+    field: 'tier',
+    input: 'high',
+    value: {
+      error:
+        'Sorry, but the «tier» field is not avaiable in version v2 of the Datadog Service Catalog schema; this field is only available in version(s): v2.1',
+    },
+  },
+  {
+    version: 'v2.1',
+    field: 'tier',
+    input: 'high',
+    value: { tier: 'high' },
+  },
+  {
+    version: 'v2',
+    field: 'lifecycle',
+    input: 'production',
+    value: {
+      error:
+        'Sorry, but the «lifecycle» field is not avaiable in version v2 of the Datadog Service Catalog schema; this field is only available in version(s): v2.1',
+    },
+  },
+  {
+    version: 'v2.1',
+    field: 'lifecycle',
+    input: 'production',
+    value: { lifecycle: 'production' },
+  },
+  {
+    version: 'v2',
+    field: 'docs',
+    input: `
+- name: 'first-doc'
+  provider: jira
+  url: https://my-org.atlassian.net/wiki/spaces/PROJ/pages/1234567890
+`,
+    value: {
+      docs: [
+        {
+          name: 'first-doc',
+          provider: 'jira',
+          url: 'https://my-org.atlassian.net/wiki/spaces/PROJ/pages/1234567890',
+        },
+      ],
+    },
+  },
+  {
+    version: 'v2.1',
+    field: 'docs',
+    input: `
+- name: 'first-doc'
+  provider: jira
+  url: https://my-org.atlassian.net/wiki/spaces/PROJ/pages/1234567890
+`,
+    value: {
+      error:
+        'Sorry, but the «docs» field is not avaiable in version v2.1 of the Datadog Service Catalog schema; this field is only available in version(s): v2',
+    },
+  },
+  {
+    version: 'v2',
+    field: 'repos',
+    input: `
+- name: 'first-repo'
+  provider: github
+  url: https://github.com/arcxp/datadog-service-catalog-metadata-provider
+`,
+    value: {
+      repos: [
+        {
+          name: 'first-repo',
+          provider: 'github',
+          url: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
+        },
+      ],
+    },
+  },
+  {
+    version: 'v2.1',
+    field: 'repos',
+    input: `
+- name: 'first-repo'
+  provider: github
+  url: https://github.com/arcxp/datadog-service-catalog-metadata-provider
+`,
+    value: {
+      error:
+        'Sorry, but the «repos» field is not avaiable in version v2.1 of the Datadog Service Catalog schema; this field is only available in version(s): v2',
+    },
+  },
 ])('$field:$version', ({ version, field, input, value }) => {
   beforeEach(() => {
     core.setFailed.mockClear()
