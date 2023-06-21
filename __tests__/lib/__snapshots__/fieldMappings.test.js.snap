@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`constants convenienceFields 1`] = `
+[
+  "opsgenie",
+  "pagerduty",
+  "email",
+  "slack-support-channel",
+  "repo",
+]
+`;
+
+exports[`constants mappings 1`] = `
+{
+  "application": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "contacts": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "description": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "docs": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "email": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "integrations": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "lifecycle": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "links": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "opsgenie": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "pagerduty": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "repo": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "repos": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "schema-version": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "service-name": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "slack-support-channel": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "tags": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "team": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "tier": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+}
+`;
+
+exports[`constants schemaFields 1`] = `
+{
+  "0": "schema-version",
+  "1": "service-name",
+  "10": "description",
+  "11": "tier",
+  "12": "lifecycle",
+  "13": "email",
+  "14": "slack-support-channel",
+  "15": "repo",
+  "16": "opsgenie",
+  "17": "pagerduty",
+  "2": "team",
+  "3": "contacts",
+  "4": "tags",
+  "5": "links",
+  "6": "integrations",
+  "7": "docs",
+  "8": "repos",
+  "9": "application",
+}
+`;

@@ -3,7 +3,12 @@
  **/
 
 const core = require('@actions/core')
-const { mappings, mapField } = require('../../lib/fieldMappings')
+const {
+  mappings,
+  convenienceFields,
+  schemaFields,
+  mapField,
+} = require('../../lib/fieldMappings')
 
 describe.each([
   {
@@ -397,6 +402,30 @@ opsgenie:
       repo: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
     },
   },
+  {
+    version: 'v2',
+    field: 'opsgenie',
+    input: 'https://my-org.opsgenie.com',
+    value: { opsgenie: 'https://my-org.opsgenie.com' },
+  },
+  {
+    version: 'v2.1',
+    field: 'opsgenie',
+    input: 'https://my-org.opsgenie.com',
+    value: { opsgenie: 'https://my-org.opsgenie.com' },
+  },
+  {
+    version: 'v2',
+    field: 'pagerduty',
+    input: 'https://my-org.pagerduty.com',
+    value: { pagerduty: 'https://my-org.pagerduty.com' },
+  },
+  {
+    version: 'v2.1',
+    field: 'pagerduty',
+    input: 'https://my-org.pagerduty.com',
+    value: { pagerduty: 'https://my-org.pagerduty.com' },
+  },
 ])('$field:$version', ({ version, field, input, value }) => {
   beforeEach(() => {
     core.setFailed.mockClear()
@@ -426,5 +455,19 @@ opsgenie:
     mapField(field, version)(input)
     expect(core.setFailed).toHaveBeenCalledTimes(1)
     expect(core.setFailed).toHaveBeenLastCalledWith(value.error)
+  })
+})
+
+describe('constants', () => {
+  test('mappings', () => {
+    expect(mappings).toMatchSnapshot()
+  })
+
+  test('convenienceFields', () => {
+    expect(convenienceFields).toMatchSnapshot()
+  })
+
+  test('schemaFields', () => {
+    expect(schemaFields).toMatchSnapshot()
   })
 })
