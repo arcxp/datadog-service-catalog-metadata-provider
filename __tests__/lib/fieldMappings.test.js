@@ -353,6 +353,50 @@ opsgenie:
         'Sorry, but the «repos» field is not avaiable in version v2.1 of the Datadog Service Catalog schema; this field is only available in version(s): v2',
     },
   },
+  {
+    version: 'v2',
+    field: 'email',
+    input: 'testing@manchicken.io',
+    value: { email: 'testing@manchicken.io' },
+  },
+  {
+    version: 'v2.1',
+    field: 'email',
+    input: 'testing@manchicken.io',
+    value: { email: 'testing@manchicken.io' },
+  },
+  {
+    version: 'v2',
+    field: 'slack-support-channel',
+    input: 'https://my-org.slack.com/archives/my-channel',
+    value: {
+      'slack-support-channel': 'https://my-org.slack.com/archives/my-channel',
+    },
+  },
+  {
+    version: 'v2.1',
+    field: 'slack-support-channel',
+    input: 'https://my-org.slack.com/archives/my-channel',
+    value: {
+      'slack-support-channel': 'https://my-org.slack.com/archives/my-channel',
+    },
+  },
+  {
+    version: 'v2',
+    field: 'repo',
+    input: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
+    value: {
+      repo: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
+    },
+  },
+  {
+    version: 'v2.1',
+    field: 'repo',
+    input: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
+    value: {
+      repo: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
+    },
+  },
 ])('$field:$version', ({ version, field, input, value }) => {
   beforeEach(() => {
     core.setFailed.mockClear()
