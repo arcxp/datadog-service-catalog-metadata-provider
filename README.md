@@ -9,6 +9,7 @@ The Datadog Service Catalog is a marvelous new way to track which services are i
 With the Service Catalog registration API, you can supply the Service Catalog with all of the support information you might want:
 
 - The name of the service
+- The name of the application to which the service belongs
 - The team which supports and maintains the service
 - The email address of the team
 - The URL of the service's documentation, which has a special subtype for runbooks (we _all_ need more runbooks)
@@ -34,47 +35,73 @@ Another reason to use this Action is that it permits your organization to establ
 
 ## Supported Metadata Fields
 
-The registration API's links are below, and it takes input per its own JSON schema (also below), but this Action seeks to make things simpler and easier still! Here's a simplified list of the metadata fields that are supported by the Datadog Service Catalog Metadata Provider:
+The registration API's links are below, and it takes input per its own JSON schema (also below), but this Action seeks to make things simpler and easier still! There are a lot of fields to choose from across the supported versions, we're going to group them into: Action Fields, Schema Fields, and Convenience Fields.
+
+- Action Fields are fields that are specific to this GitHub Action. They are not part of the Service Catalog API, but they are used by this Action to make things easier for you.
+- Schema Fields are fields that are part of the Service Catalog API. They are not specific to this GitHub Action, but they are used by this Action to make things easier for you. These may vary by `schema-version`.
+- Convenience Fields are fields that are not part of the Service Catalog API, but they are used by this Action to make things easier for you. With these fields you need not worry about schema version, this action will map them to supported fields for you.
+
+### Action Fields
+
+All of these fields are used for the functioning of this Action.
 
 | Field | Description | Required | Default |
 | --- | --- | --- | --- |
+| `schema-version` | This is the version of the schema you're using. This action supports versions `v2` and `v2.1`, with `v2` being the default if no version is specified. | No | `v2` |
 | `github-token` | This action will use the built-in `GITHUB_TOKEN` for all GitHub access. If you would prefer to use a different GitHub token for the action, please specify it here. | No | `GITHUB_TOKEN` |
 | `org-rules-file` | If you would prefer to use a different name for your Org Rules File, you can specify it here. This parameter only supports a different file name within the `.github` repository, it will not support an alternate repository. Please make sure that your Org Rules File is accessible to whichever token you use (either `GITHUB_TOKEN` or the `github-token` input value). | No | `.github/service-catalog-rules.yml` |
 | `datadog-hostname` | The Datadog host to use for the integration, which varies by Datadog customer. [See here for more details:](https://docs.datadoghq.com/getting_started/site/) <https://docs.datadoghq.com/getting_started/site/>. Please make sure that you are sure about this value. You'll get an error if it's incorrect. | Yes | `https://api.datadoghq.com` |
 | `datadog-key` | The Datadog API key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
 | `datadog-app-key` | The Datadog Application key to use for the integration. _Please_ use [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to secure your secrets. | Yes | |
-| `service-name` | The name of the service. This must be unique across all services. | Yes | |
-| `team` | The team that owns the service. | Yes | |
-| `email` | The email address of the team that owns the service. | Yes | |
-| `slack-support-channel` | The Slack channel where folks can get support for the service. **This must be a Slack URL.** | No | |
-| `repo` | The GitHub repository where the service is hosted. This is a convenience input for when you only have one repository for the service. You must either have this value, or you must have values specified in the `repos` object. | No | |
 
-Here's a larger set of metadata fields that are supported by the Datadog Service Catalog Metadata Provider:
+### Schema Fields
+
+These fields directly map to the Service Catalog API. Please see the [Service Catalog API Documentation](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/#post-a-service-definition) for more information.
+
+Using a field which is not supported in the schema version you've selected will result in an error.
+
+| Field | Description | Required | Default | Schema Versions |
+| --- | --- | --- | --- | --- |
+| `service-name` | The name of the service. This must be unique across all services. | Yes | | `v2`, `v2.1` |
+| `team` | The team that owns the service. | Yes | | `v2`, `v2.1` |
+| `description` | A description of the service. | No | | `v2.1` |
+| `application` | The application that the service belongs to. | No | | `v2.1` |
+| `tier` | The importance tier of the service. This is an unconstrained text field where you can use your own tiering definitions. Examples would be `High`, `Critical`, or however you or your organization classify criticality tiers. | No | | `v2.1` |
+| `lifecycle` | This is the lifecycle of the service. This text field is unconstrained, and some examples are `production`, `development`, `staging`. | No | | `v2.1` |
+| `contacts` | The list of contacts for the service. Each of these contacts is an object. Keep in mind that `email` and `slack-support-channel` are already included as contacts. This list should be in addition to that. These values are supplied as objects, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` | `v2`, `v2.1` |
+| `contacts[].name` | The name of the contact. | Yes | | `v2`, `v2.1` |
+| `contacts[].type` | The type of the contact. Acceptable values are: `email`, `slack`, and `microsoft-teams` | Yes | | `v2`, `v2.1` |
+| `contacts[].contact` | The actual contact information for the contact. For example, if the type is `email`, this would be the email address. | Yes | | `v2`, `v2.1` |
+| `repos` | The list of GitHub repositories that are part of the service. You must supply at least one repository. The repositories are supplied as objects, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. In `v2.1`, this field is moved under `links`. | Yes | `[]` | `v2` |
+| `repos[].name` | The name of the repository. | Yes | | `v2` |
+| `repos[].url` | The URL of the repository. | Yes | | `v2` |
+| `repos[].provider` | The provider of the repository. Acceptable values are: `Github`. | No | | `v2` |
+| `tags` | The list of tags that are associated with the service. This should be a list of key-value pairs separated by colons. | No | |
+| `links` | A list of links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` | `v2`, `v2.1` |
+| `links[].name` | The name of the link. | Yes | | `v2`, `v2.1` |
+| `links[].url` | The URL of the link. | Yes | | `v2`, `v2.1` |
+| `links[].type` | The type for the link. Acceptable values are: `doc`, `wiki`, `runbook`, `url`, `repo`, `dashboard`, `oncall`, `code`, and `link` | Yes | | `v2`, `v2.1` |
+| `docs` | A list of documentation links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. In `v2.1`, this field moved under `links`. | No | `[]` | `v2` |
+| `docs[].name` | The name of the document. | Yes | | `v2` |
+| `docs[].url` | The URL of the document. | Yes | | `v2` |
+| `docs[].provider` | The provider for where the documentation lives. Acceptable values are: `Confluence`, `GoogleDocs`, `Github`, `Jira`, `OneNote`, `SharePoint`, and `Dropbox` | No | | `v2` |
+| `integrations` | Integrations associated with the service. These integrations are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `{}` | `v2`, `v2.1` |
+| `integrations.opsgenie` | The OpsGenie details for the service. | No | | `v2`, `v2.1` |
+| `integrations.opsgenie.service_url` | The service URL for the OpsGenie integration. A team URL will work, but if you want on-call metadata then make sure that this URL is to a service, not a team. | Yes | | `v2`, `v2.1` |
+| `integrations.opsgenie.region` | The region for the OpsGenie integration. Acceptable values are `US` and `EU`. | No | | `v2`, `v2.1` |
+| `integrations.pagerduty` | The PagerDuty URL for the service. **Important:** In `v2`, this field is just a URL. In `v2.1` this field is a dictionary with a `service-url` property. | No | | `v2`, `v2.1` |
+| `integrations.pagerduty.service-url` | The PagerDuty URL for the service. | Yes | | `v2.1` |
+
+### Convenience Fields
 
 | Field | Description | Required | Default |
 | --- | --- | --- | --- |
-| `contacts` | The list of contacts for the service. Each of these contacts is an object. Keep in mind that `email` and `slack-support-channel` are already included as contacts. This list should be in addition to that. These values are supplied as objects, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` |
-| `contacts[].name` | The name of the contact. | Yes | |
-| `contacts[].type` | The type of the contact. Acceptable values are: `email`, `slack`, and `microsoft-teams` | Yes | |
-| `contacts[].value` | The value of the contact. For example, if the type is `email`, this would be the email address. | Yes | |
-| `repos` | The list of GitHub repositories that are part of the service. You must supply at least one repository. The repositories are supplied as objects, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | Yes | `[]` |
-| `repos[].name` | The name of the repository. | Yes | |
-| `repos[].url` | The URL of the repository. | Yes | |
-| `repos[].provider` | The provider of the repository. Acceptable values are: `Github`. | No | |
-| `tags` | The list of tags that are associated with the service. This should be a list of key-value pairs separated by colons. | No | |
-| `links` | A list of links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` |
-| `links[].name` | The name of the link. | Yes | |
-| `links[].url` | The URL of the link. | Yes | |
-| `links[].type` | The type for the link. Acceptable values are: `doc`, `wiki`, `runbook`, `url`, `repo`, `dashboard`, `oncall`, `code`, and `link` | Yes | |
-| `docs` | A list of documentation links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` |
-| `docs[].name` | The name of the document. | Yes | |
-| `docs[].url` | The URL of the document. | Yes | |
-| `docs[].provider` | The provider for where the documentation lives. Acceptable values are: `Confluence`, `GoogleDocs`, `Github`, `Jira`, `OneNote`, `SharePoint`, and `Dropbox` | No | |
-| `integrations` | Integrations associated with the service. These integrations are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `{}` |
-| `integrations.opsgenie` | The OpsGenie details for the service. | No | |
-| `integrations.opsgenie.service_url` | The service URL for the OpsGenie integration. A team URL will work, but if you want on-call metadata then make sure that this URL is to a service, not a team. | Yes | |
-| `integrations.opsgenie.region` | The region for the OpsGenie integration. Acceptable values are `US` and `EU`. | No | |
-| `integrations.pagerduty` | The PagerDuty URL for the service. | No | |
+| `email` | The email address of the team that owns the service. | Yes | |
+| `slack-support-channel` | The Slack channel where folks can get support for the service. **This must be a Slack URL.** | No | |
+| `slack` | This field is an alias for the `slack-support-channel` field. **This must be a Slack URL.** | No | |
+| `repo` | The GitHub repository where the service is hosted. In `v2`, this field maps into the `repos` field, but in `v2.1` it maps into the `links` field. | No | |
+| `opsgenie` | This is a convenience field for your OpsGenie service URL. | No | |
+| `pagerduty` | This is a convenience field for your PagerDuty service URL. | No | |
 
 ## Example
 
@@ -90,6 +117,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
+          schema-version: v2.1
           datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APP_KEY }}
@@ -111,6 +139,7 @@ jobs:
     steps:
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
+          schema-version: v2
           datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
@@ -130,6 +159,9 @@ jobs:
             opsgenie:
               service_url: https://fake-org.hello-world.opsgenie.com
               region: US
+          contacts: |
+            - name: Product Owner
+              email: john.doe@fake-email-host.com
 ```
 
 ### Example with multiple repositories
@@ -143,6 +175,7 @@ jobs:
     steps:
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
+          schema-version: v2
           datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
@@ -165,11 +198,16 @@ jobs:
             opsgenie:
               service_url: https://fake-org.hello-world.opsgenie.com
               region: US
+          contacts: |
+            - name: Product Owner
+              email: john.doe@fake-email-host.com
 ```
 
 ### The whole enchilada
 
 This is the maximal configuration you could use, in a complete workflow that you could copy-and-paste. It's a bit verbose, but it shows you all the options you have complete with "why."
+
+#### Here it is for schema version `v2`
 
 ```yaml
 ---
@@ -191,6 +229,7 @@ jobs:
       # This uses the custom action to push the service definition to Datadog.
       - uses: arcxp/datadog-service-catalog-metadata-provider@v1
         with:
+          service-version: v2
           # You should use GitHub's encrypted secrets feature to manage secrets for Datadog.
           # Don't store your secrets in your workflow files, and don't do anything fancy to get them.
           # GitHub already gave us a great tool for managing secrets, and it's super easy to use.
@@ -249,6 +288,107 @@ jobs:
               service_url: https://fake-org.hello-world.opsgenie.com
               region: US
             pagerduty: https://fake-org.hello-world.pagerduty.com
+          
+          # This is the Product Owner, you should contact them if you have suggestions.
+          contacts: |
+            - name: Product Owner
+              email: john.doe@fake-email-host.com
+```
+
+#### Here it is for schema version `v2.1`
+
+This is ported over from `v2`, and `v2.1` fields are added.
+
+```yaml
+---
+name: Datadog Service Catalog Metadata Provider
+
+on:
+  # This will make my service definition get pushed any time I push a change
+  # to the main branch of my repository.
+  push:
+    branches:
+      - main
+  # This trigger will allow me to manually run the Action in GitHub.
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # This uses the custom action to push the service definition to Datadog.
+      - uses: arcxp/datadog-service-catalog-metadata-provider@v2
+        with:
+          service-version: v2.1
+          # You should use GitHub's encrypted secrets feature to manage secrets for Datadog.
+          # Don't store your secrets in your workflow files, and don't do anything fancy to get them.
+          # GitHub already gave us a great tool for managing secrets, and it's super easy to use.
+          datadog-hostname: api.us5.datadoghq.com
+          datadog-key: ${{ secrets.DATADOG_API_KEY }}
+          datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
+
+          # This maps to the `dd-service` field in Datadog, it's just the name of your service.
+          service-name: hello-world
+
+          # This is the application name, which is used to group services together.
+          application: hello-world
+
+          # This application is critically important, so let's outline that with the tier field.
+          tier: critical
+
+          # This service is in production, so let's put that into the lifecycle field
+          lifecycle: production
+          
+          # The name of the team which owns and/or supports the service.
+          team: Global Greetings
+
+          # The email address of the team which owns and/or supports the service. This is a convenience field
+          email: global.greetings@fake-email-host.com
+          
+          # The URL of the Slack channel where support for the service is handled.
+          # Keep in mind, this _must_ be a URL. To get the URL, right-click on the channel
+          # in the Slack app, and select "Copy link" in the "Copy" submenu.
+          slack-support-channel: 'https://team-name-here.slack.com/archives/ABC123'
+          
+          tags: |
+            - isprod:true
+            - lang:nodejs
+          
+          # Links are great for runbooks, other documentation, other services which
+          # could be helpful, as well as dashboards. In v2.1 repos and docs move here.
+          links: |
+            - name: hello-world (primary service repo)
+              url: https://github.com/fake-org/hello-world
+              type: repo
+              provider: github
+            - name: some-library
+              url: https://github.com/fake-org/some-library
+              type: repo
+              provider: github
+             - name: outage-runbook
+              url: https://fake-org.github.io/hello-world-outage-runbook
+              type: runbook
+            - name: hello-world dashboard
+              url: https://app.datadoghq.com/dashboard/1234567890
+              type: dashboard
+            - name: API Docs
+              url: https://fake-org.github.io/hello-world-api-docs
+              type: doc
+              provider: github
+          
+          # These integrations allow folks to be able to see who's on-call for the
+          # service right from the Datadog Service Catalog.
+          integrations: |
+            opsgenie:
+              service_url: https://fake-org.hello-world.opsgenie.com
+              region: US
+            pagerduty:
+              service-url: https://fake-org.hello-world.pagerduty.com
+          
+          # This is the Product Owner, you should contact them if you have suggestions.
+          contacts: |
+            - name: Product Owner
+              email: john.doe@fake-email-host.com
 ```
 
 ## Quick note on triggers
@@ -265,7 +405,11 @@ One of the challenges of running a large set of services is keeping track of wha
 
 ### The organization rules YAML file
 
-The place where you will configure your organization's rules is `.github/service-catalog-rules.yml` in your organization's `.github` repository. This file will be a YAML file which contains a list of rules. The syntax of this file is simple YAML, and the rules are simple as well. Here's an example:
+The place where you will configure your organization's rules is `.github/service-catalog-rules.yml` in your organization's `.github` repository. This file will be a YAML file which contains a list of rules. The syntax of this file is simple YAML, and the rules are simple as well.
+
+For schema versioning, backwards compatibility will be maintained. If you would like to make schema version a constraint, there is a field for that in the Org Rules File.
+
+Here's an example:
 
 ```yaml
 ---
@@ -430,6 +574,14 @@ As with any other application, there are a number of decisions that were made in
 - If there is no Org Rules file, the action will still run, but it will not enforce any rules.
 - If there _is_ a file, but it does not parse, the action will fail. This is to prevent a user from accidentally breaking the Org Rules File, and then not knowing why the action is failing, but also to make sure that if someone intended for rules to be followed, we respect that.
 - If there is an Org Rules File, but it does not contain any rules, the action will still run, but it will not enforce any rules (because there aren't any).
+
+## Trust, Privacy, and Security
+
+While this Custom Action does handle sensitive information (mostly your Datadog and GitHub secrets), this information is only used for the purpose of interacting with the Datadog and GitHub APIs. This information is not stored anywhere, and is not used for any other purpose. This Action is open source, and you are encouraged to review the code.
+
+All security reports and dependency vulnerabilities via GitHub's security features are reviewed and addressed as quickly as possible. If you have more questions, please review the `SECURITY.md` file in this repository.
+
+In no way does this Action phone home or otherwise send any information to any service other than GitHub or Datadog.
 
 ## References
 
