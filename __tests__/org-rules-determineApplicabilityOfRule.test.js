@@ -377,4 +377,95 @@ repo: foo
       ),
     ).toBeFalsy()
   })
+
+  test('#determineApplicabilityOfRule() - schema-version safe default v2', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      lifecycle: any
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+
+schema-version: v2
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+lifecycle: production
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    expect(
+      determineApplicabilityOfRule(ruleDefinition.rules[0], serviceDefinition),
+    ).toBeTruthy()
+  })
+
+  test('#determineApplicabilityOfRule() - schema-version safe default v2.1', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection: all
+    requirements:
+      lifecycle: any
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+
+schema-version: v2.1
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+lifecycle: production
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    expect(
+      determineApplicabilityOfRule(ruleDefinition.rules[0], serviceDefinition),
+    ).toBeTruthy()
+  })
+
+  test('#determineApplicabilityOfRule() - schema-version selection v2.1', async () => {
+    const ruleDefinition = YAML.parse(`
+---
+org: test-org
+rules:
+  - name: "All services"
+    selection:
+      schema-version: v2.1
+    requirements:
+      lifecycle: any
+    `)
+    core.__setInputsObject(
+      YAML.parse(`
+---
+
+schema-version: v2.1
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+lifecycle: production
+    `),
+    )
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    expect(
+      determineApplicabilityOfRule(ruleDefinition.rules[0], serviceDefinition),
+    ).toBeTruthy()
+  })
 })

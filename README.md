@@ -23,6 +23,13 @@ Supporting services can be tricky, and the Datadog Service Catalog can make it e
 
 **NOTE ABOUT VERSIONING:** This GitHub Action uses the [Service Catalog Definition APIs](https://docs.datadoghq.com/tracing/service_catalog/service_definition_api/#post-a-service-definition) at version 2. Datadog is always working to improve their APIs, and this Action will be updated to support the newer versions of the API as they become available.
 
+## Supported Versions
+
+At this time, this GitHub Action supports the following versions of the Service Catalog schema:
+
+- `v2`
+- `v2.1`
+
 ## Wait, but why?
 
 Datadog already has methods for supplying this information. Why do we need another one? The answer is pretty simple: constraints.
@@ -448,32 +455,44 @@ This is the key of your org. There are two reasons why we have this key:
 
 #### The `rules` fields
 
+A quick note on versioning and backwards-compatibility: If a field is backwards-compatible, it will be marked as such in the table below. Not all fields are backwards-compatible, and if they are not then they will be skipped if the schema version is mismatched. We are intentionally using the same version numbers here that we use in the Service Catalog schema, this way there is less confusion. If you would like to make schema version a constraint, there is a field for that in the Org Rules File.
+
 The Org Rules File is pretty light-weight, here's a breakdown of the fields:
 
-| Field | Description | Required? | Default Value |
-| --- | --- | --- | --- |
-| `name` | The name of the rule. This is just for your own reference, it's not used by the Action. | `false` | `undefined` |
-| `selection` | The selection criteria for the rule. This is a list of criteria which will be used to select the services which the rule applies to. The word `all` for the value of this field indicates that it is applicable to all definitions for the whole org. This field must be a list, except for the case of `all`. | `true` | No default |
-| `selection[].tags` | These are the tags which you can use as selection criteria for this rule. These key-value pairs allow the Metadata Provider to choose which rules will apply. See examples below. | `false` | `{}` |
-| `selection[].service-name` | This is the name of the service which you can use as selection criteria for this rule. | `false` | `undefined` |
-| `selection[].team` | This is the name of the team which you can use as selection criteria for this rule. | `false` | `undefined` |
-| `requirements` | These are the requirements which must be met for the rule to pass. More details for this field are below in "On Requirements." | `true` | No default |
-| `requirements[].tags` | These are the tags which you can require for this rule. | `false` | `undefined` |
-| `requirements[].tags.<tag-name>` | These are the tag values which you can require for this rule. If you only wish to validate the presence of the tag, use the value `ANY` to indicate that any value is valid. | `false` | `undefined` |
-| `requirements[].tags.<tag-name>.[]` | You may supply a list of acceptable values as a sequence. Keep in mind that outside of special values (such as `ANY`), all value checks are forced to locale-sensitive lower case. | `false` | `undefined` |
-| `requirements[].links` | This structure allows you to have requirements surrounding the `links` section. | `false` | `undefined` |
-| `requirements[].links.count` | Require at least this many `links` entries. If you require at least 1 link, you'd put a value here. | `false` | `undefined` |
-| `requirements[].links.type` | Require at least one of the `links` entry to have a specific type. If you need more than one, please use two rules, one for each type. | `false` | `undefined` |
-| `requirements[].docs` | This structure allows you to have requirements surrounding the `docs` section. | `false` | `undefined` |
-| `requirements[].docs.provider` | Require at least one of the `docs` entry to have a specific provider. If you need more than one, please use two rules, one for each provider. **PLEASE NOTE**: This is check is case-sensitive. | `false` | `undefined` |
-| `requirements[].docs.count` | Require at least this many `docs` entries. If you require at least 1 doc, you'd put a value here. | `false` | `undefined` |
-| `requirements[].contacts` | This structure allows you to have requirements surrounding the `contacts` section. | `false` | `undefined` |
-| `requirements[].contacts.count` | Require at least this many `contacts` entries. If you require at least 1 link, you'd put a value here. | `false` | `undefined` |
-| `requirements[].contacts.type` | Require at least one of the `contacts` entry to have a specific type. If you need more than one, please use two rules, one for each type. | `false` | `undefined` |
-| `requirements[].repos` | This structure allows you to have requirements surrounding the `repos` section. | `false` | `undefined` |
-| `requirements[].repos.count` | Require at least this many `repos` entries. If you require at least 1 repo, you'd put a value here. | `false` | `undefined` |
-| `requirements[].integrations` | This structure allows you to have requirements surrounding the `integrations` section. | `false` | `undefined` |
-| `requirements[].integrations[(opsgenie|pagerduty)]` | With this requirement you can require either an OpsGenie or a PagerDuty integration. | `false` | `[]` |
+| Field | Description | Required? | Default Value | Versions Supported |
+| --- | --- | --- | --- | --- |
+| `name` | The name of the rule. This is just for your own reference, it's not used by the Action. | `false` | `undefined` | all |
+| `selection` | The selection criteria for the rule. This is a list of criteria which will be used to select the services which the rule applies to. The word `all` for the value of this field indicates that it is applicable to all definitions for the whole org. This field must be a list, except for the case of `all`. | `true` | No default | all |
+| `selection[].schema-version` | The version of the schema which this rule applies to. This is a string which is used to determine which version of the schema to use. If this field is not present then the version will not be considered. Note that fields which are version-specific will cause an error if there is a mismatch, so you may wish to consider having versioned rules in those instances. The value of this field should match one of the supported versions above. | `false` | `undefined` | all |
+| `selection[].tags` | These are the tags which you can use as selection criteria for this rule. These key-value pairs allow the Metadata Provider to choose which rules will apply. See examples below. | `false` | `{}` | all |
+| `selection[].service-name` | This is the name of the service which you can use as selection criteria for this rule. | `false` | `undefined` | all |
+| `selection[].application` | This is the name of the application which you can use as selection criteria for this rule. | `false` | `undefined` | `v2.1` |
+| `selection[].tier` | This is the name of the tier which you can use as selection criteria for this rule. | `false` | `undefined` | `v2.1` |
+| `selection[].lifecycle` | This is the name of the lifecycle which you can use as selection criteria for this rule. | `false` | `undefined` | `v2.1` |
+| `selection[].team` | This is the name of the team which you can use as selection criteria for this rule. | `false` | `undefined` | all |
+| `requirements` | These are the requirements which must be met for the rule to pass. More details for this field are below in "On Requirements." | `true` | No default | all |
+| `requirements[].schema-version` | This is the version that the schema is constrained to. If this field is not present, this field is not constrained.  The value of this field should match one of the supported versions above. | `false` | `undefined` | all |
+| `requirements[].application` | This is the name of the application which you can use as a requirement for this rule. | `false` | `undefined` | `v2.1` |
+| `requirements[].description` | This is a description of the service which you can use as a requirement for this rule. | `false` | `undefined` | `v2.1` |
+| `requirements[].tier` | This is the name of the tier which you can use as a requirement for this rule. | `false` | `undefined` | `v2.1` |
+| `requirements[].lifecycle` | This is the name of the lifecycle which you can use as a requirement for this rule. | `false` | `undefined` | `v2.1` |
+| `requirements[].tags` | These are the tags which you can require for this rule. | `false` | `undefined` | all |
+| `requirements[].tags.<tag-name>` | These are the tag values which you can require for this rule. If you only wish to validate the presence of the tag, use the value `ANY` to indicate that any value is valid. | `false` | `undefined` | all |
+| `requirements[].tags.<tag-name>.[]` | You may supply a list of acceptable values as a sequence. Keep in mind that outside of special values (such as `ANY`), all value checks are forced to locale-sensitive lower case. | `false` | `undefined` | all |
+| `requirements[].links` | This structure allows you to have requirements surrounding the `links` section. | `false` | `undefined` | all |
+| `requirements[].links.count` | Require at least this many `links` entries. If you require at least 1 link, you'd put a value here. | `false` | `undefined` | all |
+| `requirements[].links.type` | Require at least one of the `links` entry to have a specific type. If you need more than one, please use two rules, one for each type. | `false` | `undefined` | all |
+| `requirements[].links.provider` | Require at least one of the `links` entry to have a specific provider. If you need more than one, please use two rules, one for each provider. **PLEASE NOTE**: This is check is case-sensitive, and this property is version-specific. | `false` | `undefined` | `v2.1` |
+| `requirements[].docs` | This structure allows you to have requirements surrounding the `docs` section. | `false` | `undefined` | `v2` |
+| `requirements[].docs.provider` | Require at least one of the `docs` entry to have a specific provider. If you need more than one, please use two rules, one for each provider. **PLEASE NOTE**: This is check is case-sensitive. | `false` | `undefined` | `v2` |
+| `requirements[].docs.count` | Require at least this many `docs` entries. If you require at least 1 doc, you'd put a value here. | `false` | `undefined` | `v2` |
+| `requirements[].contacts` | This structure allows you to have requirements surrounding the `contacts` section. | `false` | `undefined` | all |
+| `requirements[].contacts.count` | Require at least this many `contacts` entries. If you require at least 1 link, you'd put a value here. | `false` | `undefined` | all |
+| `requirements[].contacts.type` | Require at least one of the `contacts` entry to have a specific type. If you need more than one, please use two rules, one for each type. | `false` | `undefined` | all |
+| `requirements[].repos` | This structure allows you to have requirements surrounding the `repos` section. | `false` | `undefined` | `v2` |
+| `requirements[].repos.count` | Require at least this many `repos` entries. If you require at least 1 repo, you'd put a value here. | `false` | `undefined` | `v2` |
+| `requirements[].integrations` | This structure allows you to have requirements surrounding the `integrations` section. | `false` | `undefined` | all |
+| `requirements[].integrations[(opsgenie|pagerduty)]` | With this requirement you can require either an OpsGenie or a PagerDuty integration. | `false` | `[]` | all |
 
 ##### On Selection
 
@@ -507,20 +526,24 @@ The `requirements` section of the Org Rules file is where you will define the re
 The syntax for these requirements is as follows:
 
 ```yaml
+---
+
+org: "my-org"
+
 rules:
   - name: "This is a test."
     selection:
-      - tags:
-        - isprod: "true"
+      tags:
+        isprod: "true"
     requirements:
       tags:
-      - data-sensitivity:
-        - critical
-        - high
-        - medium
-        - low
-        - public
-      - isprod: ANY
+        - data-sensitivity:
+          - critical
+          - high
+          - medium
+          - low
+          - public
+        - isprod: ANY
       links:
         count: 1
         type: "runbook"
@@ -535,18 +558,83 @@ rules:
         - pagerduty
 ```
 
-This is a maximal set of requirements, but here's what it means:
+This is a maximal set of requirements for `v2`, but here's what it means:
 
 - The rule applies only to services which have the `isprod` tag, and the value of that tag is `true`.
 - The service is required to have a tag named `data-sensitivity`, and the value of that tag must be one of `critical`, `high`, `medium`, `low`, or `public`.
 - The rule requires that the service have at least one `links` entry with the type `runbook`.
-- The rule requires that the service have at least one `docs` entry with the name `design` and the provider `confluence`.
-- The rule requires that the service have at least one `contacts` entry with the name `oncall` and the type `email`.
-- The rule requires that the service also have a second `contacts` entry with the type `slack`.
-- The rule requires that the service have at least one `repos` entry with the name `primary`.
+- The rule requires that the service have at least one `docs`.
+- The rule requires that the service have at least one `contacts` entry with the type `email`.
+- The rule requires that the service have at least one `repos`.
 - The rule requires that the service have at least one `integrations` entry called `pagerduty`.
 
 It's encouraged to be judicious in how these are required. Restrictions are inherently, well, restrictive. If you're not careful, you can end up with a situation where you're not able to add new services to your org because they don't meet the requirements of a rule. It's a good idea to start with a minimal set of requirements, and then add more as you go.
+
+### Working with versions
+
+Because of versioning, the above schema will break with schema `v2.1`. Let's take a look at what this would look like if we wanted the same rules to work across all versions of the schema:
+
+```yaml
+---
+
+org: "my-org"
+
+rules:
+  - name: "This is a test. (v2)"
+    selection:
+      schema-version: v2
+      tags:
+        isprod: "true"
+    requirements:
+      tags:
+        - data-sensitivity:
+          - critical
+          - high
+          - medium
+          - low
+          - public
+        - isprod: ANY
+      links:
+        count: 1
+        type: "runbook"
+      docs:
+        count: 1
+      contacts:
+        type: "email"
+        count: 2
+      repos:
+        count: 1
+      integrations:
+        - pagerduty
+
+  - name: "This is a test. (v2.1)"
+    selection:
+      schema-version: v2.1
+      tags:
+        isprod: "true"
+    requirements:
+      tags:
+        - data-sensitivity:
+          - critical
+          - high
+          - medium
+          - low
+          - public
+        - isprod: ANY
+      links:
+        count: 3
+        type:
+          - "runbook"
+          - "repo"
+          - "doc"
+      contacts:
+        type: "email"
+        count: 2
+      integrations:
+        - pagerduty
+```
+
+Since the `repos` and `docs` fields were rolled up under `links` in `v2.1`, this second rule now requires three links, at least one of type `runbook`, one `doc`, and one `repo`. The first rule still shows the older schema version, and works just the way it used to in `v2`.
 
 ## Weird stuff
 

@@ -10,6 +10,7 @@ const {
   mappings,
   convenienceFields,
   schemaFields,
+  mapField,
 } = require('../../lib/fieldMappings')
 
 describe('constants', () => {
@@ -23,5 +24,14 @@ describe('constants', () => {
 
   test('schemaFields', () => {
     expect(schemaFields).toMatchSnapshot()
+  })
+
+  test('mapField for invalid field', () => {
+    core.setFailed.mockReset()
+    core.setFailed.mockClear()
+    mapField('v2', 'invalid-field', 'test')('foo:bar')
+    expect(core.setFailed).toHaveBeenCalledTimes(1)
+    core.setFailed.mockReset()
+    core.setFailed.mockClear()
   })
 })
