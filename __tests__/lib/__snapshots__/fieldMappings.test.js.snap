@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`constants convenienceFields 1`] = `
+[
+  "email",
+  "slack",
+  "repo",
+  "opsgenie",
+  "pagerduty",
+  "slack-support-channel",
+]
+`;
+
+exports[`constants mappings 1`] = `
+{
+  "application": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "contacts": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "description": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "docs": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "integrations": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "lifecycle": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "links": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "repos": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "schema-version": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "service-name": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "tags": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "team": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+  "tier": {
+    "v2": [Function],
+    "v2.1": [Function],
+  },
+}
+`;
+
+exports[`constants schemaFields 1`] = `
+[
+  "schema-version",
+  "service-name",
+  "team",
+  "contacts",
+  "tags",
+  "links",
+  "integrations",
+  "docs",
+  "repos",
+  "application",
+  "description",
+  "tier",
+  "lifecycle",
+]
+`;

@@ -1,32 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`input-to-registry-document.js #inputsToRegistryDocument() - less input 1`] = `
+exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() - 100% input 1`] = `
 {
   "contacts": [
     {
+      "contact": "dba-team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "DBA Team Email Alias",
+      "type": "email",
+    },
+    {
       "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
-      "name": "Team Email",
       "type": "email",
     },
     {
       "contact": "https://fakeorg.slack.com/archives/A0000000000",
-      "name": "Support Slack Channel",
       "type": "slack",
     },
   ],
   "dd-service": "datadog-service-catalog-metadata-provider-test",
-  "docs": [],
+  "docs": [
+    {
+      "name": "GitHub Actions!",
+      "provider": "Github",
+      "url": "https://github.com/features/actions",
+    },
+  ],
+  "integrations": {
+    "opsgenie": {
+      "region": "US",
+      "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
+    },
+    "pagerduty": "https://my-org.pagerduty.com/service-directory/PMyService",
+  },
+  "links": [
+    {
+      "name": "AMI Version Status Dashboard",
+      "type": "dashboard",
+      "url": "https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard",
+    },
+  ],
+  "repos": [
+    {
+      "name": "@actions/toolkit",
+      "provider": "Github",
+      "url": "https://github.com/actions/toolkit",
+    },
+    {
+      "name": "Repo",
+      "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
+    },
+  ],
+  "schema-version": "v2",
+  "tags": [
+    "application:GitHub Action Config Test",
+    "env:prod",
+    "infrastructure:serverless",
+    "language:nodejs",
+    "other:value",
+  ],
+  "team": "Team Name Here",
+}
+`;
+
+exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() - less input 1`] = `
+{
+  "contacts": [
+    {
+      "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "type": "email",
+    },
+    {
+      "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "type": "slack",
+    },
+  ],
+  "dd-service": "datadog-service-catalog-metadata-provider-test",
   "integrations": {
     "opsgenie": {
       "region": "US",
       "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
     },
   },
-  "links": [],
   "repos": [
     {
-      "name": "Service Repository",
-      "provider": "Github",
+      "name": "Repo",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
   ],
@@ -41,17 +98,15 @@ exports[`input-to-registry-document.js #inputsToRegistryDocument() - less input 
 }
 `;
 
-exports[`input-to-registry-document.js #inputsToRegistryDocument() - normal input 1`] = `
+exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() - normal input 1`] = `
 {
   "contacts": [
     {
       "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
-      "name": "Team Email",
       "type": "email",
     },
     {
       "contact": "https://fakeorg.slack.com/archives/A0000000000",
-      "name": "Support Slack Channel",
       "type": "slack",
     },
   ],
@@ -78,14 +133,13 @@ exports[`input-to-registry-document.js #inputsToRegistryDocument() - normal inpu
   ],
   "repos": [
     {
-      "name": "Service Repository",
-      "provider": "Github",
-      "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
-    },
-    {
       "name": "@actions/toolkit",
       "provider": "Github",
       "url": "https://github.com/actions/toolkit",
+    },
+    {
+      "name": "Repo",
+      "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
   ],
   "schema-version": "v2",
@@ -97,5 +151,160 @@ exports[`input-to-registry-document.js #inputsToRegistryDocument() - normal inpu
     "other:value",
   ],
   "team": "Team Name Here",
+}
+`;
+
+exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument() - 100% input 1`] = `
+{
+  "contacts": [
+    {
+      "contact": "dba-team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "DBA Team Email Alias",
+      "type": "email",
+    },
+    {
+      "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "type": "email",
+    },
+    {
+      "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "type": "slack",
+    },
+  ],
+  "dd-service": "datadog-service-catalog-metadata-provider-test",
+  "integrations": {
+    "opsgenie": {
+      "region": "US",
+      "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
+    },
+    "pagerduty": {
+      "service-url": "https://my-org.pagerduty.com/service-directory/PMyService",
+    },
+  },
+  "links": [
+    {
+      "name": "AMI Version Status Dashboard",
+      "type": "dashboard",
+      "url": "https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard",
+    },
+    {
+      "name": "@actions/toolkit",
+      "type": "repo",
+      "url": "https://github.com/actions/toolkit",
+    },
+    {
+      "name": "GitHub Actions!",
+      "type": "doc",
+      "url": "https://github.com/features/actions",
+    },
+    {
+      "name": "Repo",
+      "type": "repo",
+      "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
+    },
+  ],
+  "schema-version": "v2.1",
+  "tags": [
+    "application:GitHub Action Config Test",
+    "env:prod",
+    "infrastructure:serverless",
+    "language:nodejs",
+    "other:value",
+  ],
+  "team": "Team Name Here",
+}
+`;
+
+exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument() - less input 1`] = `
+{
+  "contacts": [
+    {
+      "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "type": "email",
+    },
+    {
+      "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "type": "slack",
+    },
+  ],
+  "dd-service": "datadog-service-catalog-metadata-provider-test",
+  "integrations": {
+    "opsgenie": {
+      "region": "US",
+      "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
+    },
+  },
+  "links": [
+    {
+      "name": "Repo",
+      "type": "repo",
+      "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
+    },
+  ],
+  "schema-version": "v2.1",
+  "tags": [
+    "application:GitHub Action Config Test",
+    "env:prod",
+    "infrastructure:serverless",
+    "language:nodejs",
+  ],
+  "team": "Team Name Here",
+}
+`;
+
+exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument() - normal input 1`] = `
+{
+  "contacts": [
+    {
+      "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "type": "email",
+    },
+    {
+      "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "type": "slack",
+    },
+  ],
+  "dd-service": "datadog-service-catalog-metadata-provider-test",
+  "description": "This description describes a service.",
+  "integrations": {
+    "opsgenie": {
+      "region": "US",
+      "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
+    },
+  },
+  "lifecycle": "production",
+  "links": [
+    {
+      "name": "@actions/toolkit",
+      "provider": "GitHub",
+      "type": "repo",
+      "url": "https://github.com/actions/toolkit",
+    },
+    {
+      "name": "AMI Version Status Dashboard",
+      "type": "dashboard",
+      "url": "https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard",
+    },
+    {
+      "name": "GitHub Actions!",
+      "type": "doc",
+      "url": "https://github.com/features/actions",
+    },
+    {
+      "name": "Repo",
+      "type": "repo",
+      "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
+    },
+  ],
+  "schema-version": "v2.1",
+  "tags": [
+    "application:GitHub Action Config Test",
+    "env:prod",
+    "infrastructure:serverless",
+    "language:nodejs",
+    "other:value",
+  ],
+  "team": "Team Name Here",
+  "tier": "Tier 1",
 }
 `;
