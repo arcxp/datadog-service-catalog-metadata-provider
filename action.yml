@@ -1,10 +1,10 @@
 ---
 name: 'Datadog Service Catalog Metadata Provider'
 description: 'This is an action which allows you to provide your Datadog Service Catalog metadata to the Datadog Service Catalog'
-author: 'Arc XP'
+author: 'Mike Stemle <themanchicken@duck.com>'
 branding:
   icon: 'monitor'
-  color: 'blue'
+  color: 'purple'
 runs:
   using: node16
   main: dist/index.js

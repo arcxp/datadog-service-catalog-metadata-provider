@@ -30,6 +30,10 @@ const {
 } = require('../lib/org-rules')
 
 describe('org-rules.js Org Rules selection', () => {
+  afterAll(() => {
+    core.setFailed.mockClear()
+    core.getInput.mockClear()
+  })
   test('#determineApplicabilityOfRule() - all', async () => {
     const ruleDefinition = YAML.parse(`
 ---

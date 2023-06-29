@@ -1,5 +1,8 @@
 /**
  * @fileoverview This test covers all of the field mappings across versions.
+ * @jest-environment node
+ * @group ci
+ * @author Mike Stemle <themanchicken@duck.com>
  **/
 
 const core = require('@actions/core')
@@ -78,6 +81,41 @@ describe.each([
         {
           type: 'slack',
           contact: 'https://my-org.slack.com/archives/my-channel',
+        },
+      ],
+    },
+  },
+  {
+    version: 'v2',
+    field: 'repo',
+    input: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
+    doc: {
+      contacts: [{ type: 'email', contact: 'testing@manchicken.io' }],
+    },
+    value: {
+      contacts: [{ type: 'email', contact: 'testing@manchicken.io' }],
+      repos: [
+        {
+          name: 'Repo',
+          url: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
+        },
+      ],
+    },
+  },
+  {
+    version: 'v2.1',
+    field: 'repo',
+    input: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
+    doc: {
+      contacts: [{ type: 'email', contact: 'testing@manchicken.io' }],
+    },
+    value: {
+      contacts: [{ type: 'email', contact: 'testing@manchicken.io' }],
+      links: [
+        {
+          name: 'Repo',
+          type: 'repo',
+          url: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
         },
       ],
     },
@@ -200,6 +238,10 @@ describe.each([
     },
   },
 ])('$field:$version', ({ version, field, input, doc, value }) => {
+  afterAll(() => {
+    core.setFailed.mockClear()
+    core.setFailed.mockReset()
+  })
   beforeEach(() => {
     core.setFailed.mockClear()
   })

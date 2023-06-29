@@ -1,5 +1,8 @@
 /**
  * @fileoverview This test covers all of the field mappings across versions.
+ * @jest-environment node
+ * @group ci
+ * @author Mike Stemle <themanchicken@duck.com>
  **/
 
 const core = require('@actions/core')
@@ -90,12 +93,14 @@ describe.each([
 - plain:nospaces
 - compat1: space-in-value
 - compat2 : space-in-both
+- number_value : 42
 `,
     value: {
       tags: [
         'plain:nospaces',
         'compat1:space-in-value',
         'compat2:space-in-both',
+        'number_value:42',
       ],
     },
   },
@@ -359,6 +364,10 @@ opsgenie:
     },
   },
 ])('$field:$version', ({ version, field, input, value }) => {
+  afterAll(() => {
+    core.setFailed.mockClear()
+    core.setFailed.mockReset()
+  })
   beforeEach(() => {
     core.setFailed.mockClear()
   })
