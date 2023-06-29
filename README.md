@@ -122,7 +122,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: arcxp/datadog-service-catalog-metadata-provider@v1
+      - uses: arcxp/datadog-service-catalog-metadata-provider@v2
         with:
           schema-version: v2.1
           datadog-hostname: api.us5.datadoghq.com
@@ -144,7 +144,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: arcxp/datadog-service-catalog-metadata-provider@v1
+      - uses: arcxp/datadog-service-catalog-metadata-provider@v2
         with:
           schema-version: v2
           datadog-hostname: api.us5.datadoghq.com
@@ -180,7 +180,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: arcxp/datadog-service-catalog-metadata-provider@v1
+      - uses: arcxp/datadog-service-catalog-metadata-provider@v2
         with:
           schema-version: v2
           datadog-hostname: api.us5.datadoghq.com
@@ -234,7 +234,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # This uses the custom action to push the service definition to Datadog.
-      - uses: arcxp/datadog-service-catalog-metadata-provider@v1
+      - uses: arcxp/datadog-service-catalog-metadata-provider@v2
         with:
           service-version: v2
           # You should use GitHub's encrypted secrets feature to manage secrets for Datadog.
