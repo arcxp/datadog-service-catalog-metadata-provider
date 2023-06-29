@@ -48,18 +48,18 @@ jobs:
             - language:nodejs
             - updated:${{ steps.date.outputs.date }}
             - internet_accessible: false
-          repos: |
+          links: |
             - url: https://github.com/actions/toolkit
+              type: repo
               provider: Github
               name: @actions/toolkit
-          links: |
             - name: AMI Version Status Dashboard
               url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
               type: dashboard
-          docs: |
             - name: GitHub Actions!
               url: https://github.com/features/actions
               provider: Github
+              type: doc
           integrations: |
             opsgenie:
               service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
