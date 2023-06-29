@@ -67,4 +67,14 @@ const run = async (configs) => {
 }
 
 // Grab the inputs and then run with them!
-inputsToRegistryDocument().then((configs) => run(configs))
+core.debug('STARTING THE PARSE')
+inputsToRegistryDocument()
+  .then((configs) => {
+    core.debug(`Input schema version is «${core.getInput('schema-version')}»`)
+    core.debug(
+      `Inputs coming off of configs: ${JSON.stringify(configs, undefined, 2)}`,
+    )
+
+    return configs
+  })
+  .then((configs) => run(configs))
