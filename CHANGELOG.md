@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [2.0.0] - 2023-06-29
+
+### Added
+
+- Support for the Datadog Service Catalog v2.1 schema version.
+
+### Changed
+
+- Version updates to dependencies.
+- Corrected a bunch of documentation problems.
+
 ## [1.1.2] - 2023-03-16
 
 ### Fixed

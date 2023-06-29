@@ -508,20 +508,9 @@ Wildcards are _not_ supported, so all values must be exact matches. Wildcards ma
 
 ##### On Requirements
 
-The `requirements` section of the Org Rules file is where you will define the requirements which must be met for the rule to pass. The requirements are a list of requirements, and each requirement is a list of fields which must be present in the service definition. The fields which you can require are:
+The `requirements` section of the Org Rules file is where you will define the requirements which must be met for the rule to pass. The requirements are a list of requirements, and each requirement is a list of fields which must be present in the service definition.
 
-- `tags`
-  - You can require that a service have a specific tag, and you can further constrain that to a list of values.
-- `links`
-  - You can require that a service have a minimum count of links, and you can further constrain that to a type.
-- `docs`
-  - You can require that a service have a at least a certain number of docs.
-- `contacts`
-  - You can require that a service have a minimum count of contacts, and you can further constrain that to a type.
-- `repos`
-  - You can require that a service have a minimum count of repos.
-- `integrations(.opsgenie|.pagerduty)`
-  - You can require that a service have an integration for a specific provider. No further constraints are supported for integrations.
+
 
 The syntax for these requirements is as follows:
 
