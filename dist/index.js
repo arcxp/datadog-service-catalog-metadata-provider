@@ -1,16 +1,316 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 6724:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+/**
+ * @file This file contains the mappings between the GitHub Actions inputs and the Datadog Service Catalog schema.
+ * @module lib/fieldMappings
+ * @author Mike Stemle <themanchicken@duck.com>
+ **/
+
+const core = __nccwpck_require__(2186)
+const _ = __nccwpck_require__(250)
+const {
+  expandObjectInputs,
+  forceArray,
+  forceObject,
+} = __nccwpck_require__(8454)
+
+/**
+ * This lets us use the same mapping function for multiple versions.
+ * @param {string[]} versions - The versions to use.
+ * @param {function} mapper - The mapping function.
+ * @returns {object} - The mapping object.
+ * @private
+ * @function
+ **/
+const useSharedMappings = (versions, mapper) =>
+  Object.assign(...versions.map((x) => ({ [x]: mapper })))
+
+/**
+ * This function takes an input name and a mapper function and returns a function which maps the input value to the registry document value.
+ * @param {string} input - The input name.
+ * @param {function} func - The mapping function.
+ * @returns {function} - The mapping function.
+ * @private
+ * @function
+ **/
+const mapToUsing = (input, func) => (value) => func(input, value)
+
+/**
+ * This function takes an input and a value and returns an object with the input as the key and the value as the value.
+ * @param {string} input - The input name.
+ * @param {any} value - The value.
+ * @returns {object} - The mapped object.
+ * @private
+ * @function
+ **/
+const passThru = (input, value) => ({ [input]: value })
+
+/**
+ * This function takes an input and a YAML string and returns an object with the input as the key and the expanded YAML as the value.
+ * @param {string} input - The input name.
+ * @param {string} str - The YAML string.
+ * @returns {object} - The mapped object.
+ * @private
+ * @function
+ * @see expandObjectInputs
+ **/
+const simpleYamlParse = (input, str) => ({ [input]: expandObjectInputs(str) })
+
+/**
+ * This function takes an input and a YAML string and returns an object with the input as the key and the expanded YAML as the value. The value of the object returned will _always_ be an array.
+ * @param {string} input - The input name.
+ * @param {string} str - The YAML string.
+ * @returns {object} - The mapped object.
+ * @private
+ * @function
+ * @see expandObjectInputs
+ * @see forceArray
+ **/
+const arrayYamlParse = (input, str) => ({
+  [input]: forceArray(expandObjectInputs(str)),
+})
+
+const objectYamlParse = (input, str) => ({
+  [input]: forceObject(expandObjectInputs(str)),
+})
+
+const versionCompatibilityError =
+  (field, chosenVersion, validVersions) => (_input) =>
+    core.setFailed(
+      `Sorry, but the «${field}» field is not avaiable in version ${chosenVersion} of the Datadog Service Catalog schema; this field is only available in version(s): ${validVersions.join(
+        ',',
+      )}`,
+    )
+
+/**
+ * This is the list of mappings which tracks which fields map to different versions in different ways.
+ * - Keyed by the GitHub Actions input name (action.yml)
+ * - Values are objects keyed with version tags
+ * - Values of those objects are the function which maps the input value to the registry document value.
+ * TODO: Add warnings for when folks try to use the wrong schema versions.
+ **/
+const mappings = {
+  'schema-version': useSharedMappings(
+    ['v2', 'v2.1'],
+    mapToUsing('schema-version', (input, value) => ({
+      'schema-version': value ?? 'v2',
+    })),
+  ),
+
+  'service-name': useSharedMappings(
+    ['v2', 'v2.1'],
+    mapToUsing('dd-service', passThru),
+  ),
+
+  team: useSharedMappings(['v2', 'v2.1'], mapToUsing('team', passThru)),
+
+  contacts: useSharedMappings(
+    ['v2', 'v2.1'],
+    mapToUsing('contacts', arrayYamlParse),
+  ),
+
+  // This tags setup is a little hairy, but the biggest thing
+  // to keep in mind is that we want a list of strings, made up
+  // of colon-separated values. Mercifully, this is the same
+  // for both v2 and v2.1.
+  tags: useSharedMappings(['v2', 'v2.1'], (input) => ({
+    tags: forceArray(expandObjectInputs(input)).map((entry) =>
+      _.isPlainObject(entry)
+        ? _.join(
+            _.head(_.toPairs(entry)).map((x) =>
+              // This check is so that we trim strings, but don't break
+              // numbers or boolean values.
+              typeof x === 'string' ? x.trim() : x,
+            ),
+            ':',
+          )
+        : entry,
+    ),
+  })),
+
+  links: {
+    v2: (input) => ({
+      links: forceArray(expandObjectInputs(input)).map((x) =>
+        // v2 doesn't have a provider field
+        _.omit(x, ['provider']),
+      ),
+    }),
+    'v2.1': (input) => ({ links: forceArray(expandObjectInputs(input)) }),
+  },
+
+  integrations: useSharedMappings(
+    ['v2', 'v2.1'],
+    mapToUsing('integrations', objectYamlParse),
+  ),
+
+  docs: {
+    v2: mapToUsing('docs', arrayYamlParse),
+    'v2.1': versionCompatibilityError('docs', 'v2.1', ['v2']),
+  },
+
+  repos: {
+    v2: mapToUsing('repos', arrayYamlParse),
+    'v2.1': versionCompatibilityError('repos', 'v2.1', ['v2']),
+  },
+
+  application: {
+    v2: versionCompatibilityError('application', 'v2', ['v2.1']),
+    'v2.1': mapToUsing('application', passThru),
+  },
+
+  description: {
+    v2: versionCompatibilityError('description', 'v2', ['v2.1']),
+    'v2.1': mapToUsing('description', passThru),
+  },
+
+  tier: {
+    v2: versionCompatibilityError('tier', 'v2', ['v2.1']),
+    'v2.1': mapToUsing('tier', passThru),
+  },
+
+  lifecycle: {
+    v2: versionCompatibilityError('lifecycle', 'v2', ['v2.1']),
+    'v2.1': mapToUsing('lifecycle', passThru),
+  },
+}
+Object.freeze(mappings)
+
+/**
+ * This is the list of fields which are part of the Datadog schema, in one version or another.
+ * @type {string[]}
+ **/
+const schemaFields = _.keys(mappings)
+Object.freeze(schemaFields)
+
+const incorporateConvenienceMapping = (inputObj, doc, targetList) => {
+  const docCopy = !!doc ? _.cloneDeep(doc) : {}
+  docCopy?.[targetList]
+    ? docCopy[targetList].push(inputObj)
+    : (docCopy[targetList] = [inputObj])
+  return docCopy
+}
+
+const incorporateConvenienceMappingToObject = (inputObj, doc, targetObject) => {
+  const docCopy = !!doc ? _.cloneDeep(doc) : {}
+  docCopy?.[targetObject]
+    ? (docCopy[targetObject] = _.merge(docCopy[targetObject], inputObj))
+    : (docCopy[targetObject] = { ...inputObj })
+  return docCopy
+}
+
+/**
+ * This is the list of fields which are convenience fields, which are mapped to other fields in the registry document.
+ * A key difference between this and `mappings` is that the mappers here take two arguments: the input value, as well as the document currently being produced. The function then returns a fresh copy of that document, mutated with the output of the mapper. This is a pure function, and does not mutate the document passed in.
+ * @type {Object<string, function>}
+ **/
+const convenienceMappings = {
+  // These fields map into `contacts` in the registry document.
+  email: useSharedMappings(['v2', 'v2.1'], (input, doc) =>
+    incorporateConvenienceMapping(
+      { contact: input, type: 'email' },
+      doc,
+      'contacts',
+    ),
+  ),
+
+  slack: useSharedMappings(['v2', 'v2.1'], (input, doc) =>
+    incorporateConvenienceMapping(
+      { contact: input, type: 'slack' },
+      doc,
+      'contacts',
+    ),
+  ),
+
+  // These fields map into `repos` list in the registry document for v2, and into the `links` list in the registry document for v2.1.
+  repo: {
+    v2: (input, doc) =>
+      incorporateConvenienceMapping({ name: 'Repo', url: input }, doc, 'repos'),
+    'v2.1': (input, doc) =>
+      incorporateConvenienceMapping(
+        { name: 'Repo', type: 'repo', url: input },
+        doc,
+        'links',
+      ),
+  },
+
+  // These fields map into `integrations` in the registry document.
+  opsgenie: useSharedMappings(['v2', 'v2.1'], (input, doc) =>
+    incorporateConvenienceMappingToObject(
+      { opsgenie: { 'service-url': input } },
+      doc,
+      'integrations',
+    ),
+  ),
+  pagerduty: {
+    v2: (input, doc) =>
+      incorporateConvenienceMappingToObject(
+        { pagerduty: input },
+        doc,
+        'integrations',
+      ),
+    'v2.1': (input, doc) =>
+      incorporateConvenienceMappingToObject(
+        { pagerduty: { 'service-url': input } },
+        doc,
+        'integrations',
+      ),
+  },
+}
+convenienceMappings['slack-support-channel'] = convenienceMappings.slack
+Object.freeze(convenienceMappings)
+
+/**
+ * This is the list of fields which are convenience fields, which are mapped to other fields in the registry document.
+ * @type {string[]}
+ **/
+const convenienceFields = _.keys(convenienceMappings)
+Object.freeze(convenienceFields)
+
+/**
+ * This is a convenience function which takes a field name and a version tag and returns a function which maps the input value to the registry document value.
+ * @param {string} field - The name of the field to map.
+ * @param {string} version - The version tag to map the field to.
+ * @returns {function} - A function which maps the input value to the registry document value.
+ * @example
+ * const mapField = require('./lib/fieldMappings')
+ * const mappedValue = mapField('team', 'v2.1')('my-team')
+ * `// mappedValue = { team: 'my-team' }`
+ * @public
+ * @function
+ **/
+const mapField =
+  (field, version) =>
+  (input, doc = undefined) =>
+    (
+      mappings?.[field]?.[version] ??
+      convenienceMappings?.[field]?.[version] ??
+      ((_) => core.setFailed(`Unknown field: ${field}`))
+    )(input, doc)
+
+module.exports = {
+  mappings,
+  convenienceFields,
+  schemaFields,
+  mapField,
+}
+
+
+/***/ }),
+
 /***/ 8454:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 /**
  * input-expander.js
  * DDSCMP
- * @desc This module contains all of the functions which expand scalar
+ * @file This module contains all of the functions which expand scalar
  *       input from GitHub Actions into hydrated structures for the DD API.
  *
- * @author Michael D. Stemle, Jr
+ * @author Mike Stemle <themanchicken@duck.com>
  */
 
 const core = __nccwpck_require__(2186)
@@ -114,7 +414,7 @@ const expandObjectInputs = (str) => {
  * @function
  */
 const forceArray = (input) =>
-  Array.isArray(input) ? input : input && input.length > 0 ? [input] : []
+  Array.isArray(input) ? input : !!input ? [input] : []
 
 /**
  * This function takes an input and forces it to be an object.
@@ -144,6 +444,7 @@ module.exports = {
  * @requires path
  * @requires @actions/core
  * @requires lodash
+ * @author Mike Stemle <themanchicken@duck.com>
  **/
 
 const fs = __nccwpck_require__(7147)
@@ -151,6 +452,8 @@ const path = __nccwpck_require__(1017)
 const core = __nccwpck_require__(2186)
 const _ = __nccwpck_require__(250)
 const { expandObjectInputs, forceArray, forceObject } = __nccwpck_require__(8454)
+
+const { mapField, convenienceFields, schemaFields } = __nccwpck_require__(6724)
 
 /**
  * This function takes the inputs from the Action and converts them into a registry document for Datadog.
@@ -160,79 +463,26 @@ const { expandObjectInputs, forceArray, forceObject } = __nccwpck_require__(8454
  */
 const inputsToRegistryDocument = async () => {
   // This does the initial fetch of configs from the Action inputs.
-  const configs = [
-    'team',
-    'contacts',
-    'repos',
-    'tags',
-    'links',
-    'docs',
-    'integrations',
-  ].reduce((agg, inputName) => {
-    const inputValue = core.getInput(inputName)
-    return Object.assign(agg, { [inputName]: expandObjectInputs(inputValue) })
-  }, {})
+  // const configs = collectInputs(core, core.getInput('schema-version') ?? 'v2')
 
-  // Prep the team email contact
-  const teamContactEmail = {
-    name: 'Team Email',
-    type: 'email',
-    contact: core.getInput('email'),
-  }
-  const teamContactSlack = core.getInput('slack-support-channel')
-    ? [
-        {
-          name: 'Support Slack Channel',
-          type: 'slack',
-          contact: core.getInput('slack-support-channel'),
-        },
-      ]
-    : []
-  configs.contacts = Array.isArray(configs.contacts)
-    ? [teamContactEmail, ...teamContactSlack, ...configs.contacts]
-    : [teamContactEmail, ...teamContactSlack]
+  const version = core.getInput('schema-version') ?? 'v2'
+  let configs = { 'schema-version': version }
 
-  if (core.getInput('repo')) {
-    const serviceRepo = {
-      name: 'Service Repository',
-      provider: 'Github',
-      url: core.getInput('repo'),
-    }
-    configs.repos = Array.isArray(configs.repos)
-      ? [serviceRepo, ...configs.repos]
-      : [serviceRepo]
-  } else {
-    configs.repos = forceArray(configs.repos)
-  }
-
-  // Make sure we have at least one repository.
-  if (configs.repos?.length === 0) {
-    return core.setFailed('No repos provided. At least one repo is required.')
-  }
-
-  // Rename `service-name` to `dd-service`
-  configs['dd-service'] = core.getInput('service-name')
-  // The schema version
-  configs['schema-version'] = 'v2'
-
-  // Tags _need_ to be an array of strings, but we can accept an array of strings or an array of objects which we then flatten to an array of strings.
-  configs.tags = forceArray(configs.tags).map((entry) =>
-    _.isPlainObject(entry)
-      ? _.join(
-          _.head(_.toPairs(entry)).map((x) =>
-            typeof x === 'string' ? x.trim() : x,
-          ),
-          ':',
-        )
-      : entry,
+  _.merge(
+    configs,
+    ...schemaFields
+      .filter((fieldName) => !!core.getInput(fieldName))
+      .map((fieldName) =>
+        mapField(fieldName, version)(core.getInput(fieldName)),
+      ),
   )
-  // These items don't have any convenience items, but they _must_ be arrays.
-  configs.docs = forceArray(configs.docs)
-  configs.links = forceArray(configs.links)
-  // Except for this one which must be an Object
-  configs.integrations = forceObject(configs.integrations)
 
-  // Return the configs.
+  for (const fieldName of convenienceFields) {
+    const input = core.getInput(fieldName)
+    if (input === undefined) continue
+    configs = mapField(fieldName, version)(input, configs)
+  }
+
   return configs
 }
 
@@ -245,6 +495,13 @@ module.exports = { inputsToRegistryDocument }
 /***/ ((module) => {
 
 /**
+ * @file This file contains the input validation functions.
+ * @module lib/input-validation
+ * @see lib/input-expander
+ * @author Mike Stemle <themanchicken@duck.com>
+ **/
+
+/**
  * Validates the Datadog host.
  * @param {string} ddHost - The Datadog host.
  * @returns {string} - The Datadog host.
@@ -254,7 +511,10 @@ module.exports = { inputsToRegistryDocument }
  */
 const validateDatadogHostname = (ddHost) => {
   // Verify the host.
-  if (!ddHost || !ddHost.match(/^[a-z0-9.-]+\.(datadoghq\.(com|eu|us)|ddog-gov\.com)$/)) {
+  if (
+    !ddHost ||
+    !ddHost.match(/^[a-z0-9.-]+\.(datadoghq\.(com|eu|us)|ddog-gov\.com)$/)
+  ) {
     throw new Error(
       `Invalid DataDog host: ${ddHost}. See here for more details: https://docs.datadoghq.com/getting_started/site/`,
     )
@@ -269,6 +529,12 @@ module.exports = { validateDatadogHostname }
 
 /***/ 5947:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+/**
+ * @file This file contains the functions which apply the organization rules to service catalog entries.
+ * @module lib/org-rules
+ * @author Mike Stemle <themanchicken@duck.com>
+ **/
 
 const YAML = __nccwpck_require__(4083)
 const core = __nccwpck_require__(2186)
@@ -454,28 +720,33 @@ const selectionForTags = (tags, serviceDefinition) => {
   return true
 }
 
-/**
- * Check selection criteria for a team.
- * @param {string} teamName - The team name to check.
- * @param {object} serviceDefinition - The service definition to use when checking.
- * @returns {boolean} - True if the team name matches, false otherwise.
- * @private
- * @function
- */
-const selectionForTeam = (teamName, serviceDefinition) =>
-  teamName.toLocaleLowerCase() === serviceDefinition?.team?.toLocaleLowerCase()
+const caseSensitiveFieldListMatch =
+  (fieldName) => (value, serviceDefinition) => {
+    if (value.toLocaleLowerCase() === 'all') {
+      !!_.get(serviceDefinition, fieldName, undefined)
+    }
+    if (!Array.isArray(value)) {
+      core.warning(
+        `Invalid value for ${fieldName}: ${value}; this should be either 'all' or an array of acceptable values.`,
+      )
+    }
+
+    return (
+      value.filter((v) => _.get(serviceDefinition, fieldName, []).includes(v))
+        .length > 0
+    )
+  }
 
 /**
- * Check selection criteria for a service name.
- * @param {string} serviceName - The service name to check.
- * @param {object} serviceDefinition - The service definition to use when checking.
- * @returns {boolean} - True if the service name matches, false otherwise.
+ * Make a function which checks for a field name in a service definition.
+ * @param {string} fieldName - The field name to check.
+ * @returns {function} - A function which checks for the field name in a service definition.
  * @private
  * @function
- */
-const selectionForServiceName = (serviceName, serviceDefinition) =>
-  serviceName.toLocaleLowerCase() ===
-  serviceDefinition['dd-service'].toLocaleLowerCase()
+ **/
+const caseInsensitiveFieldMatch = (fieldName) => (value, serviceDefinition) =>
+  value.toLocaleLowerCase() ===
+  serviceDefinition?.[fieldName]?.toLocaleLowerCase()
 
 /**
  * Determine if the rule applies to the service description. Since a single rule can have
@@ -492,8 +763,12 @@ const determineApplicabilityOfRule = (rule, serviceDescription) => {
   const selectionCriteria = rule?.selection || undefined
   const selectionCheckers = {
     tags: selectionForTags,
-    'service-name': selectionForServiceName,
-    team: selectionForTeam,
+    'service-name': caseInsensitiveFieldMatch('dd-service'),
+    'schema-version': caseInsensitiveFieldMatch('schema-version'),
+    team: caseInsensitiveFieldMatch('team'),
+    application: caseSensitiveFieldListMatch('application'),
+    tier: caseSensitiveFieldListMatch('tier'),
+    lifecycle: caseSensitiveFieldListMatch('lifecycle'),
   }
   const selectableFields = Object.keys(selectionCheckers)
 
@@ -599,6 +874,32 @@ const makeComplianceCheck_valueMatchAndCount = (
     return true
   }
 }
+
+/**
+ * Create a compliance check function which checks that a field in the service definition using a value check, with support for `any`.
+ * @param {string} fieldName - The name of the field to check.
+ * @returns {function} - A compliance check function.
+ * @private
+ * @function
+ **/
+const makeSimpleStringFieldComplianceChecker =
+  (fieldName) => (requirement, serviceDefinition) => {
+    if (!requirement || _.isEmpty(requirement)) return true
+    if (!serviceDefinition || _.isEmpty(serviceDefinition)) return false
+
+    // Support `any`
+    if (
+      !Array.isArray(requirement) &&
+      requirement.toLocaleLowerCase() === 'any'
+    ) {
+      return !!_.get(serviceDefinition, fieldName, undefined)
+    }
+
+    const req_list = Array.isArray(requirement) ? requirement : [requirement]
+    const sd_value = _.get(serviceDefinition, fieldName, undefined)
+
+    return req_list.includes(sd_value)
+  }
 
 /**
  * Check if the service description complies with the tags rule.
@@ -708,6 +1009,11 @@ const determineRuleCompliance = (rule, serviceDescription) => {
     // Tags and integrations have special handling.
     tags: checkTagsCompliance,
     integrations: checkIntegrationsCompliance,
+
+    application: makeSimpleStringFieldComplianceChecker('application'),
+    description: makeSimpleStringFieldComplianceChecker('description'),
+    lifecycle: makeSimpleStringFieldComplianceChecker('lifecycle'),
+    tier: makeSimpleStringFieldComplianceChecker('tier'),
 
     // Everything else can use these higher-order functions.
     links: makeComplianceCheck_valueMatchAndCount(
@@ -5283,7 +5589,7 @@ var import_plugin_paginate_rest = __nccwpck_require__(606);
 var import_plugin_rest_endpoint_methods = __nccwpck_require__(4923);
 
 // pkg/dist-src/version.js
-var VERSION = "19.0.12";
+var VERSION = "19.0.13";
 
 // pkg/dist-src/index.js
 var Octokit = import_core.Octokit.plugin(
@@ -6092,7 +6398,7 @@ __export(dist_src_exports, {
 module.exports = __toCommonJS(dist_src_exports);
 
 // pkg/dist-src/version.js
-var VERSION = "7.1.2";
+var VERSION = "6.1.2";
 
 // pkg/dist-src/normalize-paginated-list-response.js
 function normalizePaginatedListResponse(response) {
@@ -6259,7 +6565,6 @@ var paginatingEndpoints = [
   "GET /orgs/{org}/projects",
   "GET /orgs/{org}/public_members",
   "GET /orgs/{org}/repos",
-  "GET /orgs/{org}/rulesets",
   "GET /orgs/{org}/secret-scanning/alerts",
   "GET /orgs/{org}/teams",
   "GET /orgs/{org}/teams/{team_slug}/discussions",
@@ -6349,8 +6654,6 @@ var paginatingEndpoints = [
   "GET /repos/{owner}/{repo}/releases",
   "GET /repos/{owner}/{repo}/releases/{release_id}/assets",
   "GET /repos/{owner}/{repo}/releases/{release_id}/reactions",
-  "GET /repos/{owner}/{repo}/rules/branches/{branch}",
-  "GET /repos/{owner}/{repo}/rulesets",
   "GET /repos/{owner}/{repo}/secret-scanning/alerts",
   "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations",
   "GET /repos/{owner}/{repo}/security-advisories",
@@ -39920,7 +40223,17 @@ const run = async (configs) => {
 }
 
 // Grab the inputs and then run with them!
-inputsToRegistryDocument().then((configs) => run(configs))
+core.debug('STARTING THE PARSE')
+inputsToRegistryDocument()
+  .then((configs) => {
+    core.debug(`Input schema version is «${core.getInput('schema-version')}»`)
+    core.debug(
+      `Inputs coming off of configs: ${JSON.stringify(configs, undefined, 2)}`,
+    )
+
+    return configs
+  })
+  .then((configs) => run(configs))
 
 })();
 
