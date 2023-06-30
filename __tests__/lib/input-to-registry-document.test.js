@@ -76,6 +76,8 @@ contacts: |
     }
     expect(validate_v2.errors).toBeNull()
     expect(inputs).toMatchSnapshot()
+    expect(Array.isArray(inputs.links)).toBeTruthy()
+    expect(inputs.links.length).toEqual(1)
   })
 
   test('#inputsToRegistryDocument() - normal input', async () => {
@@ -209,6 +211,8 @@ contacts: |
     expect(validate_v2_1(inputs)).toStrictEqual(true)
     expect(validate_v2_1.errors).toBeNull()
     expect(inputs).toMatchSnapshot()
+    expect(Array.isArray(inputs.links)).toBeTruthy()
+    expect(inputs.links.length).toEqual(4)
   })
 
   test('#inputsToRegistryDocument() - normal input', async () => {
