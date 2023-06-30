@@ -49,25 +49,25 @@ jobs:
             - updated:${{ steps.date.outputs.date }}
             - internet_accessible: false
           links: |
-            - url: 'https://github.com/actions/toolkit'
-              type: 'repo'
-              provider: 'Github'
+            - url: https://github.com/actions/toolkit
+              type: repo
+              provider: Github
               name: '@actions/toolkit'
-            - name: 'AMI Version Status Dashboard'
-              url: 'https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard'
-              type: 'dashboard'
+            - name: AMI Version Status Dashboard
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
+              type: dashboard
             - name: 'GitHub Actions!'
-              url: 'https://github.com/features/actions'
-              provider: 'Github Docs'
-              type: 'doc'
-            - name: 'Some Runbook'
-              url: 'https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/runbook'
-              type: 'runbook'
-              provider: 'Confluence'
-            - name: 'Some Docs'
-              url: 'https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/docs'
-              type: 'doc'
-              provider: 'Confluence'
+              url: https://github.com/features/actions
+              provider: Github Docs
+              type: doc
+            - name: Some Runbook
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/runbook
+              type: runbook
+              provider: Confluence
+            - name: Some Docs
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/docs
+              type: doc
+              provider: Confluence
           integrations: |
             opsgenie:
               service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
