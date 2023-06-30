@@ -246,22 +246,22 @@ jobs:
 
           # This maps to the `dd-service` field in Datadog, it's just the name of your service.
           service-name: hello-world
-          
+
           # The name of the team which owns and/or supports the service.
           team: Global Greetings
 
           # The email address of the team which owns and/or supports the service.
           email: global.greetings@fake-email-host.com
-          
+
           # The URL of the Slack channel where support for the service is handled.
           # Keep in mind, this _must_ be a URL. To get the URL, right-click on the channel
           # in the Slack app, and select "Copy link" in the "Copy" submenu.
           slack-support-channel: 'https://team-name-here.slack.com/archives/ABC123'
-          
+
           tags: |
             - isprod:true
             - lang:nodejs
-          
+
           # For repos, you'll obviously want to have the repository for your service. If your service
           # is made up of multiple repositories, you can add them here as well. Note that we're using a multi-line string here. That multi-line string will be parsed as YAML, I didn't typo.
           repos: |
@@ -271,13 +271,13 @@ jobs:
             - name: some-library
               url: https://github.com/fake-org/some-library
               provider: github
-          
+
           # Docs contain anything that you might need when supporting the service.
           docs: |
             - name: API Docs
               url: https://fake-org.github.io/hello-world-api-docs
               provider: github
-          
+
           # Links are great for runbooks, other documentation, other services which
           # could be helpful, as well as dashboards.
           links: |
@@ -287,7 +287,7 @@ jobs:
             - name: hello-world dashboard
               url: https://app.datadoghq.com/dashboard/1234567890
               type: dashboard
-          
+
           # These integrations allow folks to be able to see who's on-call for the
           # service right from the Datadog Service Catalog.
           integrations: |
@@ -295,7 +295,7 @@ jobs:
               service_url: https://fake-org.hello-world.opsgenie.com
               region: US
             pagerduty: https://fake-org.hello-world.pagerduty.com
-          
+
           # This is the Product Owner, you should contact them if you have suggestions.
           contacts: |
             - name: Product Owner
@@ -345,22 +345,22 @@ jobs:
 
           # This service is in production, so let's put that into the lifecycle field
           lifecycle: production
-          
+
           # The name of the team which owns and/or supports the service.
           team: Global Greetings
 
           # The email address of the team which owns and/or supports the service. This is a convenience field
           email: global.greetings@fake-email-host.com
-          
+
           # The URL of the Slack channel where support for the service is handled.
           # Keep in mind, this _must_ be a URL. To get the URL, right-click on the channel
           # in the Slack app, and select "Copy link" in the "Copy" submenu.
           slack-support-channel: 'https://team-name-here.slack.com/archives/ABC123'
-          
+
           tags: |
             - isprod:true
             - lang:nodejs
-          
+
           # Links are great for runbooks, other documentation, other services which
           # could be helpful, as well as dashboards. In v2.1 repos and docs move here.
           links: |
@@ -382,7 +382,7 @@ jobs:
               url: https://fake-org.github.io/hello-world-api-docs
               type: doc
               provider: github
-          
+
           # These integrations allow folks to be able to see who's on-call for the
           # service right from the Datadog Service Catalog.
           integrations: |
@@ -391,7 +391,7 @@ jobs:
               region: US
             pagerduty:
               service-url: https://fake-org.hello-world.pagerduty.com
-          
+
           # This is the Product Owner, you should contact them if you have suggestions.
           contacts: |
             - name: Product Owner
@@ -642,6 +642,7 @@ Since the `repos` and `docs` fields were rolled up under `links` in `v2.1`, this
 | `Error: The team name is required.` | You didn't set the `team` input. | Set the `team` input. |
 | `Error: The team email is required.` | You didn't set the `email` input. | Set the `email` input. |
 | Datadog gives a 403 when you try to push the service definition. | You didn't set the `datadog-key` or `datadog-app-key` inputs correctly, or you've got the wrong `datadog-hostname` value for your account. | Check the `datadog-hostname` first, that's easier to check since GitHub Actions secrets will not show the value to you. After you've verified that, if you still have a 403, verify that you set the `datadog-key` and `datadog-app-key` inputs correctly. If that continues to cause trouble, you may want to visit the [API documentation for the API that this Action uses](https://docs.datadoghq.com/api/latest/service-definition/?code-lang=curl#create-or-update-service-definition) and make sure that it's functional with the host name and credentials you've provided. |
+| Your YAML-encoded fields don't seem to parse | Special characters can sometimes confuse the YAML parser. | Use quotation marks around any field containing a special character, such as `@`, `&`, or `:` (not an exhaustive list) |
 
 ## Design Decisions
 
