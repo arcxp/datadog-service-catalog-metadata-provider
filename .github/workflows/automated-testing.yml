@@ -37,6 +37,7 @@ jobs:
           application: Datadog Service Catalog Metadata Provider
           description: This is a test of the Datadog Service Catalog Metadata Provider
           lifecycle: production
+          tier: p3
           team: Team Name Here
           email: team-name-here@fakeemaildomainthatdoesntexist.com
           slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000000'
@@ -68,6 +69,9 @@ jobs:
               url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/docs
               type: doc
               provider: Confluence
+            - name: Datadog Blog
+              type: link
+              url: https://www.datadoghq.com/blog/
           integrations: |
             opsgenie:
               service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
