@@ -451,7 +451,11 @@ const fs = __nccwpck_require__(7147)
 const path = __nccwpck_require__(1017)
 const core = __nccwpck_require__(2186)
 const _ = __nccwpck_require__(250)
-const { expandObjectInputs, forceArray, forceObject } = __nccwpck_require__(8454)
+const {
+  expandObjectInputs,
+  forceArray,
+  forceObject,
+} = __nccwpck_require__(8454)
 
 const { mapField, convenienceFields, schemaFields } = __nccwpck_require__(6724)
 
@@ -472,14 +476,19 @@ const inputsToRegistryDocument = async () => {
     configs,
     ...schemaFields
       .filter((fieldName) => !!core.getInput(fieldName))
-      .map((fieldName) =>
-        mapField(fieldName, version)(core.getInput(fieldName)),
-      ),
+      .map((fieldName) => {
+        const mapping = mapField(fieldName, version)(core.getInput(fieldName))
+        core.debug(`Field ${fieldName} maps to output: `, mapping)
+        return mapping
+      }),
   )
 
   for (const fieldName of convenienceFields) {
     const input = core.getInput(fieldName)
     if (input === undefined) continue
+    core.debug(
+      `Convenience field ${fieldName} for version ${version} has input: ${input}`,
+    )
     configs = mapField(fieldName, version)(input, configs)
   }
 
