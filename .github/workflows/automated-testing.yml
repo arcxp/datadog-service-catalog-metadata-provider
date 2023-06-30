@@ -58,8 +58,16 @@ jobs:
               type: dashboard
             - name: GitHub Actions!
               url: https://github.com/features/actions
-              provider: Github
+              provider: Github Docs
               type: doc
+            - name: Some Runbook
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/runbook
+              type: runbook
+              provider: Confluence
+            - name: Some Docs
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/docs
+              type: doc
+              provider: Confluence
           integrations: |
             opsgenie:
               service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
