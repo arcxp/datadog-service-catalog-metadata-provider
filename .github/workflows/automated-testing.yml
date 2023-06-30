@@ -70,7 +70,7 @@ jobs:
               type: doc
               provider: Confluence
             - name: Datadog Blog
-              type: link
+              type: other
               url: https://www.datadoghq.com/blog/
           integrations: |
             opsgenie:
