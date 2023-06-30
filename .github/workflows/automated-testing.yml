@@ -52,7 +52,7 @@ jobs:
             - url: https://github.com/actions/toolkit
               type: repo
               provider: Github
-              name: '@actions/toolkit'
+              name: @actions/toolkit
             - name: AMI Version Status Dashboard
               url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
               type: dashboard
