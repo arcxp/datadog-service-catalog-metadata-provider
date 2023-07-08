@@ -76,7 +76,7 @@ There are a few things you need to do building locally.
 
 1. You'll need a Datadog account to use. We have one for the project, but we are unable to grant access to third parties who are not a part of the team.
 2. You'll want to work through this tutorial: https://docs.datadoghq.com/tracing/guide/tutorial-enable-python-containers/
-3. This project runs in Node, but do keep in mind that the business end is executed by GitHub Actions. There are simulators out there for GHA, but I haven't found any of them to work.
+3. This project runs in Node, but do keep in mind that the business end is executed by GitHub Actions. There are simulators out there for GHA, but I haven't found any of them to work consistently.
 
 Please understand that all changes will need to be accompanied by tests.
 
