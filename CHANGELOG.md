@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [Unreleased]
+
+### Changed
+
+- Updated dependencies
+  - `yaml`
+  - `@types/jest`
+  - `jest`
+  - `prettier`
+
 ## [2.0.0] - 2023-06-29
 
 ### Added
