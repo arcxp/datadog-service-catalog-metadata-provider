@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning].
   - `@types/jest`
   - `jest`
   - `prettier`
+- Using `cjs` extensions instead of `js` ones, per convention
+- Updating to NodeJS 18
 
 ## [2.0.0] - 2023-06-29
 

@@ -3,3 +3,4 @@ tags
 node_modules/*
 coverage
 .nova
+**/.DS_Store

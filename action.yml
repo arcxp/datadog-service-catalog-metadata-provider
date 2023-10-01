@@ -6,8 +6,8 @@ branding:
   icon: 'monitor'
   color: 'purple'
 runs:
-  using: node16
-  main: dist/index.js
+  using: node18
+  main: dist/index.cjs
 inputs:
   # Stuff we need for this action
   github-token:
