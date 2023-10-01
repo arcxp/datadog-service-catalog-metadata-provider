@@ -1,5 +1,4 @@
 const core = require('@actions/core')
-const YAML = require('yaml')
 const { HttpClient } = require('@actions/http-client')
 
 const { inputsToRegistryDocument } = require('./lib/input-to-registry-document')

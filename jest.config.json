@@ -4,9 +4,10 @@
   "collectCoverageFrom": [
     "**/lib/**/*.js"
   ],
+  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.c?js$",
   "testPathIgnorePatterns": [
     "/node_modules/",
     "__tests__/__mocks__",
-    "__tests__/test-locally-only.js"
+    "__tests__/test-locally-only.cjs"
   ]
 }
