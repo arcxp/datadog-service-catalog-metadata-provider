@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "module": "commonJS",
-    "target": "esnext",
-    "moduleResolution":"classic"
-  },
-  "exclude": ["node_modules"],
-  "suggestionActions": false
-}
