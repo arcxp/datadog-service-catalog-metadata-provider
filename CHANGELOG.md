@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning].
   - `jest`
   - `prettier`
 - Using `cjs` extensions instead of `js` ones, per convention
-- Updating to NodeJS 18
+- Updating to NodeJS 20
+- Changing from `@vercel/ncc` to `esbuild` for packaging.
 
 ## [2.0.0] - 2023-06-29
 
