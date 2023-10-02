@@ -2,7 +2,8 @@
   "collectCoverage": true,
   "coverageDirectory": "coverage",
   "collectCoverageFrom": [
-    "**/lib/**/*.js"
+    "**/lib/**/*.js",
+    "**/lib/**/*.cjs"
   ],
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.c?js$",
   "testPathIgnorePatterns": [

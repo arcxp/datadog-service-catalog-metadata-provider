@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Added a limit of ten Datadog calls per Workflow step
+
 ### Changed
 
 - Updated dependencies
