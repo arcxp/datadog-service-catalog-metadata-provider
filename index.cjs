@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const { HttpClient } = require('@actions/http-client')
 
+const { DatadogPostGovernor } = require('./lib/governors')
 const { inputsToRegistryDocument } = require('./lib/input-to-registry-document')
 const { validateDatadogHostname } = require('./lib/input-validation')
 const { fetchAndApplyOrgRules } = require('./lib/org-rules')
@@ -11,6 +12,8 @@ const { fetchAndApplyOrgRules } = require('./lib/org-rules')
  * @param {string} config - The config JSON string.
  **/
 const registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
+  DatadogPostGovernor.increment()
+
   core.debug(`JSON: ${configJsonStr}`)
   // Prep the auth
   const client = new HttpClient(
@@ -42,6 +45,10 @@ const run = async (configs) => {
     // Extract the API key for DataDog
     const apiKey = core.getInput('datadog-key')
     const appKey = core.getInput('datadog-app-key')
+
+    // Initialize the Post governor to help prevent excessive calls to Datadog
+    DatadogPostGovernor.init()
+
     if (!apiKey || !appKey) {
       return core.setFailed(
         'Both `datadog-key` and `datadog-app-key` are required.',
