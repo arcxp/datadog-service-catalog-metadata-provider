@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning].
   - `@types/jest`
   - `jest`
   - `prettier`
+  - `@actions/github`
+  - `@actions/http-client`
 - Using `cjs` extensions instead of `js` ones, per convention
 - Updating to NodeJS 20
 - Changing from `@vercel/ncc` to `esbuild` for packaging.
