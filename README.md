@@ -87,14 +87,14 @@ Using a field which is not supported in the schema version you've selected will 
 | `links` | A list of links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` | `v2`, `v2.1` |
 | `links[].name` | The name of the link. | Yes | | `v2`, `v2.1` |
 | `links[].url` | The URL of the link. | Yes | | `v2`, `v2.1` |
-| `links[].type` | The type for the link. Acceptable values are: `doc`, `wiki`, `runbook`, `url`, `repo`, `dashboard`, `oncall`, `code`, and `link` | Yes | | `v2`, `v2.1` |
+| `links[].type` | The type for the link. Acceptable values for the `v2` API are: `doc`, `wiki`, `runbook`, `url`, `repo`, `dashboard`, `oncall`, `code`, and `link`. Acceptable values for the `v2.1` API are: `doc`, `runbook`, `repo`, `dashboard`, and `other`. | Yes | | `v2`, `v2.1` |
 | `docs` | A list of documentation links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. In `v2.1`, this field moved under `links`. | No | `[]` | `v2` |
 | `docs[].name` | The name of the document. | Yes | | `v2` |
 | `docs[].url` | The URL of the document. | Yes | | `v2` |
 | `docs[].provider` | The provider for where the documentation lives. Acceptable values are: `Confluence`, `GoogleDocs`, `Github`, `Jira`, `OneNote`, `SharePoint`, and `Dropbox` | No | | `v2` |
 | `integrations` | Integrations associated with the service. These integrations are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `{}` | `v2`, `v2.1` |
 | `integrations.opsgenie` | The OpsGenie details for the service. | No | | `v2`, `v2.1` |
-| `integrations.opsgenie.service_url` | The service URL for the OpsGenie integration. A team URL will work, but if you want on-call metadata then make sure that this URL is to a service, not a team. | Yes | | `v2`, `v2.1` |
+| `integrations.opsgenie.service-url` | The service URL for the OpsGenie integration. A team URL will work, but if you want on-call metadata then make sure that this URL is to a service, not a team. | Yes | | `v2`, `v2.1` |
 | `integrations.opsgenie.region` | The region for the OpsGenie integration. Acceptable values are `US` and `EU`. | No | | `v2`, `v2.1` |
 | `integrations.pagerduty` | The PagerDuty URL for the service. **Important:** In `v2`, this field is just a URL. In `v2.1` this field is a dictionary with a `service-url` property. | No | | `v2`, `v2.1` |
 | `integrations.pagerduty.service-url` | The PagerDuty URL for the service. | Yes | | `v2.1` |
@@ -164,11 +164,12 @@ jobs:
               provider: github
           integrations: |
             opsgenie:
-              service_url: https://fake-org.hello-world.opsgenie.com
+              service-url: https://fake-org.hello-world.opsgenie.com
               region: US
           contacts: |
             - name: Product Owner
-              email: john.doe@fake-email-host.com
+              type: email
+              contact: john.doe@fake-email-host.com
 ```
 
 ### Example with multiple repositories
@@ -203,11 +204,12 @@ jobs:
               provider: github
           integrations: |
             opsgenie:
-              service_url: https://fake-org.hello-world.opsgenie.com
+              service-url: https://fake-org.hello-world.opsgenie.com
               region: US
           contacts: |
             - name: Product Owner
-              email: john.doe@fake-email-host.com
+              type: email
+              contact: john.doe@fake-email-host.com
 ```
 
 ### The whole enchilada
@@ -292,14 +294,15 @@ jobs:
           # service right from the Datadog Service Catalog.
           integrations: |
             opsgenie:
-              service_url: https://fake-org.hello-world.opsgenie.com
+              service-url: https://fake-org.hello-world.opsgenie.com
               region: US
             pagerduty: https://fake-org.hello-world.pagerduty.com
 
           # This is the Product Owner, you should contact them if you have suggestions.
           contacts: |
             - name: Product Owner
-              email: john.doe@fake-email-host.com
+              type: email
+              contact: john.doe@fake-email-host.com
 ```
 
 #### Here it is for schema version `v2.1`
@@ -387,7 +390,7 @@ jobs:
           # service right from the Datadog Service Catalog.
           integrations: |
             opsgenie:
-              service_url: https://fake-org.hello-world.opsgenie.com
+              service-url: https://fake-org.hello-world.opsgenie.com
               region: US
             pagerduty:
               service-url: https://fake-org.hello-world.pagerduty.com
@@ -395,7 +398,8 @@ jobs:
           # This is the Product Owner, you should contact them if you have suggestions.
           contacts: |
             - name: Product Owner
-              email: john.doe@fake-email-host.com
+              type: email
+              contact: john.doe@fake-email-host.com
 ```
 
 ## Quick note on triggers
