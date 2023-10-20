@@ -7160,7 +7160,9 @@ var require_client = __commonJS({
     }
     function onSocketReadable() {
       const { [kParser]: parser } = this;
-      parser.readMore();
+      if (parser) {
+        parser.readMore();
+      }
     }
     function onSocketError(err) {
       const { [kClient]: client, [kParser]: parser } = this;
@@ -8891,7 +8893,7 @@ var require_readable = __commonJS({
             dst.set(buf, pos);
             pos += buf.byteLength;
           }
-          resolve(dst);
+          resolve(dst.buffer);
         } else if (type === "blob") {
           if (!Blob2) {
             Blob2 = require("buffer").Blob;
@@ -9261,6 +9263,9 @@ var require_api_stream = __commonJS({
             { callback, body: res, contentType, statusCode, statusMessage, headers }
           );
         } else {
+          if (factory === null) {
+            return;
+          }
           res = this.runInAsyncScope(factory, null, {
             statusCode,
             headers,
@@ -9290,11 +9295,14 @@ var require_api_stream = __commonJS({
       }
       onData(chunk) {
         const { res } = this;
-        return res.write(chunk);
+        return res ? res.write(chunk) : true;
       }
       onComplete(trailers) {
         const { res } = this;
         removeSignal(this);
+        if (!res) {
+          return;
+        }
         this.trailers = util.parseHeaders(trailers);
         res.end();
       }
@@ -34713,9 +34721,9 @@ var require_github = __commonJS({
   }
 });
 
-// node_modules/@octokit/rest/node_modules/@octokit/plugin-request-log/dist-node/index.js
+// node_modules/@octokit/plugin-request-log/dist-node/index.js
 var require_dist_node11 = __commonJS({
-  "node_modules/@octokit/rest/node_modules/@octokit/plugin-request-log/dist-node/index.js"(exports2, module2) {
+  "node_modules/@octokit/plugin-request-log/dist-node/index.js"(exports2, module2) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
