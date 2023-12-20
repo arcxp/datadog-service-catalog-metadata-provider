@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning].
 
 ## [2.2.0] - unreleased
 
+### Added
+
+- Added support for schema version v2.2
+- Added the `uuid` dependency since `@actions/core` insists
+
 ### Changed
 
 - Updated dependencies

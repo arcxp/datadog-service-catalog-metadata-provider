@@ -1,6 +1,6 @@
 {
   "name": "@arcxp/datadog-service-catalog-metadata-provider",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "type": "commonjs",
   "description": "This is a package which provides GitHub Actions with a workflow for providing the DataDog Service Catalog Provider with information that will register your service in the Service Catalog.",
   "main": "index.cjs",
@@ -31,6 +31,7 @@
     "@actions/http-client": "^2.2.0",
     "@octokit/rest": "^20.0.2",
     "lodash": "^4.17.21",
+    "uuid": "^9.0.1",
     "yaml": "^2.3.4"
   },
   "devDependencies": {

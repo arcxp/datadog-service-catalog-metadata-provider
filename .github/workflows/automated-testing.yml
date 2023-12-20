@@ -28,7 +28,7 @@ jobs:
       - name: Datadog Service Catalog Metadata Provider Manual Test
         uses: ./
         with:
-          schema-version: v2.1
+          schema-version: v2.2
           github-token: ${{ secrets.GITHUB_TOKEN }}
           datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
@@ -38,6 +38,11 @@ jobs:
           description: This is a test of the Datadog Service Catalog Metadata Provider
           lifecycle: production
           tier: p3
+          type: custom
+          languages: |
+            - javascript
+            - hopes
+            - dreams
           team: Team Name Here
           email: team-name-here@fakeemaildomainthatdoesntexist.com
           slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000000'
