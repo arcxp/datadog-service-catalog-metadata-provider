@@ -371,6 +371,8 @@ describe('Edge cases', () => {
   test('should respect runner debug', async () => {
     core.debug = jest.fn()
 
+    process.env['RUNNER_DEBUG'] = undefined
+
     expect(await fetchRemoteRules()).toBeTruthy()
     expect(core.debug).toHaveBeenCalledTimes(1)
 
