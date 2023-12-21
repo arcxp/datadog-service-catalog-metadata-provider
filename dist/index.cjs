@@ -30605,7 +30605,7 @@ var require_fieldMappings = __commonJS({
         useSharedMappings(["v2.1", "v2.2"], mapToUsing("lifecycle", passThru))
       ),
       // New in v2.2
-      type2: {
+      type: {
         v2: versionCompatibilityError("type", "v2", ["v2.2"]),
         "v2.1": versionCompatibilityError("type", "v2.1", ["v2.2"]),
         "v2.2": mapToUsing("type", passThru)
@@ -35127,6 +35127,8 @@ var require_org_rules = __commonJS({
         description: makeSimpleStringFieldComplianceChecker("description"),
         lifecycle: makeSimpleStringFieldComplianceChecker("lifecycle"),
         tier: makeSimpleStringFieldComplianceChecker("tier"),
+        type: makeSimpleStringFieldComplianceChecker("type"),
+        languages: makeComplianceCheck_countOnly("count", "languages.length"),
         // Everything else can use these higher-order functions.
         links: makeComplianceCheck_valueMatchAndCount(
           "type",
