@@ -37,6 +37,12 @@ inputs:
   service-name:
     description: 'The name of the service'
     required: true
+  type:
+    description: 'Type of the service. Examples: "web", "db", "cache", "function", "browser", "mobile", "custom"'
+    required: false
+  languages:
+    description: 'A list of programming languages used.'
+    required: false
   team:
     description: 'The team responsible for the service'
     required: false

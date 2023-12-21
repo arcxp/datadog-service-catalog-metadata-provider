@@ -38,7 +38,7 @@ jobs:
           description: This is a test of the Datadog Service Catalog Metadata Provider
           lifecycle: production
           tier: p3
-          type: custom
+          type: function
           languages: |
             - javascript
             - hopes

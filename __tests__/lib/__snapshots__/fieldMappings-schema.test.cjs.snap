@@ -36,6 +36,7 @@ exports[`constants mappings 1`] = `
   "docs": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "integrations": {
     "v2": [Function],
@@ -55,10 +56,12 @@ exports[`constants mappings 1`] = `
   "links": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "repos": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "schema-version": {
     "v2": [Function],
@@ -85,7 +88,7 @@ exports[`constants mappings 1`] = `
     "v2.1": [Function],
     "v2.2": [Function],
   },
-  "type": {
+  "type2": {
     "v2": [Function],
     "v2.1": [Function],
     "v2.2": [Function],
@@ -102,7 +105,7 @@ exports[`constants schemaFields 1`] = `
   "description",
   "tier",
   "lifecycle",
-  "type",
+  "type2",
   "languages",
   "contacts",
   "links",
