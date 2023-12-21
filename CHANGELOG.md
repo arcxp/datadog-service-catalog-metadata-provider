@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning].
 
 - Added support for schema version v2.2
 - Added the `uuid` dependency since `@actions/core` insists
+- Added some more edge case tests
 
 ### Changed
 

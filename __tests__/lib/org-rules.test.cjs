@@ -4,7 +4,7 @@ const path = require('path')
 const YAML = require('yaml')
 
 // Pulling this in here activates the mocking of the github module
-const github = require('@actions/github')
+require('@actions/github')
 
 // Need to use inputs for some of our parameters
 const core = require('@actions/core')
@@ -18,20 +18,20 @@ const testLocallyOnly = require('../test-locally-only')
 
 // This is our test subject
 const {
-  fetchAndApplyOrgRules,
+  // fetchAndApplyOrgRules,
   _test: {
     fetchRemoteRules,
     ghHandle,
     currentOrg,
-    determineApplicabilityOfRule,
-    determineRuleCompliance,
+    // determineApplicabilityOfRule,
+    // determineRuleCompliance,
     applyOrgRules,
   },
 } = require('../../lib/org-rules')
 
 process.env.GITHUB_EVENT_PATH = path.join(
   __dirname,
-  '../data/github-context-payload.json',
+  '../data/github-context-payload.json'
 )
 process.env.GITHUB_REPOSITORY =
   'arcxp/datadog-service-catalog-metadata-provider'
@@ -53,7 +53,7 @@ describe('org-rules.js Org Rules the basics', () => {
     const gh = await ghHandle()
 
     expect(core.warning).toHaveBeenCalledWith(
-      'No GitHub token found, org rules cannot be applied.',
+      'No GitHub token found, org rules cannot be applied.'
     )
     expect(gh).toBeUndefined()
     process.env.GITHUB_TOKEN = GH_TOKEN
@@ -70,7 +70,7 @@ describe('org-rules.js Org Rules the basics', () => {
     delete process.env.GITHUB_REPOSITORY
     const result = currentOrg()
     expect(core.setFailed).toHaveBeenCalledWith(
-      'This GitHub Actions environment does not have a valid context.',
+      'This GitHub Actions environment does not have a valid context.'
     )
     expect(result).toBeUndefined()
 
@@ -118,7 +118,7 @@ integrations: |
   opsgenie:
     service_url: https://example.com
     region: US
-    `),
+    `)
     )
     const serviceDefinition = await inputsToRegistryDocument()
 
@@ -146,7 +146,7 @@ service-name: test1
 team: Team Name Here
 email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 repo: foo
-    `),
+    `)
     )
     const serviceDefinition = await inputsToRegistryDocument()
 
@@ -186,7 +186,7 @@ integrations: |
   opsgenie:
     service_url: https://example.com
     region: US
-    `),
+    `)
     )
     const serviceDefinition = await inputsToRegistryDocument()
 
@@ -222,7 +222,7 @@ email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 repo: foo
 tags: |
   - data-sensitivity:critical
-    `),
+    `)
     )
     const serviceDefinition = await inputsToRegistryDocument()
 
@@ -262,7 +262,7 @@ integrations: |
   opsgenie:
     service_url: https://example.com
     region: US
-    `),
+    `)
     )
     const serviceDefinition = await inputsToRegistryDocument()
 
@@ -300,7 +300,7 @@ integrations: |
   opsgenie:
     service_url: https://example.com
     region: US
-    `),
+    `)
     )
     const serviceDefinition = await inputsToRegistryDocument()
 
@@ -340,11 +340,43 @@ integrations: |
   opsgenie:
     service_url: https://example.com
     region: US
-    `),
+    `)
     )
     const serviceDefinition = await inputsToRegistryDocument()
 
     const result = await applyOrgRules(serviceDefinition, ruleDefinition)
     expect(result).toBeTruthy()
+  })
+})
+
+describe('Edge cases', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetModules() // Most important - it clears the cache
+    process.env = { ...OLD_ENV } // Make a copy
+  })
+
+  afterAll(() => {
+    process.env = OLD_ENV // Restore old environment
+    jest.clearAllMocks()
+  })
+
+  test('should return undefined without gh', () => {
+    process.env['GITHUB_TOKEN'] = undefined
+
+    expect(fetchRemoteRules()).resolves.toBeUndefined()
+  })
+
+  test('should respect runner debug', async () => {
+    core.debug = jest.fn()
+
+    expect(await fetchRemoteRules()).toBeTruthy()
+    expect(core.debug).toHaveBeenCalledTimes(1)
+
+    process.env['RUNNER_DEBUG'] = 1
+
+    expect(await fetchRemoteRules()).toBeTruthy()
+    expect(core.debug).toHaveBeenCalledTimes(3)
   })
 })

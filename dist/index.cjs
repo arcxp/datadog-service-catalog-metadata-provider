@@ -34782,104 +34782,12 @@ var require_github = __commonJS({
   }
 });
 
-// node_modules/@octokit/plugin-request-log/dist-node/index.js
-var require_dist_node11 = __commonJS({
-  "node_modules/@octokit/plugin-request-log/dist-node/index.js"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var dist_src_exports = {};
-    __export2(dist_src_exports, {
-      requestLog: () => requestLog
-    });
-    module2.exports = __toCommonJS2(dist_src_exports);
-    var VERSION = "4.0.0";
-    function requestLog(octokit) {
-      octokit.hook.wrap("request", (request, options) => {
-        octokit.log.debug("request", options);
-        const start = Date.now();
-        const requestOptions = octokit.request.endpoint.parse(options);
-        const path = requestOptions.url.replace(options.baseUrl, "");
-        return request(options).then((response) => {
-          octokit.log.info(
-            `${requestOptions.method} ${path} - ${response.status} in ${Date.now() - start}ms`
-          );
-          return response;
-        }).catch((error) => {
-          octokit.log.info(
-            `${requestOptions.method} ${path} - ${error.status} in ${Date.now() - start}ms`
-          );
-          throw error;
-        });
-      });
-    }
-    requestLog.VERSION = VERSION;
-  }
-});
-
-// node_modules/@octokit/rest/dist-node/index.js
-var require_dist_node12 = __commonJS({
-  "node_modules/@octokit/rest/dist-node/index.js"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var dist_src_exports = {};
-    __export2(dist_src_exports, {
-      Octokit: () => Octokit
-    });
-    module2.exports = __toCommonJS2(dist_src_exports);
-    var import_core = require_dist_node8();
-    var import_plugin_request_log = require_dist_node11();
-    var import_plugin_paginate_rest = require_dist_node10();
-    var import_plugin_rest_endpoint_methods = require_dist_node9();
-    var VERSION = "20.0.2";
-    var Octokit = import_core.Octokit.plugin(
-      import_plugin_request_log.requestLog,
-      import_plugin_rest_endpoint_methods.legacyRestEndpointMethods,
-      import_plugin_paginate_rest.paginateRest
-    ).defaults({
-      userAgent: `octokit-rest.js/${VERSION}`
-    });
-  }
-});
-
 // lib/org-rules.cjs
 var require_org_rules = __commonJS({
   "lib/org-rules.cjs"(exports2, module2) {
     var YAML = require_dist();
     var core2 = require_core();
     var github = require_github();
-    var ghRestPlugin = require_dist_node12();
     var _ = require_lodash();
     var DEFAULT_RULES_NAME = "service-catalog-rules.yml";
     var ghHandle = async (token = void 0) => Promise.resolve().then(
