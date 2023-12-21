@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [2.2.0] - unreleased
+
+### Added
+
+- Added support for schema version v2.2
+- Added the `uuid` dependency since `@actions/core` insists
+- Added some more edge case tests
+
+### Changed
+
+- Updated dependencies
+
 ## [2.1.0] - 2023-10-20
 
 ### Added

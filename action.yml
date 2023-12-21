@@ -75,6 +75,17 @@ inputs:
     description: '(v2.1 only) The current life cycle phase of the service. For example: sandbox, staging, production, deprecated'
     required: false
 
+  # Fields which were added in v2.2
+  type:
+    description: 'Type of the service. Examples: "web", "db", "cache", "function", "browser", "mobile", "custom"'
+    required: false
+  languages:
+    description: 'A list of programming languages used.'
+    required: false
+  ci-pipeline-fingerprints:
+    description: 'A set of CI pipeline fingerprints related to the service'
+    required: false
+
   # These are convenience inputs which are unique to this action.
   email:
     description: 'The email address of the team responsible for the service'

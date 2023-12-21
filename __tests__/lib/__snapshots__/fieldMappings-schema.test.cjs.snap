@@ -16,54 +16,82 @@ exports[`constants mappings 1`] = `
   "application": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
+  },
+  "ci-pipeline-fingerprints": {
+    "v2": [Function],
+    "v2.1": [Function],
+    "v2.2": [Function],
   },
   "contacts": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "description": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "docs": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "integrations": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
+  },
+  "languages": {
+    "v2": [Function],
+    "v2.1": [Function],
+    "v2.2": [Function],
   },
   "lifecycle": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "links": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "repos": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "schema-version": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "service-name": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "tags": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "team": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
   },
   "tier": {
     "v2": [Function],
     "v2.1": [Function],
+    "v2.2": [Function],
+  },
+  "type": {
+    "v2": [Function],
+    "v2.1": [Function],
+    "v2.2": [Function],
   },
 }
 `;
@@ -73,15 +101,18 @@ exports[`constants schemaFields 1`] = `
   "schema-version",
   "service-name",
   "team",
-  "contacts",
-  "tags",
-  "links",
-  "integrations",
-  "docs",
-  "repos",
   "application",
   "description",
   "tier",
   "lifecycle",
+  "type",
+  "languages",
+  "contacts",
+  "links",
+  "tags",
+  "integrations",
+  "docs",
+  "repos",
+  "ci-pipeline-fingerprints",
 ]
 `;

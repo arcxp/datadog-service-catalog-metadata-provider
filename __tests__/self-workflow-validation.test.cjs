@@ -2,7 +2,7 @@
 const path = require('path')
 process.env.GITHUB_EVENT_PATH = path.join(
   __dirname,
-  './data/github-context-payload.json',
+  './data/github-context-payload.json'
 )
 process.env.GITHUB_REPOSITORY =
   'arcxp/datadog-service-catalog-metadata-provider'
@@ -17,40 +17,47 @@ const core = require('@actions/core')
 
 const _ = require('lodash')
 
-const {readFile} = require('fs/promises')
+const { readFile } = require('fs/promises')
 
 // This lets us get the inputs the way that they will actually come in.
 const {
   inputsToRegistryDocument,
 } = require('../lib/input-to-registry-document')
 const {
-  applyOrgRules,
+  // applyOrgRules,
   _test: {
-    fetchRemoteRules,
-    ghHandle,
-    determineApplicabilityOfRule,
-    determineRuleCompliance,
+    // fetchRemoteRules,
+    // ghHandle,
+    // determineApplicabilityOfRule,
+    // determineRuleCompliance,
   },
 } = require('../lib/org-rules')
 
 const Ajv = require('ajv')
-const ddSchema_v2_1 = require('./data/datadog-service-catalog-schema-v2.1.json')
-const validate_v2_1 = new Ajv({
+const ddSchema_v2_2 = require('./data/datadog-service-catalog-schema-v2.2.json')
+const validate_v2_2 = new Ajv({
   strict: false,
   validateFormats: false,
-}).compile(ddSchema_v2_1)
+}).compile(ddSchema_v2_2)
 
 describe('Read and validate the automated testing workflow', () => {
   test('read and validate workflow', async () => {
-    const workflowContent = await readFile('.github/workflows/automated-testing.yml',{ encoding: 'utf8' })
-    const parsedWorkflow = _.last(YAML.parse(workflowContent)?.jobs?.['automated-testing']?.steps)?.with
+    const workflowContent = await readFile(
+      '.github/workflows/automated-testing.yml',
+      { encoding: 'utf8' }
+    )
+    const parsedWorkflow = _.last(
+      YAML.parse(workflowContent)?.jobs?.['automated-testing']?.steps
+    )?.with
 
     core.__setInputsObject(parsedWorkflow)
     const serviceDefinition = await inputsToRegistryDocument()
 
-    const isValid = validate_v2_1(serviceDefinition)
+    console.log({ parsedWorkflow, serviceDefinition })
+    const isValid = validate_v2_2(serviceDefinition)
     if (!isValid) {
-      console.log(validate_v2_1.errors)
+      console.log(validate_v2_2.errors)
+      console.log(validate_v2_2)
     }
     expect(isValid).toBeTruthy()
   })

@@ -29,6 +29,7 @@ At this time, this GitHub Action supports the following versions of the Service 
 
 - `v2`
 - `v2.1`
+- `v2.2`
 
 ## Wait, but why?
 
@@ -69,35 +70,38 @@ Using a field which is not supported in the schema version you've selected will 
 
 | Field | Description | Required | Default | Schema Versions |
 | --- | --- | --- | --- | --- |
-| `service-name` | The name of the service. This must be unique across all services. | Yes | | `v2`, `v2.1` |
-| `team` | The team that owns the service. | Yes | | `v2`, `v2.1` |
-| `description` | A description of the service. | No | | `v2.1` |
-| `application` | The application that the service belongs to. | No | | `v2.1` |
-| `tier` | The importance tier of the service. This is an unconstrained text field where you can use your own tiering definitions. Examples would be `High`, `Critical`, or however you or your organization classify criticality tiers. | No | | `v2.1` |
-| `lifecycle` | This is the lifecycle of the service. This text field is unconstrained, and some examples are `production`, `development`, `staging`. | No | | `v2.1` |
-| `contacts` | The list of contacts for the service. Each of these contacts is an object. Keep in mind that `email` and `slack-support-channel` are already included as contacts. This list should be in addition to that. These values are supplied as objects, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` | `v2`, `v2.1` |
-| `contacts[].name` | The name of the contact. | Yes | | `v2`, `v2.1` |
-| `contacts[].type` | The type of the contact. Acceptable values are: `email`, `slack`, and `microsoft-teams` | Yes | | `v2`, `v2.1` |
-| `contacts[].contact` | The actual contact information for the contact. For example, if the type is `email`, this would be the email address. | Yes | | `v2`, `v2.1` |
+| `service-name` | The name of the service. This must be unique across all services. | Yes | | `v2`, `v2.1`, `v2.2` |
+| `team` | The team that owns the service. | Yes | | `v2`, `v2.1`, `v2.2` |
+| `description` | A description of the service. | No | | `v2.1`, `v2.2` |
+| `application` | The application that the service belongs to. | No | | `v2.1`, `v2.2` |
+| `type` | The type of resource that this service constitutes. Values are constrained to one of "web", "db", "cache", "function", "browser", "mobile", or "custom". | No | | `v2.2` |
+| `languages` | This is a list of the languages used in this service. This is an array, so you may supply multiple values. | No | `[]` | `v2.2` |
+| `tier` | The importance tier of the service. This is an unconstrained text field where you can use your own tiering definitions. Examples would be `High`, `Critical`, or however you or your organization classify criticality tiers. | No | | `v2.1`, `v2.2` |
+| `lifecycle` | This is the lifecycle of the service. This text field is unconstrained, and some examples are `production`, `development`, `staging`. | No | | `v2.1`, `v2.2` |
+| `contacts` | The list of contacts for the service. Each of these contacts is an object. Keep in mind that `email` and `slack-support-channel` are already included as contacts. This list should be in addition to that. These values are supplied as objects, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` | `v2`, `v2.1`, `v2.2` |
+| `contacts[].name` | The name of the contact. | Yes | | `v2`, `v2.1`, `v2.2` |
+| `contacts[].type` | The type of the contact. Acceptable values are: `email`, `slack`, and `microsoft-teams` | Yes | | `v2`, `v2.1`, `v2.2` |
+| `contacts[].contact` | The actual contact information for the contact. For example, if the type is `email`, this would be the email address. | Yes | | `v2`, `v2.1`, `v2.2` |
 | `repos` | The list of GitHub repositories that are part of the service. You must supply at least one repository. The repositories are supplied as objects, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. In `v2.1`, this field is moved under `links`. | Yes | `[]` | `v2` |
 | `repos[].name` | The name of the repository. | Yes | | `v2` |
 | `repos[].url` | The URL of the repository. | Yes | | `v2` |
 | `repos[].provider` | The provider of the repository. Acceptable values are: `Github`. | No | | `v2` |
 | `tags` | The list of tags that are associated with the service. This should be a list of key-value pairs separated by colons. | No | |
-| `links` | A list of links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` | `v2`, `v2.1` |
-| `links[].name` | The name of the link. | Yes | | `v2`, `v2.1` |
-| `links[].url` | The URL of the link. | Yes | | `v2`, `v2.1` |
-| `links[].type` | The type for the link. Acceptable values for the `v2` API are: `doc`, `wiki`, `runbook`, `url`, `repo`, `dashboard`, `oncall`, `code`, and `link`. Acceptable values for the `v2.1` API are: `doc`, `runbook`, `repo`, `dashboard`, and `other`. | Yes | | `v2`, `v2.1` |
+| `links` | A list of links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` | `v2`, `v2.1`, `v2.2` |
+| `links[].name` | The name of the link. | Yes | | `v2`, `v2.1`, `v2.2` |
+| `links[].url` | The URL of the link. | Yes | | `v2`, `v2.1`, `v2.2` |
+| `links[].type` | The type for the link. Acceptable values for the `v2` API are: `doc`, `wiki`, `runbook`, `url`, `repo`, `dashboard`, `oncall`, `code`, and `link`. Acceptable values for the `v2.1` API are: `doc`, `runbook`, `repo`, `dashboard`, and `other`. | Yes | | `v2`, `v2.1`, `v2.2` |
 | `docs` | A list of documentation links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. In `v2.1`, this field moved under `links`. | No | `[]` | `v2` |
 | `docs[].name` | The name of the document. | Yes | | `v2` |
 | `docs[].url` | The URL of the document. | Yes | | `v2` |
 | `docs[].provider` | The provider for where the documentation lives. Acceptable values are: `Confluence`, `GoogleDocs`, `Github`, `Jira`, `OneNote`, `SharePoint`, and `Dropbox` | No | | `v2` |
-| `integrations` | Integrations associated with the service. These integrations are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `{}` | `v2`, `v2.1` |
-| `integrations.opsgenie` | The OpsGenie details for the service. | No | | `v2`, `v2.1` |
-| `integrations.opsgenie.service-url` | The service URL for the OpsGenie integration. A team URL will work, but if you want on-call metadata then make sure that this URL is to a service, not a team. | Yes | | `v2`, `v2.1` |
-| `integrations.opsgenie.region` | The region for the OpsGenie integration. Acceptable values are `US` and `EU`. | No | | `v2`, `v2.1` |
-| `integrations.pagerduty` | The PagerDuty URL for the service. **Important:** In `v2`, this field is just a URL. In `v2.1` this field is a dictionary with a `service-url` property. | No | | `v2`, `v2.1` |
-| `integrations.pagerduty.service-url` | The PagerDuty URL for the service. | Yes | | `v2.1` |
+| `integrations` | Integrations associated with the service. These integrations are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `{}` | `v2`, `v2.1`, `v2.2` |
+| `integrations.opsgenie` | The OpsGenie details for the service. | No | | `v2`, `v2.1`, `v2.2` |
+| `integrations.opsgenie.service-url` | The service URL for the OpsGenie integration. A team URL will work, but if you want on-call metadata then make sure that this URL is to a service, not a team. | Yes | | `v2`, `v2.1`, `v2.2` |
+| `integrations.opsgenie.region` | The region for the OpsGenie integration. Acceptable values are `US` and `EU`. | No | | `v2`, `v2.1`, `v2.2` |
+| `integrations.pagerduty` | The PagerDuty URL for the service. **Important:** In `v2`, this field is just a URL. In `v2.1` this field is a dictionary with a `service-url` property. | No | | `v2`, `v2.1`, `v2.2` |
+| `integrations.pagerduty.service-url` | The PagerDuty URL for the service. | Yes | | `v2.1`, `v2.2` |
+| `ci-pipeline-fingerprints` | A set of CI pipeline fingerprints related to the service. | No | `[]` | `v2.2` |
 
 ### Convenience Fields
 

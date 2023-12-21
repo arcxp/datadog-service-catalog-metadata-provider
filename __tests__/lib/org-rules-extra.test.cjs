@@ -2,7 +2,7 @@
 const path = require('path')
 process.env.GITHUB_EVENT_PATH = path.join(
   __dirname,
-  '../data/github-context-payload.json',
+  '../data/github-context-payload.json'
 )
 process.env.GITHUB_REPOSITORY =
   'arcxp/datadog-service-catalog-metadata-provider'
@@ -275,6 +275,70 @@ team: Team Name Here
 email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
 `,
         expected: false,
+      },
+    ],
+  },
+  {
+    name: 'v2.2-languages',
+    orgRules: `
+---
+
+org: test-org
+rules:
+  - name: "All services"
+    selection:
+      schema-version: v2.2
+    requirements:
+      languages:
+        count: 2
+`,
+    tests: [
+      {
+        type: 'compliance',
+        inputs: `
+---
+
+schema-version: v2.2
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+`,
+        expected: false,
+      },
+      {
+        type: 'compliance',
+        inputs: `
+---
+
+schema-version: v2.2
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+languages:
+  - perl
+`,
+        expected: false,
+      },
+      {
+        type: 'compliance',
+        inputs: `
+---
+
+schema-version: v2.2
+datadog-key: FAKE_KEY
+datadog-app-key: FAKE_KEY
+service-name: test1
+team: Team Name Here
+email: 'team-name-here@fakeemaildomainthatdoesntexist.com'
+languages:
+  - perl
+  - forth
+`,
+        expected: true,
       },
     ],
   },
