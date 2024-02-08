@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [2.2.0] - unreleased
+## [2.3.0] - 2024-02-07
+
+### Added
+
+- Support for extensions, they're just a straight YAML-to-JSON conversion.
+
+## [2.2.0] - 2023-12-21
 
 ### Added
 
