@@ -363,6 +363,40 @@ opsgenie:
         'Sorry, but the «repos» field is not avaiable in version v2.1 of the Datadog Service Catalog schema; this field is only available in version(s): v2',
     },
   },
+  {
+    version: 'v2.2',
+    field: 'extensions',
+    input: `
+shopist.com/release-scheduler:
+  release-manager:
+    slack: "release-train-shopist"
+    schedule: "* * * * *"
+    env:
+      - name: "staging"
+        ci_pipeline: "//domains/examples/apps/hello-joe/config/k8s:release-staging"
+        branch: "hello-joe/staging"
+        schedule: "* * * * 1"
+`,
+    value: {
+      extensions: {
+        'shopist.com/release-scheduler': {
+          'release-manager': {
+            slack: 'release-train-shopist',
+            schedule: '* * * * *',
+            env: [
+              {
+                name: 'staging',
+                ci_pipeline:
+                  '//domains/examples/apps/hello-joe/config/k8s:release-staging',
+                branch: 'hello-joe/staging',
+                schedule: '* * * * 1',
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
 ])('$field:$version', ({ version, field, input, value }) => {
   afterAll(() => {
     core.setFailed.mockClear()

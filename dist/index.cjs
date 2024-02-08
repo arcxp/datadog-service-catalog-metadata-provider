@@ -30494,18 +30494,23 @@ var require_input_expander = __commonJS({
   "lib/input-expander.cjs"(exports2, module2) {
     var core2 = require_core();
     var YAML = require_dist();
+    var FailedParse = Symbol("This will never match.");
     var parseSafely = (x) => {
       try {
         return YAML.parse(x);
       } catch (e) {
-        return Symbol("This will never match.");
+        return FailedParse;
       }
     };
     var isArray = Array.isArray;
     var isObject = (x) => x?.constructor === Object;
     var isYamlScalarEquivalent = (x) => !x || ["string", "number", "boolean"].includes(typeof x);
-    var isJustAScalar = (x) => !x || x[0] === "@" || x === parseSafely(`${x}`);
+    var isJustAScalar = (x) => !x || x[0] === "@" || parseSafely(`${x}`) === FailedParse || x === parseSafely(`${x}`);
     var deserializeNestedStrings = (input) => {
+      const out = _deserializeNestedStrings(input);
+      return out;
+    };
+    var _deserializeNestedStrings = (input) => {
       if (isYamlScalarEquivalent(input)) {
         return isJustAScalar(input) ? input : deserializeNestedStrings(parseSafely(input));
       }
@@ -30552,6 +30557,7 @@ var require_fieldMappings = __commonJS({
     var useSharedMappings = (versions, mapper) => Object.assign(...versions.map((x) => ({ [x]: mapper })));
     var mapToUsing = (input, func) => (value) => func(input, value);
     var passThru = (input, value) => ({ [input]: value });
+    var simpleYamlParse = (input, str) => ({ [input]: expandObjectInputs(str) });
     var arrayYamlParse = (input, str) => ({
       [input]: forceArray(expandObjectInputs(str))
     });
@@ -30681,7 +30687,11 @@ var require_fieldMappings = __commonJS({
           "v2.2"
         ]),
         "v2.2": mapToUsing("ci-pipeline-fingerprints", arrayYamlParse)
-      }
+      },
+      extensions: useSharedMappings(
+        ["v2", "v2.1", "v2.2"],
+        mapToUsing("extensions", simpleYamlParse)
+      )
     };
     Object.freeze(mappings);
     var schemaFields = _.keys(mappings);

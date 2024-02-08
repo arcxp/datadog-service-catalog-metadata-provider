@@ -31,7 +31,7 @@ inputs:
   
   # Fields which are common to all schema versions
   schema-version:
-    description: 'The version of the Datadog Service Catalog Schema. The default is v2. Valid values are `v2` and `v2.1`.'
+    description: 'The version of the Datadog Service Catalog Schema. For backwards-compatibility reasons, the default is v2. Valid values are `v2` and `v2.1`.'
     required: false
     default: 'v2'
   service-name:
@@ -51,6 +51,9 @@ inputs:
     required: false
   integrations:
     description: 'The integrations for the service'
+    required: false
+  extensions:
+    description: 'Any custom extensions you wish to use'
     required: false
   
   # Fields which are unique to v2
