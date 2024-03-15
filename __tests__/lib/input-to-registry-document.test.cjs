@@ -2,7 +2,7 @@
  * Tests.
  * @jest-environment node
  * @group ci
- * @author Mike Stemle <themanchicken@duck.com>
+ * @author Mike Stemle <hello@mikestemle.com>
  **/
 
 const YAML = require('yaml')

@@ -86,7 +86,7 @@ Using a field which is not supported in the schema version you've selected will 
 | `repos[].name` | The name of the repository. | Yes | | `v2` |
 | `repos[].url` | The URL of the repository. | Yes | | `v2` |
 | `repos[].provider` | The provider of the repository. Acceptable values are: `Github`. | No | | `v2` |
-| `tags` | The list of tags that are associated with the service. This should be a list of key-value pairs separated by colons. | No | |
+| `tags` | The list of tags that are associated with the service. This should be a list of key-value pairs separated by colons. | No | `v2`, `v2.1`, `v2.2` |
 | `links` | A list of links associated with the service. These links are objects with a variety of properties, but due to the limitations of GitHub Actions, please supply these object properties as a multi-line string. | No | `[]` | `v2`, `v2.1`, `v2.2` |
 | `links[].name` | The name of the link. | Yes | | `v2`, `v2.1`, `v2.2` |
 | `links[].url` | The URL of the link. | Yes | | `v2`, `v2.1`, `v2.2` |

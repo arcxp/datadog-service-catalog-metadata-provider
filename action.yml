@@ -1,7 +1,7 @@
 ---
 name: 'Datadog Service Catalog Metadata Provider'
 description: 'This is an action which allows you to provide your Datadog Service Catalog metadata to the Datadog Service Catalog'
-author: 'Mike Stemle <themanchicken@duck.com>'
+author: 'Mike Stemle <hello@mikestemle.com>'
 branding:
   icon: 'monitor'
   color: 'purple'
