@@ -2,7 +2,7 @@
  * @fileoverview This test covers all of the field mappings across versions.
  * @jest-environment node
  * @group ci
- * @author Mike Stemle <themanchicken@duck.com>
+ * @author Mike Stemle <hello@mikestemle.com>
  **/
 
 const core = require('@actions/core')
@@ -35,5 +35,3 @@ describe('constants', () => {
     core.setFailed.mockClear()
   })
 })
-
-describe('

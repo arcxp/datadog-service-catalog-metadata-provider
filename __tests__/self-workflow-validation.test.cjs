@@ -2,7 +2,7 @@
 const path = require('path')
 process.env.GITHUB_EVENT_PATH = path.join(
   __dirname,
-  './data/github-context-payload.json'
+  './data/github-context-payload.json',
 )
 process.env.GITHUB_REPOSITORY =
   'arcxp/datadog-service-catalog-metadata-provider'
@@ -34,20 +34,79 @@ const {
 } = require('../lib/org-rules')
 
 const Ajv = require('ajv')
-const ddSchema_v2_2 = require('./data/datadog-service-catalog-schema-v2.2.json')
-const validate_v2_2 = new Ajv({
-  strict: false,
-  validateFormats: false,
-}).compile(ddSchema_v2_2)
 
-describe('Read and validate the automated testing workflow', () => {
+describe('Validate for schema v2', () => {
+  const ddSchema_v2 = require('./data/datadog-service-catalog-schema-v2.json')
+  const validate_v2 = new Ajv({
+    strict: false,
+    validateFormats: false,
+  }).compile(ddSchema_v2)
+
   test('read and validate workflow', async () => {
     const workflowContent = await readFile(
-      '.github/workflows/automated-testing.yml',
-      { encoding: 'utf8' }
+      '.github/workflows/v2-automated-testing.yml',
+      { encoding: 'utf8' },
     )
     const parsedWorkflow = _.last(
-      YAML.parse(workflowContent)?.jobs?.['automated-testing']?.steps
+      YAML.parse(workflowContent)?.jobs?.['automated-testing']?.steps,
+    )?.with
+
+    core.__setInputsObject(parsedWorkflow)
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    console.log({ parsedWorkflow, serviceDefinition })
+    const isValid = validate_v2(serviceDefinition)
+    if (!isValid) {
+      console.log(validate_v2.errors)
+      console.log(validate_v2)
+    }
+    expect(isValid).toBeTruthy()
+  })
+})
+
+describe('Validate for schema v2.1', () => {
+  const ddSchema_v2_1 = require('./data/datadog-service-catalog-schema-v2.1.json')
+  const validate_v2_1 = new Ajv({
+    strict: false,
+    validateFormats: false,
+  }).compile(ddSchema_v2_1)
+
+  test('read and validate workflow', async () => {
+    const workflowContent = await readFile(
+      '.github/workflows/v2.1-automated-testing.yml',
+      { encoding: 'utf8' },
+    )
+    const parsedWorkflow = _.last(
+      YAML.parse(workflowContent)?.jobs?.['automated-testing']?.steps,
+    )?.with
+
+    core.__setInputsObject(parsedWorkflow)
+    const serviceDefinition = await inputsToRegistryDocument()
+
+    console.log({ parsedWorkflow, serviceDefinition })
+    const isValid = validate_v2_1(serviceDefinition)
+    if (!isValid) {
+      console.log(validate_v2_1.errors)
+      console.log(validate_v2_1)
+    }
+    expect(isValid).toBeTruthy()
+  })
+})
+
+describe('Validate for schema v2.2', () => {
+  const ddSchema_v2_2 = require('./data/datadog-service-catalog-schema-v2.2.json')
+  const validate_v2_2 = new Ajv({
+    strict: false,
+    validateFormats: false,
+  }).compile(ddSchema_v2_2)
+
+  test('read and validate workflow', async () => {
+    const workflowContent = await readFile(
+      '.github/workflows/v2.2-automated-testing.yml',
+      { encoding: 'utf8' },
+    )
+    const parsedWorkflow = _.last(
+      YAML.parse(workflowContent)?.jobs?.['automated-testing']?.steps,
     )?.with
 
     core.__setInputsObject(parsedWorkflow)

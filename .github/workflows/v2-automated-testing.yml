@@ -1,0 +1,82 @@
+---
+name: DataDog Service Catalog
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  automated-testing:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d -- %s')" >> $GITHUB_OUTPUT
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run CI Tests
+        env:
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          DATADOG_APPLICATION_KEY: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install
+          npm run test
+
+      - name: Datadog Service Catalog Metadata Provider Manual Test
+        uses: ./
+        with:
+          schema-version: v2
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          datadog-hostname: api.us5.datadoghq.com
+          datadog-key: ${{ secrets.DATADOG_API_KEY }}
+          datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          service-name: v2-automated-test
+          team: Team Name Here
+          email: team-name-here@fakeemaildomainthatdoesntexist.com
+          slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000000'
+          repo: https://github.com/arcxp/datadog-service-catalog-metadata-provider
+          contacts: |
+            - name: Testy McTester
+              type: email
+              contact: testy@mctester.com
+          tags: |
+            - schema-version: v2
+            - 'application:GitHub Action Config Test'
+            - intended-env:prod
+            - infrastructure:serverless
+            - language:nodejs
+            - updated:${{ steps.date.outputs.date }}
+            - internet_accessible: false
+          repos: |
+            - name: .github
+              url: https://github.com/arcxp/.github
+              provider: github
+          links: |
+            - url: https://github.com/actions/toolkit
+              type: repo
+              provider: Github
+              name: '@actions/toolkit'
+            - name: AMI Version Status Dashboard
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
+              type: dashboard
+            - name: GitHub Actions!
+              url: https://github.com/features/actions
+              provider: Github Docs
+              type: doc
+            - name: Some Runbook
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/runbook
+              type: runbook
+              provider: Confluence
+          docs: |
+            - name: Some Docs
+              url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/docs
+              provider: Confluence
+            - name: Datadog Blog
+              url: https://www.datadoghq.com/blog/
+          integrations: |
+            opsgenie:
+              service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
+              region: US
