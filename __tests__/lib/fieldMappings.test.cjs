@@ -35,3 +35,5 @@ describe('constants', () => {
     core.setFailed.mockClear()
   })
 })
+
+describe('
