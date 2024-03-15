@@ -1,5 +1,5 @@
 ---
-name: DataDog Service Catalog
+name: DataDog Service Catalog v2
 on:
   push:
   workflow_dispatch:
