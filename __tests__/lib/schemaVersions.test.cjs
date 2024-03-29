@@ -1,0 +1,18 @@
+const subject = require('../../lib/schemaVersions.cjs')
+
+describe('lib/schemaVersions.cjs#inputMapperByVersion()', () => {
+  test('v2 mapper', () => {
+    const mapper = subject.inputMapperByVersion('v2')
+
+    expect(mapper).toBeInstanceOf(Function)
+    expect(mapper).not.toBe(subject._test.defaultMapper)
+  })
+
+  test('default mapper', () => {
+    const mapper = subject.inputMapperByVersion('blah')
+
+    expect(mapper).toBeInstanceOf(Function)
+    expect(mapper).toBe(subject._test.defaultMapper)
+    expect(() => mapper()).toThrow(/Invalid\sschema\sversion/)
+  })
+})
