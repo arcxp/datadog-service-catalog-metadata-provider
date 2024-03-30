@@ -9,14 +9,6 @@ exports[`lib/convenienceMappings.cjs #getConvenienceFieldValues() - full set 1`]
 }
 `;
 
-exports[`lib/convenienceMappings.cjs #getConvenienceFieldValues() - full set 2`] = `
-{
-  "repo": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
-  "slack": "https://fakeorg.slack.com/archives/A0000000000",
-  "slack-support-channel": "https://fakeorg.slack.com/archives/A0000000001",
-}
-`;
-
 exports[`lib/convenienceMappings.cjs #getConvenienceFieldValues() - partial set 1`] = `
 {
   "repo": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",

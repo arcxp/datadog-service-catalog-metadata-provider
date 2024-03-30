@@ -10,10 +10,12 @@ exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() -
     },
     {
       "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "Primary Email",
       "type": "email",
     },
     {
       "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "name": "Support Channel",
       "type": "slack",
     },
   ],
@@ -46,7 +48,7 @@ exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() -
       "url": "https://github.com/actions/toolkit",
     },
     {
-      "name": "Repo",
+      "name": "Primary Repository",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
   ],
@@ -67,10 +69,12 @@ exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() -
   "contacts": [
     {
       "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "Primary Email",
       "type": "email",
     },
     {
       "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "name": "Support Channel",
       "type": "slack",
     },
   ],
@@ -83,7 +87,7 @@ exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() -
   },
   "repos": [
     {
-      "name": "Repo",
+      "name": "Primary Repository",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
   ],
@@ -103,10 +107,12 @@ exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() -
   "contacts": [
     {
       "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "Primary Email",
       "type": "email",
     },
     {
       "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "name": "Support Channel",
       "type": "slack",
     },
   ],
@@ -138,7 +144,7 @@ exports[`input-to-registry-document.js - schema v2 #inputsToRegistryDocument() -
       "url": "https://github.com/actions/toolkit",
     },
     {
-      "name": "Repo",
+      "name": "Primary Repository",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
   ],
@@ -164,10 +170,12 @@ exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument()
     },
     {
       "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "Primary Email",
       "type": "email",
     },
     {
       "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "name": "Support Channel",
       "type": "slack",
     },
   ],
@@ -198,7 +206,7 @@ exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument()
       "url": "https://github.com/features/actions",
     },
     {
-      "name": "Repo",
+      "name": "Primary Repository",
       "type": "repo",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
@@ -220,10 +228,12 @@ exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument()
   "contacts": [
     {
       "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "Primary Email",
       "type": "email",
     },
     {
       "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "name": "Support Channel",
       "type": "slack",
     },
   ],
@@ -236,7 +246,7 @@ exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument()
   },
   "links": [
     {
-      "name": "Repo",
+      "name": "Primary Repository",
       "type": "repo",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
@@ -257,10 +267,12 @@ exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument()
   "contacts": [
     {
       "contact": "team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "Primary Email",
       "type": "email",
     },
     {
       "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "name": "Support Channel",
       "type": "slack",
     },
   ],
@@ -291,7 +303,7 @@ exports[`input-to-registry-document.js - schema v2.1 #inputsToRegistryDocument()
       "url": "https://github.com/features/actions",
     },
     {
-      "name": "Repo",
+      "name": "Primary Repository",
       "type": "repo",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },

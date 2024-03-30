@@ -36,6 +36,9 @@ const {
 const Ajv = require('ajv')
 
 describe('Validate for schema v2', () => {
+  beforeAll(() => {
+    core.__resetInputsObject()
+  })
   const ddSchema_v2 = require('./data/datadog-service-catalog-schema-v2.json')
   const validate_v2 = new Ajv({
     strict: false,
@@ -52,9 +55,11 @@ describe('Validate for schema v2', () => {
     )?.with
 
     core.__setInputsObject(parsedWorkflow)
-    const serviceDefinition = await inputsToRegistryDocument()
+    const serviceDefinition = inputsToRegistryDocument()
 
-    console.log({ parsedWorkflow, serviceDefinition })
+    console.log(
+      JSON.stringify({ parsedWorkflow, serviceDefinition }, undefined, 2),
+    )
     const isValid = validate_v2(serviceDefinition)
     if (!isValid) {
       console.log(validate_v2.errors)
@@ -65,6 +70,9 @@ describe('Validate for schema v2', () => {
 })
 
 describe('Validate for schema v2.1', () => {
+  beforeAll(() => {
+    core.__resetInputsObject()
+  })
   const ddSchema_v2_1 = require('./data/datadog-service-catalog-schema-v2.1.json')
   const validate_v2_1 = new Ajv({
     strict: false,
@@ -81,7 +89,7 @@ describe('Validate for schema v2.1', () => {
     )?.with
 
     core.__setInputsObject(parsedWorkflow)
-    const serviceDefinition = await inputsToRegistryDocument()
+    const serviceDefinition = inputsToRegistryDocument()
 
     console.log({ parsedWorkflow, serviceDefinition })
     const isValid = validate_v2_1(serviceDefinition)
@@ -94,6 +102,9 @@ describe('Validate for schema v2.1', () => {
 })
 
 describe('Validate for schema v2.2', () => {
+  beforeAll(() => {
+    core.__resetInputsObject()
+  })
   const ddSchema_v2_2 = require('./data/datadog-service-catalog-schema-v2.2.json')
   const validate_v2_2 = new Ajv({
     strict: false,
@@ -110,7 +121,7 @@ describe('Validate for schema v2.2', () => {
     )?.with
 
     core.__setInputsObject(parsedWorkflow)
-    const serviceDefinition = await inputsToRegistryDocument()
+    const serviceDefinition = inputsToRegistryDocument()
 
     console.log({ parsedWorkflow, serviceDefinition })
     const isValid = validate_v2_2(serviceDefinition)

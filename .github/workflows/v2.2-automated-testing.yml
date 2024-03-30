@@ -54,7 +54,7 @@ jobs:
             - language:nodejs
             - updated:${{ steps.date.outputs.date }}
             - internet_accessible: false
-            - schema-version: 2.2
+            - schema-version: v2.2
           links: |
             - url: https://github.com/actions/toolkit
               type: repo

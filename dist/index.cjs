@@ -831,7 +831,7 @@ var require_tunnel = __commonJS({
       return target;
     }
     var debug;
-    if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
+    if (process.env['NODE_DEBUG'] && /\btunnel\b/.test(process.env['NODE_DEBUG'])) {
       debug = function() {
         var args = Array.prototype.slice.call(arguments);
         if (typeof args[0] === "string") {
@@ -17678,10 +17678,10 @@ var require_oidc_utils = __commonJS({
         return __awaiter(this, void 0, void 0, function* () {
           const httpclient = _OidcClient.createHttpClient();
           const res = yield httpclient.getJson(id_token_url).catch((error) => {
-            throw new Error(`Failed to get ID Token. 
- 
+            throw new Error(`Failed to get ID Token.
+
         Error Code : ${error.statusCode}
- 
+
         Error Message: ${error.message}`);
           });
           const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;

@@ -11,6 +11,7 @@ const core = require('@actions/core')
 const Ajv = require('ajv')
 const ddSchema_v2 = require('../data/datadog-service-catalog-schema-v2.json')
 const ddSchema_v2_1 = require('../data/datadog-service-catalog-schema-v2.1.json')
+const ddSchema_v2_2 = require('../data/datadog-service-catalog-schema-v2.2.json')
 const validate_v2 = new Ajv({ strict: false, validateFormats: false }).compile(
   ddSchema_v2,
 )
@@ -18,6 +19,10 @@ const validate_v2_1 = new Ajv({
   strict: false,
   validateFormats: false,
 }).compile(ddSchema_v2_1)
+const validate_v2_2 = new Ajv({
+  strict: false,
+  validateFormats: false,
+}).compile(ddSchema_v2_2)
 
 const {
   inputsToRegistryDocument,
@@ -69,7 +74,7 @@ contacts: |
     `
 
     core.__setInputsObject(YAML.parse(testInput))
-    const inputs = await inputsToRegistryDocument()
+    const inputs = inputsToRegistryDocument()
     expect(validate_v2(inputs)).toStrictEqual(true)
     if (validate_v2.errors) {
       console.log(validate_v2.errors)
@@ -115,7 +120,7 @@ integrations: |
     `
 
     core.__setInputsObject(YAML.parse(testInput))
-    const inputs = await inputsToRegistryDocument()
+    const inputs = inputsToRegistryDocument()
     expect(validate_v2(inputs)).toStrictEqual(true)
     if (validate_v2.errors) {
       console.log(validate_v2.errors)
@@ -147,7 +152,7 @@ integrations: |
     `
 
     core.__setInputsObject(YAML.parse(testInput))
-    const inputs = await inputsToRegistryDocument()
+    const inputs = inputsToRegistryDocument()
     expect(validate_v2(inputs)).toStrictEqual(true)
     if (!validate_v2(inputs)) {
       console.log(validate_v2_1.errors)
@@ -204,7 +209,7 @@ contacts: |
     `
 
     core.__setInputsObject(YAML.parse(testInput))
-    const inputs = await inputsToRegistryDocument()
+    const inputs = inputsToRegistryDocument()
     if (!validate_v2_1(inputs)) {
       console.log(validate_v2_1.errors)
     }
@@ -253,7 +258,7 @@ integrations: |
     `
 
     core.__setInputsObject(YAML.parse(testInput))
-    const inputs = await inputsToRegistryDocument()
+    const inputs = inputsToRegistryDocument()
     if (!validate_v2_1(inputs)) {
       console.log(validate_v2_1.errors)
     }
@@ -285,7 +290,7 @@ integrations: |
     `
 
     core.__setInputsObject(YAML.parse(testInput))
-    const inputs = await inputsToRegistryDocument()
+    const inputs = inputsToRegistryDocument()
     if (!validate_v2_1(inputs)) {
       console.log(validate_v2_1.errors)
     }
