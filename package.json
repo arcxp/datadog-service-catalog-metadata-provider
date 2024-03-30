@@ -1,6 +1,6 @@
 {
   "name": "@arcxp/datadog-service-catalog-metadata-provider",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "type": "commonjs",
   "description": "This is a package which provides GitHub Actions with a workflow for providing the DataDog Service Catalog Provider with information that will register your service in the Service Catalog.",
   "main": "index.cjs",
@@ -13,12 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/arcxp/datadog-service-catalog-metadata-provider.git"
   },
-  "keywords": [
-    "github",
-    "action",
-    "datadog",
-    "service-catalog"
-  ],
+  "keywords": ["github", "action", "datadog", "service-catalog"],
   "author": "Mike Stemle <mike.stemle@washpost.com>",
   "license": "MIT",
   "bugs": {
