@@ -77,7 +77,7 @@ contacts: |
     const inputs = inputsToRegistryDocument()
     expect(validate_v2(inputs)).toStrictEqual(true)
     if (validate_v2.errors) {
-      console.log(validate_v2.errors)
+      console.error(validate_v2.errors)
     }
     expect(validate_v2.errors).toBeNull()
     expect(inputs).toMatchSnapshot()
@@ -123,7 +123,7 @@ integrations: |
     const inputs = inputsToRegistryDocument()
     expect(validate_v2(inputs)).toStrictEqual(true)
     if (validate_v2.errors) {
-      console.log(validate_v2.errors)
+      console.error(validate_v2.errors)
     }
     expect(validate_v2.errors).toBeNull()
     expect(inputs).toMatchSnapshot()
@@ -155,7 +155,7 @@ integrations: |
     const inputs = inputsToRegistryDocument()
     expect(validate_v2(inputs)).toStrictEqual(true)
     if (!validate_v2(inputs)) {
-      console.log(validate_v2_1.errors)
+      console.error(validate_v2_1.errors)
     }
     expect(validate_v2.errors).toBeNull()
     expect(inputs).toMatchSnapshot()
@@ -211,7 +211,7 @@ contacts: |
     core.__setInputsObject(YAML.parse(testInput))
     const inputs = inputsToRegistryDocument()
     if (!validate_v2_1(inputs)) {
-      console.log(validate_v2_1.errors)
+      console.error(validate_v2_1.errors)
     }
     expect(validate_v2_1(inputs)).toStrictEqual(true)
     expect(validate_v2_1.errors).toBeNull()
@@ -260,7 +260,7 @@ integrations: |
     core.__setInputsObject(YAML.parse(testInput))
     const inputs = inputsToRegistryDocument()
     if (!validate_v2_1(inputs)) {
-      console.log(validate_v2_1.errors)
+      console.error(validate_v2_1.errors)
     }
     expect(validate_v2_1(inputs)).toStrictEqual(true)
     expect(validate_v2_1.errors).toBeNull()
@@ -292,7 +292,7 @@ integrations: |
     core.__setInputsObject(YAML.parse(testInput))
     const inputs = inputsToRegistryDocument()
     if (!validate_v2_1(inputs)) {
-      console.log(validate_v2_1.errors)
+      console.error(validate_v2_1.errors)
     }
     expect(validate_v2_1(inputs)).toStrictEqual(true)
     expect(validate_v2_1.errors).toBeNull()

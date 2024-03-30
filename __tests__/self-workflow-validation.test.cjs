@@ -10,7 +10,7 @@ process.env.GITHUB_REPOSITORY =
 const YAML = require('yaml')
 
 // Pulling this in here activates the mocking of the github module
-const github = require('@actions/github')
+// const github = require('@actions/github')
 
 // Need to use inputs for some of our parameters
 const core = require('@actions/core')
@@ -57,13 +57,13 @@ describe('Validate for schema v2', () => {
     core.__setInputsObject(parsedWorkflow)
     const serviceDefinition = inputsToRegistryDocument()
 
-    console.log(
-      JSON.stringify({ parsedWorkflow, serviceDefinition }, undefined, 2),
-    )
     const isValid = validate_v2(serviceDefinition)
     if (!isValid) {
-      console.log(validate_v2.errors)
-      console.log(validate_v2)
+      console.error(
+        JSON.stringify({ parsedWorkflow, serviceDefinition }, undefined, 2),
+      )
+      console.error(validate_v2.errors)
+      console.error(validate_v2)
     }
     expect(isValid).toBeTruthy()
   })
@@ -91,11 +91,11 @@ describe('Validate for schema v2.1', () => {
     core.__setInputsObject(parsedWorkflow)
     const serviceDefinition = inputsToRegistryDocument()
 
-    console.log({ parsedWorkflow, serviceDefinition })
     const isValid = validate_v2_1(serviceDefinition)
     if (!isValid) {
-      console.log(validate_v2_1.errors)
-      console.log(validate_v2_1)
+      console.error({ parsedWorkflow, serviceDefinition })
+      console.error(validate_v2_1.errors)
+      console.error(validate_v2_1)
     }
     expect(isValid).toBeTruthy()
   })
@@ -123,11 +123,11 @@ describe('Validate for schema v2.2', () => {
     core.__setInputsObject(parsedWorkflow)
     const serviceDefinition = inputsToRegistryDocument()
 
-    console.log({ parsedWorkflow, serviceDefinition })
     const isValid = validate_v2_2(serviceDefinition)
     if (!isValid) {
-      console.log(validate_v2_2.errors)
-      console.log(validate_v2_2)
+      console.error({ parsedWorkflow, serviceDefinition })
+      console.error(validate_v2_2.errors)
+      console.error(validate_v2_2)
     }
     expect(isValid).toBeTruthy()
   })
