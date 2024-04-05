@@ -831,7 +831,7 @@ var require_tunnel = __commonJS({
       return target;
     }
     var debug;
-    if (process.env['NODE_DEBUG'] && /\btunnel\b/.test(process.env['NODE_DEBUG'])) {
+    if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
       debug = function() {
         var args = Array.prototype.slice.call(arguments);
         if (typeof args[0] === "string") {
@@ -17678,10 +17678,10 @@ var require_oidc_utils = __commonJS({
         return __awaiter(this, void 0, void 0, function* () {
           const httpclient = _OidcClient.createHttpClient();
           const res = yield httpclient.getJson(id_token_url).catch((error) => {
-            throw new Error(`Failed to get ID Token.
-
+            throw new Error(`Failed to get ID Token. 
+ 
         Error Code : ${error.statusCode}
-
+ 
         Error Message: ${error.message}`);
           });
           const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
@@ -30923,6 +30923,7 @@ var require_dist = __commonJS({
 // lib/input-expander.cjs
 var require_input_expander = __commonJS({
   "lib/input-expander.cjs"(exports2, module2) {
+    var _ = require_lodash();
     var core2 = require_core();
     var YAML = require_dist();
     var FailedParse = Symbol("This will never match.");
@@ -30933,8 +30934,6 @@ var require_input_expander = __commonJS({
         return FailedParse;
       }
     };
-    var isArray = Array.isArray;
-    var isObject = (x) => x?.constructor === Object;
     var isYamlScalarEquivalent = (x) => !x || ["string", "number", "boolean"].includes(typeof x);
     var isJustAScalar = (x) => !x || x[0] === "@" || parseSafely(`${x}`) === FailedParse || x === parseSafely(`${x}`);
     var deserializeNestedStrings = (input) => {
@@ -30945,10 +30944,10 @@ var require_input_expander = __commonJS({
       if (isYamlScalarEquivalent(input)) {
         return isJustAScalar(input) ? input : deserializeNestedStrings(parseSafely(input));
       }
-      if (isArray(input)) {
+      if (_.isArray(input)) {
         return input.map((x) => deserializeNestedStrings(x));
       }
-      if (isObject(input)) {
+      if (_.isObject(input)) {
         return Object.assign(
           ...Object.keys(input).map((x) => ({
             [x]: deserializeNestedStrings(input[x])
@@ -30957,322 +30956,400 @@ var require_input_expander = __commonJS({
       }
     };
     var expandObjectInputs = (str) => {
-      try {
-        return deserializeNestedStrings(str);
-      } catch (error) {
-        core2.debug(`Input as <<${str}>> is not a valid YAML object.`);
-        core2.error(error);
-        core2.setFailed(error.message);
-      }
+      return !!str ? deserializeNestedStrings(str) : str;
     };
-    var forceArray = (input) => Array.isArray(input) ? input : !!input ? [input] : [];
-    var forceObject = (input) => typeof input === "object" ? input : {};
+    var forceArray = (input) => _.isArray(input) ? input : !!input ? [input] : [];
+    var forceObject = (input) => _.isObject(input) ? input : _.isEmpty(input) ? {} : { value: input };
+    var parseYamlExpectArray = (str) => forceArray(expandObjectInputs(str));
+    var parseYamlExpectObject = (str) => forceObject(expandObjectInputs(str));
+    var parseYamlExpectDatadogTags = (str) => forceArray(expandObjectInputs(str)).map(
+      (entry) => _.isPlainObject(entry) ? _.join(
+        _.head(_.toPairs(entry)).map(
+          (x) => (
+            // This check is so that we trim strings, but don't break
+            // numbers or boolean values.
+            typeof x === "string" ? x.trim() : x
+          )
+        ),
+        ":"
+      ) : entry
+    );
+    var isNothing = (testValue) => !_.isDate(testValue) && (_.isObject(testValue) || _.isArray(testValue)) ? _.isEmpty(testValue) : _.isNil(testValue);
+    var combineValues = (value, key, target) => {
+      if (isNothing(value)) {
+        return target;
+      }
+      const assertType = (check, type, func) => {
+        if (!func(check)) {
+          throw new Error(
+            `Value \xAB${JSON.stringify(check, void 0, 2)}\xBB was expected to be of type \xAB${type}\xBB, but it isn't.`
+          );
+        }
+      };
+      const ref = target[key];
+      if (_.isArray(ref)) {
+        assertType(value, "Array", _.isArray);
+        target[key] = _.concat(ref, value);
+      } else if (_.isObject(ref)) {
+        assertType(value, "Object", _.isObject);
+        target[key] = _.merge(ref, value);
+      } else {
+        target[key] = value;
+      }
+      return target;
+    };
     module2.exports = {
+      FailedParse,
+      parseSafely,
       expandObjectInputs,
       forceArray,
-      forceObject
+      forceObject,
+      parseYamlExpectArray,
+      parseYamlExpectObject,
+      parseYamlExpectDatadogTags,
+      isNothing,
+      combineValues
     };
   }
 });
 
-// lib/fieldMappings.cjs
-var require_fieldMappings = __commonJS({
-  "lib/fieldMappings.cjs"(exports2, module2) {
-    var core2 = require_core();
+// lib/convenienceMappings.cjs
+var require_convenienceMappings = __commonJS({
+  "lib/convenienceMappings.cjs"(exports2, module2) {
+    var _ = require_lodash();
+    var getConvenienceFieldValues = (core2) => _.omitBy(
+      {
+        // These fields map into `contacts` in the registry document.
+        email: core2.getInput("email"),
+        slack: core2.getInput("slack"),
+        "slack-support-channel": core2.getInput("slack-support-channel"),
+        repo: core2.getInput("repo"),
+        opsgenie: core2.getInput("opsgenie"),
+        pagerduty: core2.getInput("pagerduty")
+      },
+      _.isNil
+    );
+    module2.exports = { getConvenienceFieldValues };
+  }
+});
+
+// lib/schemaVersions/v2.cjs
+var require_v2 = __commonJS({
+  "lib/schemaVersions/v2.cjs"(exports2, module2) {
     var _ = require_lodash();
     var {
+      parseYamlExpectArray,
+      parseYamlExpectObject,
+      parseYamlExpectDatadogTags,
       expandObjectInputs,
-      forceArray,
-      forceObject
+      isNothing,
+      combineValues
     } = require_input_expander();
-    var useSharedMappings = (versions, mapper) => Object.assign(...versions.map((x) => ({ [x]: mapper })));
-    var mapToUsing = (input, func) => (value) => func(input, value);
-    var passThru = (input, value) => ({ [input]: value });
-    var simpleYamlParse = (input, str) => ({ [input]: expandObjectInputs(str) });
-    var arrayYamlParse = (input, str) => ({
-      [input]: forceArray(expandObjectInputs(str))
-    });
-    var objectYamlParse = (input, str) => ({
-      [input]: forceObject(expandObjectInputs(str))
-    });
-    var versionCompatibilityError = (field, chosenVersion, validVersions) => (_input) => core2.setFailed(
-      `Sorry, but the \xAB${field}\xBB field is not avaiable in version ${chosenVersion} of the Datadog Service Catalog schema; this field is only available in version(s): ${validVersions.join(
-        ","
-      )}`
+    var { getConvenienceFieldValues } = require_convenienceMappings();
+    var mapSchemaFields = (core2) => _.omitBy(
+      {
+        // Schema version is intentionally overridden because the schema version mapping
+        // logic has already discovered that `v2` is the value in order to get this far.
+        // No need to bother looking up something we already know.
+        "schema-version": "v2",
+        "dd-service": core2.getInput("service-name"),
+        team: core2.getInput("team"),
+        contacts: parseYamlExpectArray(core2.getInput("contacts")),
+        links: parseYamlExpectArray(core2.getInput("links")),
+        repos: parseYamlExpectArray(core2.getInput("repos")),
+        docs: parseYamlExpectArray(core2.getInput("docs")),
+        tags: parseYamlExpectDatadogTags(core2.getInput("tags")),
+        integrations: parseYamlExpectObject(core2.getInput("integrations")),
+        extensions: expandObjectInputs(core2.getInput("extensions"))
+      },
+      isNothing
     );
-    var mappings = {
-      "schema-version": useSharedMappings(
-        ["v2", "v2.1", "v2.2"],
-        mapToUsing("schema-version", (input, value) => ({
-          // We default to `v2` because later versions should specify the schema version.
-          "schema-version": value ?? "v2"
-        }))
-      ),
-      "service-name": useSharedMappings(
-        ["v2", "v2.1", "v2.2"],
-        mapToUsing("dd-service", passThru)
-      ),
-      team: useSharedMappings(["v2", "v2.1", "v2.2"], mapToUsing("team", passThru)),
-      // New in v2.1
-      application: Object.assign(
-        {
-          v2: versionCompatibilityError("application", "v2", ["v2.1"])
-        },
-        useSharedMappings(["v2.1", "v2.2"], mapToUsing("application", passThru))
-      ),
-      // New in v2.1
-      description: Object.assign(
-        {
-          v2: versionCompatibilityError("description", "v2", ["v2.1"])
-        },
-        useSharedMappings(["v2.1", "v2.2"], mapToUsing("description", passThru))
-      ),
-      // New in v2.1
-      tier: Object.assign(
-        {
-          v2: versionCompatibilityError("tier", "v2", ["v2.1"])
-        },
-        useSharedMappings(["v2.1", "v2.2"], mapToUsing("tier", passThru))
-      ),
-      // New in v2.1
-      lifecycle: Object.assign(
-        {
-          v2: versionCompatibilityError("lifecycle", "v2", ["v2.1"])
-        },
-        useSharedMappings(["v2.1", "v2.2"], mapToUsing("lifecycle", passThru))
-      ),
-      // New in v2.2
-      type: {
-        v2: versionCompatibilityError("type", "v2", ["v2.2"]),
-        "v2.1": versionCompatibilityError("type", "v2.1", ["v2.2"]),
-        "v2.2": mapToUsing("type", passThru)
-      },
-      // New in v2.2
-      languages: {
-        v2: versionCompatibilityError("languages", "v2", ["v2.2"]),
-        "v2.1": versionCompatibilityError("languages", "v2.1", ["v2.2"]),
-        "v2.2": mapToUsing("languages", arrayYamlParse)
-      },
-      contacts: useSharedMappings(
-        ["v2", "v2.1", "v2.2"],
-        mapToUsing("contacts", arrayYamlParse)
-      ),
-      links: Object.assign(
-        {
-          v2: (input) => ({
-            links: forceArray(expandObjectInputs(input)).map(
-              (x) => (
-                // v2 doesn't have a provider field
-                _.omit(x, ["provider"])
-              )
-            )
-          })
-        },
-        useSharedMappings(["v2.1", "v2.2"], (input) => ({
-          links: forceArray(expandObjectInputs(input))
-        }))
-      ),
-      // This tags setup is a little hairy, but the biggest thing
-      // to keep in mind is that we want a list of strings, made up
-      // of colon-separated values. Mercifully, this is the same
-      // for both v2 and v2.1.
-      tags: useSharedMappings(["v2", "v2.1", "v2.2"], (input) => ({
-        tags: forceArray(expandObjectInputs(input)).map(
-          (entry) => _.isPlainObject(entry) ? _.join(
-            _.head(_.toPairs(entry)).map(
-              (x) => (
-                // This check is so that we trim strings, but don't break
-                // numbers or boolean values.
-                typeof x === "string" ? x.trim() : x
-              )
-            ),
-            ":"
-          ) : entry
-        )
-      })),
-      integrations: useSharedMappings(
-        ["v2", "v2.1", "v2.2"],
-        mapToUsing("integrations", objectYamlParse)
-      ),
-      docs: Object.assign(
-        {
-          v2: mapToUsing("docs", arrayYamlParse)
-        },
-        useSharedMappings(
-          ["v2.1", "v2.2"],
-          versionCompatibilityError("docs", "v2.1", ["v2"])
-        )
-      ),
-      repos: Object.assign(
-        {
-          v2: mapToUsing("repos", arrayYamlParse)
-        },
-        useSharedMappings(
-          ["v2.1", "v2.2"],
-          versionCompatibilityError("repos", "v2.1", ["v2"])
-        )
-      ),
-      "ci-pipeline-fingerprints": {
-        v2: versionCompatibilityError("ci-pipeline-fingerprints", "v2", ["v2.2"]),
-        "v2.1": versionCompatibilityError("ci-pipeline-fingerprints", "v2.1", [
-          "v2.2"
-        ]),
-        "v2.2": mapToUsing("ci-pipeline-fingerprints", arrayYamlParse)
-      },
-      extensions: useSharedMappings(
-        ["v2", "v2.1", "v2.2"],
-        mapToUsing("extensions", simpleYamlParse)
-      )
+    var mapInputs = (core2) => {
+      const convenienceValues = getConvenienceFieldValues(core2);
+      const hasValuesForConvenienceKeys = (listOfKeys) => {
+        for (const key of listOfKeys) {
+          if (!!convenienceValues[key])
+            return true;
+        }
+        return false;
+      };
+      let mappedInputs = mapSchemaFields(core2);
+      if (hasValuesForConvenienceKeys(["email", "slack", "slack-support-channel"])) {
+        const contactAdditions = _.filter(
+          [
+            !!convenienceValues["email"] ? {
+              name: "Primary Email",
+              contact: convenienceValues["email"],
+              type: "email"
+            } : void 0,
+            !!convenienceValues["slack"] ? {
+              name: "Primary Slack Channel",
+              contact: convenienceValues["slack"],
+              type: "slack"
+            } : void 0,
+            !!convenienceValues["slack-support-channel"] ? {
+              name: "Support Channel",
+              contact: convenienceValues["slack-support-channel"],
+              type: "slack"
+            } : void 0
+          ],
+          (x) => !_.isNil(x)
+        );
+        mappedInputs = combineValues(contactAdditions, "contacts", mappedInputs);
+      }
+      if (hasValuesForConvenienceKeys(["repo"])) {
+        mappedInputs = combineValues(
+          [{ url: convenienceValues["repo"], name: "Primary Repository" }],
+          "repos",
+          mappedInputs
+        );
+      }
+      if (hasValuesForConvenienceKeys(["pagerduty", "opsgenie"])) {
+        mappedInputs.integrations ||= {};
+      }
+      if (!!convenienceValues["pagerduty"]) {
+        mappedInputs.integrations.pagerduty = convenienceValues["pagerduty"];
+      }
+      if (!!convenienceValues["opsgenie"]) {
+        mappedInputs.integrations.opsgenie = {
+          "service-url": convenienceValues["opsgenie"]
+        };
+      }
+      return mappedInputs;
     };
-    Object.freeze(mappings);
-    var schemaFields = _.keys(mappings);
-    Object.freeze(schemaFields);
-    var incorporateConvenienceMapping = (inputObj, doc, targetList) => {
-      const docCopy = !!doc ? _.cloneDeep(doc) : {};
-      docCopy?.[targetList] ? docCopy[targetList].push(inputObj) : docCopy[targetList] = [inputObj];
-      return docCopy;
-    };
-    var incorporateConvenienceMappingToObject = (inputObj, doc, targetObject) => {
-      const docCopy = !!doc ? _.cloneDeep(doc) : {};
-      docCopy?.[targetObject] ? docCopy[targetObject] = _.merge(docCopy[targetObject], inputObj) : docCopy[targetObject] = { ...inputObj };
-      return docCopy;
-    };
-    var convenienceMappings = {
-      // These fields map into `contacts` in the registry document.
-      email: useSharedMappings(
-        ["v2", "v2.1", "v2.2"],
-        (input, doc) => incorporateConvenienceMapping(
-          { contact: input, type: "email" },
-          doc,
-          "contacts"
-        )
-      ),
-      slack: useSharedMappings(
-        ["v2", "v2.1", "v2.2"],
-        (input, doc) => incorporateConvenienceMapping(
-          { contact: input, type: "slack" },
-          doc,
-          "contacts"
-        )
-      ),
-      // These fields map into `repos` list in the registry document for v2, and into the `links` list in the registry document for v2.1.
-      repo: Object.assign(
-        {
-          v2: (input, doc) => incorporateConvenienceMapping(
-            { name: "Repo", url: input },
-            doc,
-            "repos"
-          )
-        },
-        useSharedMappings(
-          ["v2.1", "v2.2"],
-          (input, doc) => incorporateConvenienceMapping(
-            { name: "Repo", type: "repo", url: input },
-            doc,
-            "links"
-          )
-        )
-      ),
-      // These fields map into `integrations` in the registry document.
-      opsgenie: useSharedMappings(
-        ["v2", "v2.1", "v2.2"],
-        (input, doc) => incorporateConvenienceMappingToObject(
-          { opsgenie: { "service-url": input } },
-          doc,
-          "integrations"
-        )
-      ),
-      pagerduty: Object.assign(
-        {
-          v2: (input, doc) => incorporateConvenienceMappingToObject(
-            { pagerduty: input },
-            doc,
-            "integrations"
-          )
-        },
-        useSharedMappings(
-          ["v2.1", "v2.2"],
-          (input, doc) => incorporateConvenienceMappingToObject(
-            { pagerduty: { "service-url": input } },
-            doc,
-            "integrations"
-          )
-        )
-      )
-    };
-    convenienceMappings["slack-support-channel"] = convenienceMappings.slack;
-    Object.freeze(convenienceMappings);
-    core2.debug({ mappings, convenienceMappings });
-    var convenienceFields = _.keys(convenienceMappings);
-    Object.freeze(convenienceFields);
-    var mapField = (field, version2) => (input, doc = void 0) => (mappings?.[field]?.[version2] ?? convenienceMappings?.[field]?.[version2] ?? ((_2) => core2.setFailed(`Unknown field: ${field}`)))(input, doc);
     module2.exports = {
-      mappings,
-      convenienceFields,
-      schemaFields,
-      mapField
+      _test: { mapSchemaFields },
+      mapInputs
     };
+  }
+});
+
+// lib/schemaVersions/v2.1.cjs
+var require_v2_1 = __commonJS({
+  "lib/schemaVersions/v2.1.cjs"(exports2, module2) {
+    var _ = require_lodash();
+    var {
+      parseYamlExpectArray,
+      parseYamlExpectObject,
+      parseYamlExpectDatadogTags,
+      expandObjectInputs,
+      isNothing,
+      combineValues
+    } = require_input_expander();
+    var { getConvenienceFieldValues } = require_convenienceMappings();
+    var mapSchemaFields = (core2) => _.omitBy(
+      {
+        // Schema version is intentionally overridden because the schema version mapping
+        // logic has already discovered that `v2` is the value in order to get this far.
+        // No need to bother looking up something we already know.
+        "schema-version": "v2.1",
+        "dd-service": core2.getInput("service-name"),
+        team: core2.getInput("team"),
+        application: core2.getInput("application"),
+        description: core2.getInput("description"),
+        tier: core2.getInput("tier"),
+        lifecycle: core2.getInput("lifecycle"),
+        contacts: parseYamlExpectArray(core2.getInput("contacts")),
+        links: parseYamlExpectArray(core2.getInput("links")),
+        tags: parseYamlExpectDatadogTags(core2.getInput("tags")),
+        integrations: parseYamlExpectObject(core2.getInput("integrations")),
+        extensions: expandObjectInputs(core2.getInput("extensions"))
+      },
+      isNothing
+    );
+    var mapInputs = (core2) => {
+      const convenienceValues = getConvenienceFieldValues(core2);
+      const hasValuesForConvenienceKeys = (listOfKeys) => {
+        for (const key of listOfKeys) {
+          if (!!convenienceValues[key])
+            return true;
+        }
+        return false;
+      };
+      let mappedInputs = mapSchemaFields(core2);
+      if (hasValuesForConvenienceKeys(["email", "slack", "slack-support-channel"])) {
+        const contactAdditions = _.filter(
+          [
+            !!convenienceValues["email"] ? {
+              name: "Primary Email",
+              contact: convenienceValues["email"],
+              type: "email"
+            } : void 0,
+            !!convenienceValues["slack"] ? {
+              name: "Primary Slack Channel",
+              contact: convenienceValues["slack"],
+              type: "slack"
+            } : void 0,
+            !!convenienceValues["slack-support-channel"] ? {
+              name: "Support Channel",
+              contact: convenienceValues["slack-support-channel"],
+              type: "slack"
+            } : void 0
+          ],
+          (x) => !_.isNil(x)
+        );
+        mappedInputs = combineValues(contactAdditions, "contacts", mappedInputs);
+      }
+      if (hasValuesForConvenienceKeys(["repo"])) {
+        mappedInputs = combineValues(
+          [
+            {
+              url: convenienceValues["repo"],
+              name: "Primary Repository",
+              type: "repo"
+            }
+          ],
+          "links",
+          mappedInputs
+        );
+      }
+      if (hasValuesForConvenienceKeys(["pagerduty", "opsgenie"])) {
+        mappedInputs.integrations ||= {};
+      }
+      if (!!convenienceValues["pagerduty"]) {
+        mappedInputs.integrations.pagerduty = {
+          "service-url": convenienceValues["pagerduty"]
+        };
+      }
+      if (!!convenienceValues["opsgenie"]) {
+        mappedInputs.integrations.opsgenie = {
+          "service-url": convenienceValues["opsgenie"]
+        };
+      }
+      return mappedInputs;
+    };
+    module2.exports = {
+      _test: { mapSchemaFields },
+      mapInputs
+    };
+  }
+});
+
+// lib/schemaVersions/v2.2.cjs
+var require_v2_2 = __commonJS({
+  "lib/schemaVersions/v2.2.cjs"(exports2, module2) {
+    var _ = require_lodash();
+    var {
+      parseYamlExpectArray,
+      parseYamlExpectObject,
+      parseYamlExpectDatadogTags,
+      expandObjectInputs,
+      isNothing,
+      combineValues
+    } = require_input_expander();
+    var { getConvenienceFieldValues } = require_convenienceMappings();
+    var mapSchemaFields = (core2) => _.omitBy(
+      {
+        // Schema version is intentionally overridden because the schema version mapping
+        // logic has already discovered that `v2` is the value in order to get this far.
+        // No need to bother looking up something we already know.
+        "schema-version": "v2.2",
+        "dd-service": core2.getInput("service-name"),
+        team: core2.getInput("team"),
+        application: core2.getInput("application"),
+        description: core2.getInput("description"),
+        type: core2.getInput("type"),
+        languages: parseYamlExpectArray(core2.getInput("languages")),
+        tier: core2.getInput("tier"),
+        lifecycle: core2.getInput("lifecycle"),
+        contacts: parseYamlExpectArray(core2.getInput("contacts")),
+        links: parseYamlExpectArray(core2.getInput("links")),
+        tags: parseYamlExpectDatadogTags(core2.getInput("tags")),
+        integrations: parseYamlExpectObject(core2.getInput("integrations")),
+        extensions: expandObjectInputs(core2.getInput("extensions"))
+      },
+      isNothing
+    );
+    var mapInputs = (core2) => {
+      const convenienceValues = getConvenienceFieldValues(core2);
+      const hasValuesForConvenienceKeys = (listOfKeys) => {
+        for (const key of listOfKeys) {
+          if (!!convenienceValues[key])
+            return true;
+        }
+        return false;
+      };
+      let mappedInputs = mapSchemaFields(core2);
+      if (hasValuesForConvenienceKeys(["email", "slack", "slack-support-channel"])) {
+        const contactAdditions = _.filter(
+          [
+            !!convenienceValues["email"] ? {
+              name: "Primary Email",
+              contact: convenienceValues["email"],
+              type: "email"
+            } : void 0,
+            !!convenienceValues["slack"] ? {
+              name: "Primary Slack Channel",
+              contact: convenienceValues["slack"],
+              type: "slack"
+            } : void 0,
+            !!convenienceValues["slack-support-channel"] ? {
+              name: "Support Channel",
+              contact: convenienceValues["slack-support-channel"],
+              type: "slack"
+            } : void 0
+          ],
+          (x) => !_.isNil(x)
+        );
+        mappedInputs = combineValues(contactAdditions, "contacts", mappedInputs);
+      }
+      if (hasValuesForConvenienceKeys(["repo"])) {
+        mappedInputs = combineValues(
+          [
+            {
+              url: convenienceValues["repo"],
+              name: "Primary Repository",
+              type: "repo"
+            }
+          ],
+          "links",
+          mappedInputs
+        );
+      }
+      if (hasValuesForConvenienceKeys(["pagerduty", "opsgenie"])) {
+        mappedInputs.integrations ||= {};
+      }
+      if (!!convenienceValues["pagerduty"]) {
+        mappedInputs.integrations.pagerduty = {
+          "service-url": convenienceValues["pagerduty"]
+        };
+      }
+      if (!!convenienceValues["opsgenie"]) {
+        mappedInputs.integrations.opsgenie = {
+          "service-url": convenienceValues["opsgenie"]
+        };
+      }
+      return mappedInputs;
+    };
+    module2.exports = {
+      _test: { mapSchemaFields },
+      mapInputs
+    };
+  }
+});
+
+// lib/schemaVersions.cjs
+var require_schemaVersions = __commonJS({
+  "lib/schemaVersions.cjs"(exports2, module2) {
+    var mapperMatrix = {
+      v2: require_v2().mapInputs,
+      "v2.1": require_v2_1().mapInputs,
+      "v2.2": require_v2_2().mapInputs
+    };
+    var defaultMapper = () => {
+      throw Error("Invalid schema version");
+    };
+    var inputMapperByVersion = (version2) => mapperMatrix?.[version2] ?? defaultMapper;
+    module2.exports = { inputMapperByVersion, _test: { defaultMapper } };
   }
 });
 
 // lib/input-to-registry-document.cjs
 var require_input_to_registry_document = __commonJS({
   "lib/input-to-registry-document.cjs"(exports2, module2) {
-    var fs = require("fs");
-    var path = require("path");
     var core2 = require_core();
-    var _ = require_lodash();
-    var {
-      expandObjectInputs,
-      forceArray,
-      forceObject
-    } = require_input_expander();
-    var { mapField, convenienceFields, schemaFields } = require_fieldMappings();
-    var inputsToRegistryDocument2 = async () => {
-      const version2 = core2.getInput("schema-version") ?? "v2";
-      let configs = { "schema-version": version2 };
-      _.merge(
-        configs,
-        ...schemaFields.filter((fieldName) => !!core2.getInput(fieldName)).map((fieldName) => {
-          const mapping = mapField(fieldName, version2)(core2.getInput(fieldName));
-          core2.debug(
-            JSON.stringify(
-              {
-                [`INPUT:schema_field:${fieldName}`]: core2.getInput(fieldName),
-                [`RESULT:schema_field:${fieldName}`]: mapping
-              },
-              void 0,
-              2
-            )
-          );
-          return mapping;
-        })
-      );
-      for (const fieldName of convenienceFields) {
-        const input = core2.getInput(fieldName);
-        if (_.isEmpty(input))
-          continue;
-        core2.debug(
-          `Convenience field ${fieldName} for version ${version2} has input: ${input}`
-        );
-        core2.debug(
-          JSON.stringify(
-            { [`BEFORE:convenience_field:${fieldName}`]: configs },
-            void 0,
-            2
-          )
-        );
-        configs = mapField(fieldName, version2)(input, configs);
-        core2.debug(
-          JSON.stringify(
-            { [`AFTER:convenience_field:${fieldName}`]: configs },
-            void 0,
-            2
-          )
-        );
-      }
-      return configs;
-    };
+    var { inputMapperByVersion } = require_schemaVersions();
+    var inputsToRegistryDocument2 = () => inputMapperByVersion(core2.getInput("schema-version") ?? "v2")(core2);
     module2.exports = { inputsToRegistryDocument: inputsToRegistryDocument2 };
   }
 });
@@ -32586,7 +32663,12 @@ var require_dist_node8 = __commonJS({
     var import_request = require_dist_node5();
     var import_graphql = require_dist_node6();
     var import_auth_token = require_dist_node7();
-    var VERSION = "5.0.1";
+    var VERSION = "5.1.0";
+    var noop = () => {
+    };
+    var consoleWarn = console.warn.bind(console);
+    var consoleError = console.error.bind(console);
+    var userAgentTrail = `octokit-core.js/${VERSION} ${(0, import_universal_user_agent.getUserAgent)()}`;
     var Octokit = class {
       static {
         this.VERSION = VERSION;
@@ -32647,10 +32729,7 @@ var require_dist_node8 = __commonJS({
             format: ""
           }
         };
-        requestDefaults.headers["user-agent"] = [
-          options.userAgent,
-          `octokit-core.js/${VERSION} ${(0, import_universal_user_agent.getUserAgent)()}`
-        ].filter(Boolean).join(" ");
+        requestDefaults.headers["user-agent"] = options.userAgent ? `${options.userAgent} ${userAgentTrail}` : userAgentTrail;
         if (options.baseUrl) {
           requestDefaults.baseUrl = options.baseUrl;
         }
@@ -32664,12 +32743,10 @@ var require_dist_node8 = __commonJS({
         this.graphql = (0, import_graphql.withCustomRequest)(this.request).defaults(requestDefaults);
         this.log = Object.assign(
           {
-            debug: () => {
-            },
-            info: () => {
-            },
-            warn: console.warn.bind(console),
-            error: console.error.bind(console)
+            debug: noop,
+            info: noop,
+            warn: consoleWarn,
+            error: consoleError
           },
           options.log
         );
@@ -32706,9 +32783,9 @@ var require_dist_node8 = __commonJS({
           this.auth = auth;
         }
         const classConstructor = this.constructor;
-        classConstructor.plugins.forEach((plugin) => {
-          Object.assign(this, plugin(this, options));
-        });
+        for (let i = 0; i < classConstructor.plugins.length; ++i) {
+          Object.assign(this, classConstructor.plugins[i](this, options));
+        }
       }
     };
   }
@@ -32741,7 +32818,7 @@ var require_dist_node9 = __commonJS({
       restEndpointMethods: () => restEndpointMethods
     });
     module2.exports = __toCommonJS2(dist_src_exports);
-    var VERSION = "10.0.1";
+    var VERSION = "10.4.1";
     var Endpoints = {
       actions: {
         addCustomLabelsToSelfHostedRunnerForOrg: [
@@ -32844,6 +32921,9 @@ var require_dist_node9 = __commonJS({
         enableWorkflow: [
           "PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable"
         ],
+        forceCancelWorkflowRun: [
+          "POST /repos/{owner}/{repo}/actions/runs/{run_id}/force-cancel"
+        ],
         generateRunnerJitconfigForOrg: [
           "POST /orgs/{org}/actions/runners/generate-jitconfig"
         ],
@@ -32863,6 +32943,9 @@ var require_dist_node9 = __commonJS({
           "GET /repos/{owner}/{repo}/actions/permissions/selected-actions"
         ],
         getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+        getCustomOidcSubClaimForRepo: [
+          "GET /repos/{owner}/{repo}/actions/oidc/customization/sub"
+        ],
         getEnvironmentPublicKey: [
           "GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key"
         ],
@@ -33015,6 +33098,9 @@ var require_dist_node9 = __commonJS({
         setCustomLabelsForSelfHostedRunnerForRepo: [
           "PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
         ],
+        setCustomOidcSubClaimForRepo: [
+          "PUT /repos/{owner}/{repo}/actions/oidc/customization/sub"
+        ],
         setGithubActionsDefaultWorkflowPermissionsOrganization: [
           "PUT /orgs/{org}/actions/permissions/workflow"
         ],
@@ -33084,6 +33170,7 @@ var require_dist_node9 = __commonJS({
         listWatchersForRepo: ["GET /repos/{owner}/{repo}/subscribers"],
         markNotificationsAsRead: ["PUT /notifications"],
         markRepoNotificationsAsRead: ["PUT /repos/{owner}/{repo}/notifications"],
+        markThreadAsDone: ["DELETE /notifications/threads/{thread_id}"],
         markThreadAsRead: ["PATCH /notifications/threads/{thread_id}"],
         setRepoSubscription: ["PUT /repos/{owner}/{repo}/subscription"],
         setThreadSubscription: [
@@ -33253,6 +33340,9 @@ var require_dist_node9 = __commonJS({
         addSelectedRepoToOrgSecret: [
           "PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}"
         ],
+        checkPermissionsForDevcontainer: [
+          "GET /repos/{owner}/{repo}/codespaces/permissions_check"
+        ],
         codespaceMachinesForAuthenticatedUser: [
           "GET /user/codespaces/{codespace_name}/machines"
         ],
@@ -33357,10 +33447,10 @@ var require_dist_node9 = __commonJS({
         updateForAuthenticatedUser: ["PATCH /user/codespaces/{codespace_name}"]
       },
       copilot: {
-        addCopilotForBusinessSeatsForTeams: [
+        addCopilotSeatsForTeams: [
           "POST /orgs/{org}/copilot/billing/selected_teams"
         ],
-        addCopilotForBusinessSeatsForUsers: [
+        addCopilotSeatsForUsers: [
           "POST /orgs/{org}/copilot/billing/selected_users"
         ],
         cancelCopilotSeatAssignmentForTeams: [
@@ -33370,7 +33460,7 @@ var require_dist_node9 = __commonJS({
           "DELETE /orgs/{org}/copilot/billing/selected_users"
         ],
         getCopilotOrganizationDetails: ["GET /orgs/{org}/copilot/billing"],
-        getCopilotSeatAssignmentDetailsForUser: [
+        getCopilotSeatDetailsForUser: [
           "GET /orgs/{org}/members/{username}/copilot"
         ],
         listCopilotSeats: ["GET /orgs/{org}/copilot/billing/seats"]
@@ -33583,7 +33673,13 @@ var require_dist_node9 = __commonJS({
         root: ["GET /"]
       },
       migrations: {
-        cancelImport: ["DELETE /repos/{owner}/{repo}/import"],
+        cancelImport: [
+          "DELETE /repos/{owner}/{repo}/import",
+          {},
+          {
+            deprecated: "octokit.rest.migrations.cancelImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#cancel-an-import"
+          }
+        ],
         deleteArchiveForAuthenticatedUser: [
           "DELETE /user/migrations/{migration_id}/archive"
         ],
@@ -33596,9 +33692,27 @@ var require_dist_node9 = __commonJS({
         getArchiveForAuthenticatedUser: [
           "GET /user/migrations/{migration_id}/archive"
         ],
-        getCommitAuthors: ["GET /repos/{owner}/{repo}/import/authors"],
-        getImportStatus: ["GET /repos/{owner}/{repo}/import"],
-        getLargeFiles: ["GET /repos/{owner}/{repo}/import/large_files"],
+        getCommitAuthors: [
+          "GET /repos/{owner}/{repo}/import/authors",
+          {},
+          {
+            deprecated: "octokit.rest.migrations.getCommitAuthors() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-commit-authors"
+          }
+        ],
+        getImportStatus: [
+          "GET /repos/{owner}/{repo}/import",
+          {},
+          {
+            deprecated: "octokit.rest.migrations.getImportStatus() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-an-import-status"
+          }
+        ],
+        getLargeFiles: [
+          "GET /repos/{owner}/{repo}/import/large_files",
+          {},
+          {
+            deprecated: "octokit.rest.migrations.getLargeFiles() is deprecated, see https://docs.github.com/rest/migrations/source-imports#get-large-files"
+          }
+        ],
         getStatusForAuthenticatedUser: ["GET /user/migrations/{migration_id}"],
         getStatusForOrg: ["GET /orgs/{org}/migrations/{migration_id}"],
         listForAuthenticatedUser: ["GET /user/migrations"],
@@ -33612,22 +33726,60 @@ var require_dist_node9 = __commonJS({
           {},
           { renamed: ["migrations", "listReposForAuthenticatedUser"] }
         ],
-        mapCommitAuthor: ["PATCH /repos/{owner}/{repo}/import/authors/{author_id}"],
-        setLfsPreference: ["PATCH /repos/{owner}/{repo}/import/lfs"],
+        mapCommitAuthor: [
+          "PATCH /repos/{owner}/{repo}/import/authors/{author_id}",
+          {},
+          {
+            deprecated: "octokit.rest.migrations.mapCommitAuthor() is deprecated, see https://docs.github.com/rest/migrations/source-imports#map-a-commit-author"
+          }
+        ],
+        setLfsPreference: [
+          "PATCH /repos/{owner}/{repo}/import/lfs",
+          {},
+          {
+            deprecated: "octokit.rest.migrations.setLfsPreference() is deprecated, see https://docs.github.com/rest/migrations/source-imports#update-git-lfs-preference"
+          }
+        ],
         startForAuthenticatedUser: ["POST /user/migrations"],
         startForOrg: ["POST /orgs/{org}/migrations"],
-        startImport: ["PUT /repos/{owner}/{repo}/import"],
+        startImport: [
+          "PUT /repos/{owner}/{repo}/import",
+          {},
+          {
+            deprecated: "octokit.rest.migrations.startImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#start-an-import"
+          }
+        ],
         unlockRepoForAuthenticatedUser: [
           "DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock"
         ],
         unlockRepoForOrg: [
           "DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock"
         ],
-        updateImport: ["PATCH /repos/{owner}/{repo}/import"]
+        updateImport: [
+          "PATCH /repos/{owner}/{repo}/import",
+          {},
+          {
+            deprecated: "octokit.rest.migrations.updateImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#update-an-import"
+          }
+        ]
+      },
+      oidc: {
+        getOidcCustomSubTemplateForOrg: [
+          "GET /orgs/{org}/actions/oidc/customization/sub"
+        ],
+        updateOidcCustomSubTemplateForOrg: [
+          "PUT /orgs/{org}/actions/oidc/customization/sub"
+        ]
       },
       orgs: {
         addSecurityManagerTeam: [
           "PUT /orgs/{org}/security-managers/teams/{team_slug}"
+        ],
+        assignTeamToOrgRole: [
+          "PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"
+        ],
+        assignUserToOrgRole: [
+          "PUT /orgs/{org}/organization-roles/users/{username}/{role_id}"
         ],
         blockUser: ["PUT /orgs/{org}/blocks/{username}"],
         cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
@@ -33637,16 +33789,32 @@ var require_dist_node9 = __commonJS({
         convertMemberToOutsideCollaborator: [
           "PUT /orgs/{org}/outside_collaborators/{username}"
         ],
+        createCustomOrganizationRole: ["POST /orgs/{org}/organization-roles"],
         createInvitation: ["POST /orgs/{org}/invitations"],
+        createOrUpdateCustomProperties: ["PATCH /orgs/{org}/properties/schema"],
+        createOrUpdateCustomPropertiesValuesForRepos: [
+          "PATCH /orgs/{org}/properties/values"
+        ],
+        createOrUpdateCustomProperty: [
+          "PUT /orgs/{org}/properties/schema/{custom_property_name}"
+        ],
         createWebhook: ["POST /orgs/{org}/hooks"],
         delete: ["DELETE /orgs/{org}"],
+        deleteCustomOrganizationRole: [
+          "DELETE /orgs/{org}/organization-roles/{role_id}"
+        ],
         deleteWebhook: ["DELETE /orgs/{org}/hooks/{hook_id}"],
         enableOrDisableSecurityProductOnAllOrgRepos: [
           "POST /orgs/{org}/{security_product}/{enablement}"
         ],
         get: ["GET /orgs/{org}"],
+        getAllCustomProperties: ["GET /orgs/{org}/properties/schema"],
+        getCustomProperty: [
+          "GET /orgs/{org}/properties/schema/{custom_property_name}"
+        ],
         getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
         getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
+        getOrgRole: ["GET /orgs/{org}/organization-roles/{role_id}"],
         getWebhook: ["GET /orgs/{org}/hooks/{hook_id}"],
         getWebhookConfigForOrg: ["GET /orgs/{org}/hooks/{hook_id}/config"],
         getWebhookDelivery: [
@@ -33655,12 +33823,19 @@ var require_dist_node9 = __commonJS({
         list: ["GET /organizations"],
         listAppInstallations: ["GET /orgs/{org}/installations"],
         listBlockedUsers: ["GET /orgs/{org}/blocks"],
+        listCustomPropertiesValuesForRepos: ["GET /orgs/{org}/properties/values"],
         listFailedInvitations: ["GET /orgs/{org}/failed_invitations"],
         listForAuthenticatedUser: ["GET /user/orgs"],
         listForUser: ["GET /users/{username}/orgs"],
         listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
         listMembers: ["GET /orgs/{org}/members"],
         listMembershipsForAuthenticatedUser: ["GET /user/memberships/orgs"],
+        listOrgRoleTeams: ["GET /orgs/{org}/organization-roles/{role_id}/teams"],
+        listOrgRoleUsers: ["GET /orgs/{org}/organization-roles/{role_id}/users"],
+        listOrgRoles: ["GET /orgs/{org}/organization-roles"],
+        listOrganizationFineGrainedPermissions: [
+          "GET /orgs/{org}/organization-fine-grained-permissions"
+        ],
         listOutsideCollaborators: ["GET /orgs/{org}/outside_collaborators"],
         listPatGrantRepositories: [
           "GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories"
@@ -33675,9 +33850,15 @@ var require_dist_node9 = __commonJS({
         listSecurityManagerTeams: ["GET /orgs/{org}/security-managers"],
         listWebhookDeliveries: ["GET /orgs/{org}/hooks/{hook_id}/deliveries"],
         listWebhooks: ["GET /orgs/{org}/hooks"],
+        patchCustomOrganizationRole: [
+          "PATCH /orgs/{org}/organization-roles/{role_id}"
+        ],
         pingWebhook: ["POST /orgs/{org}/hooks/{hook_id}/pings"],
         redeliverWebhookDelivery: [
           "POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"
+        ],
+        removeCustomProperty: [
+          "DELETE /orgs/{org}/properties/schema/{custom_property_name}"
         ],
         removeMember: ["DELETE /orgs/{org}/members/{username}"],
         removeMembershipForUser: ["DELETE /orgs/{org}/memberships/{username}"],
@@ -33695,6 +33876,18 @@ var require_dist_node9 = __commonJS({
         ],
         reviewPatGrantRequestsInBulk: [
           "POST /orgs/{org}/personal-access-token-requests"
+        ],
+        revokeAllOrgRolesTeam: [
+          "DELETE /orgs/{org}/organization-roles/teams/{team_slug}"
+        ],
+        revokeAllOrgRolesUser: [
+          "DELETE /orgs/{org}/organization-roles/users/{username}"
+        ],
+        revokeOrgRoleTeam: [
+          "DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"
+        ],
+        revokeOrgRoleUser: [
+          "DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}"
         ],
         setMembershipForUser: ["PUT /orgs/{org}/memberships/{username}"],
         setPublicMembershipForAuthenticatedUser: [
@@ -33986,6 +34179,9 @@ var require_dist_node9 = __commonJS({
           {},
           { mapToData: "users" }
         ],
+        cancelPagesDeployment: [
+          "POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel"
+        ],
         checkAutomatedSecurityFixes: [
           "GET /repos/{owner}/{repo}/automated-security-fixes"
         ],
@@ -34021,12 +34217,15 @@ var require_dist_node9 = __commonJS({
         createForAuthenticatedUser: ["POST /user/repos"],
         createFork: ["POST /repos/{owner}/{repo}/forks"],
         createInOrg: ["POST /orgs/{org}/repos"],
+        createOrUpdateCustomPropertiesValues: [
+          "PATCH /repos/{owner}/{repo}/properties/values"
+        ],
         createOrUpdateEnvironment: [
           "PUT /repos/{owner}/{repo}/environments/{environment_name}"
         ],
         createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
         createOrgRuleset: ["POST /orgs/{org}/rulesets"],
-        createPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployment"],
+        createPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployments"],
         createPagesSite: ["POST /repos/{owner}/{repo}/pages"],
         createRelease: ["POST /repos/{owner}/{repo}/releases"],
         createRepoRuleset: ["POST /repos/{owner}/{repo}/rulesets"],
@@ -34159,6 +34358,7 @@ var require_dist_node9 = __commonJS({
         getCustomDeploymentProtectionRule: [
           "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"
         ],
+        getCustomPropertiesValues: ["GET /repos/{owner}/{repo}/properties/values"],
         getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
         getDeployment: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}"],
         getDeploymentBranchPolicy: [
@@ -34172,10 +34372,15 @@ var require_dist_node9 = __commonJS({
         ],
         getLatestPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/latest"],
         getLatestRelease: ["GET /repos/{owner}/{repo}/releases/latest"],
+        getOrgRuleSuite: ["GET /orgs/{org}/rulesets/rule-suites/{rule_suite_id}"],
+        getOrgRuleSuites: ["GET /orgs/{org}/rulesets/rule-suites"],
         getOrgRuleset: ["GET /orgs/{org}/rulesets/{ruleset_id}"],
         getOrgRulesets: ["GET /orgs/{org}/rulesets"],
         getPages: ["GET /repos/{owner}/{repo}/pages"],
         getPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/{build_id}"],
+        getPagesDeployment: [
+          "GET /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}"
+        ],
         getPagesHealthCheck: ["GET /repos/{owner}/{repo}/pages/health"],
         getParticipationStats: ["GET /repos/{owner}/{repo}/stats/participation"],
         getPullRequestReviewProtection: [
@@ -34187,6 +34392,10 @@ var require_dist_node9 = __commonJS({
         getRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}"],
         getReleaseAsset: ["GET /repos/{owner}/{repo}/releases/assets/{asset_id}"],
         getReleaseByTag: ["GET /repos/{owner}/{repo}/releases/tags/{tag}"],
+        getRepoRuleSuite: [
+          "GET /repos/{owner}/{repo}/rulesets/rule-suites/{rule_suite_id}"
+        ],
+        getRepoRuleSuites: ["GET /repos/{owner}/{repo}/rulesets/rule-suites"],
         getRepoRuleset: ["GET /repos/{owner}/{repo}/rulesets/{ruleset_id}"],
         getRepoRulesets: ["GET /repos/{owner}/{repo}/rulesets"],
         getStatusChecksProtection: [
@@ -34382,6 +34591,9 @@ var require_dist_node9 = __commonJS({
         ]
       },
       securityAdvisories: {
+        createFork: [
+          "POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"
+        ],
         createPrivateVulnerabilityReport: [
           "POST /repos/{owner}/{repo}/security-advisories/reports"
         ],
@@ -34764,7 +34976,7 @@ var require_dist_node10 = __commonJS({
       paginatingEndpoints: () => paginatingEndpoints
     });
     module2.exports = __toCommonJS2(dist_src_exports);
-    var VERSION = "9.0.0";
+    var VERSION = "9.2.1";
     function normalizePaginatedListResponse(response) {
       if (!response.data) {
         return {
@@ -34915,6 +35127,8 @@ var require_dist_node10 = __commonJS({
       "GET /orgs/{org}/members/{username}/codespaces",
       "GET /orgs/{org}/migrations",
       "GET /orgs/{org}/migrations/{migration_id}/repositories",
+      "GET /orgs/{org}/organization-roles/{role_id}/teams",
+      "GET /orgs/{org}/organization-roles/{role_id}/users",
       "GET /orgs/{org}/outside_collaborators",
       "GET /orgs/{org}/packages",
       "GET /orgs/{org}/packages/{package_type}/{package_name}/versions",
@@ -34923,9 +35137,11 @@ var require_dist_node10 = __commonJS({
       "GET /orgs/{org}/personal-access-tokens",
       "GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories",
       "GET /orgs/{org}/projects",
+      "GET /orgs/{org}/properties/values",
       "GET /orgs/{org}/public_members",
       "GET /orgs/{org}/repos",
       "GET /orgs/{org}/rulesets",
+      "GET /orgs/{org}/rulesets/rule-suites",
       "GET /orgs/{org}/secret-scanning/alerts",
       "GET /orgs/{org}/security-advisories",
       "GET /orgs/{org}/teams",
@@ -35017,6 +35233,7 @@ var require_dist_node10 = __commonJS({
       "GET /repos/{owner}/{repo}/releases/{release_id}/reactions",
       "GET /repos/{owner}/{repo}/rules/branches/{branch}",
       "GET /repos/{owner}/{repo}/rulesets",
+      "GET /repos/{owner}/{repo}/rulesets/rule-suites",
       "GET /repos/{owner}/{repo}/secret-scanning/alerts",
       "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations",
       "GET /repos/{owner}/{repo}/security-advisories",
