@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [3.0.0] - unreleased
+
+> [!WARNING]
+> This version may include breaking changes!
+> There have been efforts made to not break backwards compatibility for either the org rules file
+> or the schema versions. That said, it is impossible to know how you have structured your files,
+> so please exercise caution when upgrading to the `v3` tag.
+
+### Added
+
+- Better tests for the various schema versions
+
+### Changed
+
+- Moved all of the field mapping from a common module for all versions, to version-specific modules
+  - This will make it easier to add new schema version support without risking breakage to existing versions
+  - This makes it much easier to test convenience functionality independently from the schema fields
+- So... many... tests...
+
 ## [2.3.0] - 2024-02-07
 
 ### Added

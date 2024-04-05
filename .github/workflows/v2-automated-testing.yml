@@ -1,5 +1,5 @@
 ---
-name: DataDog Service Catalog
+name: DataDog Service Catalog v2
 on:
   push:
   workflow_dispatch:
@@ -57,19 +57,16 @@ jobs:
           links: |
             - url: https://github.com/actions/toolkit
               type: repo
-              provider: Github
               name: '@actions/toolkit'
             - name: AMI Version Status Dashboard
               url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
               type: dashboard
             - name: GitHub Actions!
               url: https://github.com/features/actions
-              provider: Github Docs
               type: doc
             - name: Some Runbook
               url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/runbook
               type: runbook
-              provider: Confluence
           docs: |
             - name: Some Docs
               url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/docs

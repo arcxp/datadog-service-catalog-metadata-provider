@@ -10,7 +10,7 @@ process.env.GITHUB_REPOSITORY =
 const YAML = require('yaml')
 
 // Pulling this in here activates the mocking of the github module
-const github = require('@actions/github')
+// const github = require('@actions/github')
 
 // Need to use inputs for some of our parameters
 const core = require('@actions/core')
@@ -36,6 +36,9 @@ const {
 const Ajv = require('ajv')
 
 describe('Validate for schema v2', () => {
+  beforeAll(() => {
+    core.__resetInputsObject()
+  })
   const ddSchema_v2 = require('./data/datadog-service-catalog-schema-v2.json')
   const validate_v2 = new Ajv({
     strict: false,
@@ -52,19 +55,24 @@ describe('Validate for schema v2', () => {
     )?.with
 
     core.__setInputsObject(parsedWorkflow)
-    const serviceDefinition = await inputsToRegistryDocument()
+    const serviceDefinition = inputsToRegistryDocument()
 
-    console.log({ parsedWorkflow, serviceDefinition })
     const isValid = validate_v2(serviceDefinition)
     if (!isValid) {
-      console.log(validate_v2.errors)
-      console.log(validate_v2)
+      console.error(
+        JSON.stringify({ parsedWorkflow, serviceDefinition }, undefined, 2),
+      )
+      console.error(validate_v2.errors)
+      console.error(validate_v2)
     }
     expect(isValid).toBeTruthy()
   })
 })
 
 describe('Validate for schema v2.1', () => {
+  beforeAll(() => {
+    core.__resetInputsObject()
+  })
   const ddSchema_v2_1 = require('./data/datadog-service-catalog-schema-v2.1.json')
   const validate_v2_1 = new Ajv({
     strict: false,
@@ -81,19 +89,22 @@ describe('Validate for schema v2.1', () => {
     )?.with
 
     core.__setInputsObject(parsedWorkflow)
-    const serviceDefinition = await inputsToRegistryDocument()
+    const serviceDefinition = inputsToRegistryDocument()
 
-    console.log({ parsedWorkflow, serviceDefinition })
     const isValid = validate_v2_1(serviceDefinition)
     if (!isValid) {
-      console.log(validate_v2_1.errors)
-      console.log(validate_v2_1)
+      console.error({ parsedWorkflow, serviceDefinition })
+      console.error(validate_v2_1.errors)
+      console.error(validate_v2_1)
     }
     expect(isValid).toBeTruthy()
   })
 })
 
 describe('Validate for schema v2.2', () => {
+  beforeAll(() => {
+    core.__resetInputsObject()
+  })
   const ddSchema_v2_2 = require('./data/datadog-service-catalog-schema-v2.2.json')
   const validate_v2_2 = new Ajv({
     strict: false,
@@ -110,13 +121,13 @@ describe('Validate for schema v2.2', () => {
     )?.with
 
     core.__setInputsObject(parsedWorkflow)
-    const serviceDefinition = await inputsToRegistryDocument()
+    const serviceDefinition = inputsToRegistryDocument()
 
-    console.log({ parsedWorkflow, serviceDefinition })
     const isValid = validate_v2_2(serviceDefinition)
     if (!isValid) {
-      console.log(validate_v2_2.errors)
-      console.log(validate_v2_2)
+      console.error({ parsedWorkflow, serviceDefinition })
+      console.error(validate_v2_2.errors)
+      console.error(validate_v2_2)
     }
     expect(isValid).toBeTruthy()
   })

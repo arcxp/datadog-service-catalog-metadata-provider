@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lib/schemaVersions/v2.2.cjs#mapInputs() #mapInputs() - Merging in some convenience fields 1`] = `
+{
+  "contacts": [
+    {
+      "contact": "dba-team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "DBA Team Email Alias",
+      "type": "email",
+    },
+    {
+      "contact": "atotallydifferentemail@fakeemaildomainthatdoesntexist.com",
+      "name": "Primary Email",
+      "type": "email",
+    },
+    {
+      "contact": "https://fakeorg.slack.com/archives/A0000000000",
+      "name": "Primary Slack Channel",
+      "type": "slack",
+    },
+    {
+      "contact": "https://fakeorg.slack.com/archives/A0000000001",
+      "name": "Support Channel",
+      "type": "slack",
+    },
+  ],
+  "integrations": {
+    "opsgenie": {
+      "service-url": "https://www.opsgenies.com/service/123e4567-e89b-12d3-a456-426614174000",
+    },
+    "pagerduty": {
+      "service-url": "https://my-org.pagerduty.com/service-directory/PMyService",
+    },
+  },
+  "links": [
+    {
+      "name": "Primary Repository",
+      "type": "repo",
+      "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
+    },
+  ],
+  "schema-version": "v2.2",
+  "tags": [
+    "application:GitHub Action Config Test",
+  ],
+  "team": "Team Name Here",
+}
+`;
+
+exports[`lib/schemaVersions/v2.2.cjs#mapSchemaFields() #mapSchemaFields() - Full schema fields set 1`] = `
+{
+  "application": "Schema Version v2.2 Test",
+  "contacts": [
+    {
+      "contact": "dba-team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "DBA Team Email Alias",
+      "type": "email",
+    },
+  ],
+  "dd-service": "schemaVersions-v2.2-test",
+  "description": "This is just a test",
+  "integrations": {
+    "opsgenie": {
+      "region": "US",
+      "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
+    },
+    "pagerduty": {
+      "service-url": "https://my-org.pagerduty.com/service-directory/PMyService",
+    },
+  },
+  "languages": [
+    "javascript",
+    "markdown",
+  ],
+  "lifecycle": "production",
+  "links": [
+    {
+      "name": "AMI Version Status Dashboard",
+      "type": "dashboard",
+      "url": "https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard",
+    },
+    {
+      "name": "GitHub Actions!",
+      "type": "doc",
+      "url": "https://github.com/features/actions",
+    },
+    {
+      "name": "@actions/toolkit",
+      "type": "repo",
+      "url": "https://github.com/actions/toolkit",
+    },
+  ],
+  "schema-version": "v2.2",
+  "tags": [
+    "application:GitHub Action Config Test",
+    "env:prod",
+    "infrastructure:serverless",
+    "language:nodejs",
+    "other:value",
+  ],
+  "team": "Team Name Here",
+  "tier": "p0",
+  "type": "function",
+}
+`;
+
+exports[`lib/schemaVersions/v2.2.cjs#mapSchemaFields() #mapSchemaFields() - Partial schema fields set 1`] = `
+{
+  "contacts": [
+    {
+      "contact": "dba-team-name-here@fakeemaildomainthatdoesntexist.com",
+      "name": "DBA Team Email Alias",
+      "type": "email",
+    },
+  ],
+  "integrations": {
+    "opsgenie": {
+      "region": "US",
+      "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
+    },
+    "pagerduty": {
+      "service-url": "https://my-org.pagerduty.com/service-directory/PMyService",
+    },
+  },
+  "links": [
+    {
+      "name": "AMI Version Status Dashboard",
+      "type": "dashboard",
+      "url": "https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard",
+    },
+    {
+      "name": "GitHub Actions!",
+      "type": "doc",
+      "url": "https://github.com/features/actions",
+    },
+    {
+      "name": "@actions/toolkit",
+      "type": "repo",
+      "url": "https://github.com/actions/toolkit",
+    },
+  ],
+  "schema-version": "v2.2",
+  "tags": [
+    "application:GitHub Action Config Test",
+    "env:prod",
+    "infrastructure:serverless",
+    "language:nodejs",
+    "other:value",
+  ],
+  "team": "Team Name Here",
+}
+`;
