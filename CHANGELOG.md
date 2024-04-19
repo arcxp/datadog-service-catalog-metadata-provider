@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [2.3.1] - 2024-04-19
+
+### Fixed
+
+- Fixed undefined property exception in org-rules file processing
+
 ## [2.3.0] - 2024-02-07
 
 ### Added
