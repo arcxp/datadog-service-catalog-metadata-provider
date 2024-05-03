@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`lib/schemaVersions/v2.1.cjs#mapInputs() #mapInputs() - Merging in some convenience fields 1`] = `
+exports[`lib/schema-versions/v2.2.cjs#mapInputs() #mapInputs() - Merging in some convenience fields 1`] = `
 {
   "contacts": [
     {
@@ -39,7 +39,7 @@ exports[`lib/schemaVersions/v2.1.cjs#mapInputs() #mapInputs() - Merging in some 
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
   ],
-  "schema-version": "v2.1",
+  "schema-version": "v2.2",
   "tags": [
     "application:GitHub Action Config Test",
   ],
@@ -47,9 +47,9 @@ exports[`lib/schemaVersions/v2.1.cjs#mapInputs() #mapInputs() - Merging in some 
 }
 `;
 
-exports[`lib/schemaVersions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Full schema fields set 1`] = `
+exports[`lib/schema-versions/v2.2.cjs#mapSchemaFields() #mapSchemaFields() - Full schema fields set 1`] = `
 {
-  "application": "Schema Version v2.1 Test",
+  "application": "Schema Version v2.2 Test",
   "contacts": [
     {
       "contact": "dba-team-name-here@fakeemaildomainthatdoesntexist.com",
@@ -57,7 +57,7 @@ exports[`lib/schemaVersions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Full
       "type": "email",
     },
   ],
-  "dd-service": "schemaVersions-v2.1-test",
+  "dd-service": "schema-versions-v2.2-test",
   "description": "This is just a test",
   "integrations": {
     "opsgenie": {
@@ -68,6 +68,10 @@ exports[`lib/schemaVersions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Full
       "service-url": "https://my-org.pagerduty.com/service-directory/PMyService",
     },
   },
+  "languages": [
+    "javascript",
+    "markdown",
+  ],
   "lifecycle": "production",
   "links": [
     {
@@ -86,7 +90,7 @@ exports[`lib/schemaVersions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Full
       "url": "https://github.com/actions/toolkit",
     },
   ],
-  "schema-version": "v2.1",
+  "schema-version": "v2.2",
   "tags": [
     "application:GitHub Action Config Test",
     "env:prod",
@@ -96,10 +100,11 @@ exports[`lib/schemaVersions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Full
   ],
   "team": "Team Name Here",
   "tier": "p0",
+  "type": "function",
 }
 `;
 
-exports[`lib/schemaVersions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Partial schema fields set 1`] = `
+exports[`lib/schema-versions/v2.2.cjs#mapSchemaFields() #mapSchemaFields() - Partial schema fields set 1`] = `
 {
   "contacts": [
     {
@@ -134,7 +139,7 @@ exports[`lib/schemaVersions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Part
       "url": "https://github.com/actions/toolkit",
     },
   ],
-  "schema-version": "v2.1",
+  "schema-version": "v2.2",
   "tags": [
     "application:GitHub Action Config Test",
     "env:prod",

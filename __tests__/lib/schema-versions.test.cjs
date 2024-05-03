@@ -1,6 +1,6 @@
-const subject = require('../../lib/schemaVersions.cjs')
+const subject = require('../../lib/schema-versions.cjs')
 
-describe('lib/schemaVersions.cjs#inputMapperByVersion()', () => {
+describe('lib/schema-versions.cjs#inputMapperByVersion()', () => {
   test.each([{ version: 'v2' }, { version: 'v2.1' }, { version: 'v2.2' }])(
     '$version mapper',
     ({ version }) => {

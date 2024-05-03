@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`lib/convenienceMappings.cjs #getConvenienceFieldValues() - full set 1`] = `
+exports[`lib/convenience-mappings.cjs #getConvenienceFieldValues() - full set 1`] = `
 {
   "email": "team-name-here@fakeemaildomainthatdoesntexist.com",
   "repo": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
@@ -9,9 +9,17 @@ exports[`lib/convenienceMappings.cjs #getConvenienceFieldValues() - full set 1`]
 }
 `;
 
-exports[`lib/convenienceMappings.cjs #getConvenienceFieldValues() - partial set 1`] = `
+exports[`lib/convenience-mappings.cjs #getConvenienceFieldValues() - partial set 1`] = `
 {
   "repo": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
+  "slack": "https://fakeorg.slack.com/archives/A0000000000",
+  "slack-support-channel": "https://fakeorg.slack.com/archives/A0000000001",
+}
+`;
+
+exports[`lib/convenience-mappings.cjs #getConvenienceFieldValues() - partial set 2`] = `
+{
+  "repo": "OVERRIDE!",
   "slack": "https://fakeorg.slack.com/archives/A0000000000",
   "slack-support-channel": "https://fakeorg.slack.com/archives/A0000000001",
 }

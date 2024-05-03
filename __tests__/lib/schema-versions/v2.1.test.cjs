@@ -1,50 +1,50 @@
 const YAML = require('yaml')
 const core = require('@actions/core')
-const subject = require('../../../lib/schemaVersions/v2.cjs')
+const subject = require('../../../lib/schema-versions/v2.1.cjs')
 
-describe('lib/schemaVersions/v2.cjs#mapSchemaFields()', () => {
+describe('lib/schema-versions/v2.1.cjs#mapSchemaFields()', () => {
   test('#mapSchemaFields() - Full schema fields set', () => {
     const testInput = `
 ---
 schema-version: something-crazy-that-is-ignored
-service-name: schemaVersions-v2-test
+service-name: schema-versions-v2.1-test
 team: Team Name Here
+application: Schema Version v2.1 Test
+description: This is just a test
+tier: p0
+lifecycle: production
 tags: |
   - 'application:GitHub Action Config Test'
   - env:prod
   - infrastructure:serverless
   - language:nodejs
   - other :   value
-repos: |
-  - url: https://github.com/actions/toolkit
-    provider: Github
-    name: "@actions/toolkit"
 links: |
   - name: AMI Version Status Dashboard
     url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
     type: dashboard
-docs: |
   - name: GitHub Actions!
     url: https://github.com/features/actions
-    provider: Github
+    type: doc
+  - url: https://github.com/actions/toolkit
+    type: repo
+    name: "@actions/toolkit"
 integrations: |
   opsgenie:
     service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
     region: US
-  pagerduty: https://my-org.pagerduty.com/service-directory/PMyService
+  pagerduty:
+    service-url: https://my-org.pagerduty.com/service-directory/PMyService
 contacts: |
   - name: DBA Team Email Alias
     type: email
     contact: dba-team-name-here@fakeemaildomainthatdoesntexist.com
-extensions: |
-  - name: foo
-    bar: bar
  `
     // Full set of fields
     core.__setInputsObject(YAML.parse(testInput))
     const inputs = subject._test.mapSchemaFields(core)
     expect(inputs).toMatchSnapshot()
-    expect(inputs['dd-service']).toEqual('schemaVersions-v2-test')
+    expect(inputs['dd-service']).toEqual('schema-versions-v2.1-test')
   })
 
   test('#mapSchemaFields() - Partial schema fields set', () => {
@@ -58,30 +58,26 @@ tags: |
   - infrastructure:serverless
   - language:nodejs
   - other :   value
-repos: |
-  - url: https://github.com/actions/toolkit
-    provider: Github
-    name: "@actions/toolkit"
 links: |
   - name: AMI Version Status Dashboard
     url: https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard
     type: dashboard
-docs: |
   - name: GitHub Actions!
     url: https://github.com/features/actions
-    provider: Github
+    type: doc
+  - url: https://github.com/actions/toolkit
+    type: repo
+    name: "@actions/toolkit"
 integrations: |
   opsgenie:
     service-url: https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000
     region: US
-  pagerduty: https://my-org.pagerduty.com/service-directory/PMyService
+  pagerduty:
+    service-url: https://my-org.pagerduty.com/service-directory/PMyService
 contacts: |
   - name: DBA Team Email Alias
     type: email
     contact: dba-team-name-here@fakeemaildomainthatdoesntexist.com
-extensions: |
-  - name: foo
-    bar: bar
  `
     // Full set of fields
     core.__setInputsObject(YAML.parse(testInput))
@@ -91,7 +87,7 @@ extensions: |
   })
 })
 
-describe('lib/schemaVersions/v2.cjs#mapInputs()', () => {
+describe('lib/schema-versions/v2.1.cjs#mapInputs()', () => {
   test('#mapInputs() - Merging in some convenience fields', () => {
     const testInput = `
 ---
@@ -109,9 +105,6 @@ contacts: |
     contact: dba-team-name-here@fakeemaildomainthatdoesntexist.com
 pagerduty: https://my-org.pagerduty.com/service-directory/PMyService
 opsgenie: https://www.opsgenies.com/service/123e4567-e89b-12d3-a456-426614174000
-extensions: |
-  - name: foo
-    bar: bar
  `
     // Full set of fields
     core.__setInputsObject(YAML.parse(testInput))
@@ -140,15 +133,19 @@ extensions: |
       },
     ])
 
-    expect(inputs.repos).toEqual([
+    expect(inputs.links).toEqual([
       {
         url: 'https://github.com/arcxp/datadog-service-catalog-metadata-provider',
         name: 'Primary Repository',
+        type: 'repo',
       },
     ])
 
     expect(inputs.integrations).toEqual({
-      pagerduty: 'https://my-org.pagerduty.com/service-directory/PMyService',
+      pagerduty: {
+        'service-url':
+          'https://my-org.pagerduty.com/service-directory/PMyService',
+      },
       opsgenie: {
         'service-url':
           'https://www.opsgenies.com/service/123e4567-e89b-12d3-a456-426614174000',

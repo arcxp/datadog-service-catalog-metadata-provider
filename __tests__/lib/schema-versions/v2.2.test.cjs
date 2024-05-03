@@ -1,13 +1,13 @@
 const YAML = require('yaml')
 const core = require('@actions/core')
-const subject = require('../../../lib/schemaVersions/v2.2.cjs')
+const subject = require('../../../lib/schema-versions/v2.2.cjs')
 
-describe('lib/schemaVersions/v2.2.cjs#mapSchemaFields()', () => {
+describe('lib/schema-versions/v2.2.cjs#mapSchemaFields()', () => {
   test('#mapSchemaFields() - Full schema fields set', () => {
     const testInput = `
 ---
 schema-version: something-crazy-that-is-ignored
-service-name: schemaVersions-v2.2-test
+service-name: schema-versions-v2.2-test
 team: Team Name Here
 application: Schema Version v2.2 Test
 description: This is just a test
@@ -48,7 +48,7 @@ contacts: |
     core.__setInputsObject(YAML.parse(testInput))
     const inputs = subject._test.mapSchemaFields(core)
     expect(inputs).toMatchSnapshot()
-    expect(inputs['dd-service']).toEqual('schemaVersions-v2.2-test')
+    expect(inputs['dd-service']).toEqual('schema-versions-v2.2-test')
   })
 
   test('#mapSchemaFields() - Partial schema fields set', () => {
@@ -91,7 +91,7 @@ contacts: |
   })
 })
 
-describe('lib/schemaVersions/v2.2.cjs#mapInputs()', () => {
+describe('lib/schema-versions/v2.2.cjs#mapInputs()', () => {
   test('#mapInputs() - Merging in some convenience fields', () => {
     const testInput = `
 ---

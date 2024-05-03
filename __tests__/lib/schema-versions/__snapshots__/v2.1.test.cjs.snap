@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`lib/schemaVersions/v2.cjs#mapInputs() #mapInputs() - Merging in some convenience fields 1`] = `
+exports[`lib/schema-versions/v2.1.cjs#mapInputs() #mapInputs() - Merging in some convenience fields 1`] = `
 {
   "contacts": [
     {
@@ -24,25 +24,22 @@ exports[`lib/schemaVersions/v2.cjs#mapInputs() #mapInputs() - Merging in some co
       "type": "slack",
     },
   ],
-  "extensions": [
-    {
-      "bar": "bar",
-      "name": "foo",
-    },
-  ],
   "integrations": {
     "opsgenie": {
       "service-url": "https://www.opsgenies.com/service/123e4567-e89b-12d3-a456-426614174000",
     },
-    "pagerduty": "https://my-org.pagerduty.com/service-directory/PMyService",
+    "pagerduty": {
+      "service-url": "https://my-org.pagerduty.com/service-directory/PMyService",
+    },
   },
-  "repos": [
+  "links": [
     {
       "name": "Primary Repository",
+      "type": "repo",
       "url": "https://github.com/arcxp/datadog-service-catalog-metadata-provider",
     },
   ],
-  "schema-version": "v2",
+  "schema-version": "v2.1",
   "tags": [
     "application:GitHub Action Config Test",
   ],
@@ -50,8 +47,9 @@ exports[`lib/schemaVersions/v2.cjs#mapInputs() #mapInputs() - Merging in some co
 }
 `;
 
-exports[`lib/schemaVersions/v2.cjs#mapSchemaFields() #mapSchemaFields() - Full schema fields set 1`] = `
+exports[`lib/schema-versions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Full schema fields set 1`] = `
 {
+  "application": "Schema Version v2.1 Test",
   "contacts": [
     {
       "contact": "dba-team-name-here@fakeemaildomainthatdoesntexist.com",
@@ -59,42 +57,36 @@ exports[`lib/schemaVersions/v2.cjs#mapSchemaFields() #mapSchemaFields() - Full s
       "type": "email",
     },
   ],
-  "dd-service": "schemaVersions-v2-test",
-  "docs": [
-    {
-      "name": "GitHub Actions!",
-      "provider": "Github",
-      "url": "https://github.com/features/actions",
-    },
-  ],
-  "extensions": [
-    {
-      "bar": "bar",
-      "name": "foo",
-    },
-  ],
+  "dd-service": "schema-versions-v2.1-test",
+  "description": "This is just a test",
   "integrations": {
     "opsgenie": {
       "region": "US",
       "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
     },
-    "pagerduty": "https://my-org.pagerduty.com/service-directory/PMyService",
+    "pagerduty": {
+      "service-url": "https://my-org.pagerduty.com/service-directory/PMyService",
+    },
   },
+  "lifecycle": "production",
   "links": [
     {
       "name": "AMI Version Status Dashboard",
       "type": "dashboard",
       "url": "https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard",
     },
-  ],
-  "repos": [
+    {
+      "name": "GitHub Actions!",
+      "type": "doc",
+      "url": "https://github.com/features/actions",
+    },
     {
       "name": "@actions/toolkit",
-      "provider": "Github",
+      "type": "repo",
       "url": "https://github.com/actions/toolkit",
     },
   ],
-  "schema-version": "v2",
+  "schema-version": "v2.1",
   "tags": [
     "application:GitHub Action Config Test",
     "env:prod",
@@ -103,10 +95,11 @@ exports[`lib/schemaVersions/v2.cjs#mapSchemaFields() #mapSchemaFields() - Full s
     "other:value",
   ],
   "team": "Team Name Here",
+  "tier": "p0",
 }
 `;
 
-exports[`lib/schemaVersions/v2.cjs#mapSchemaFields() #mapSchemaFields() - Partial schema fields set 1`] = `
+exports[`lib/schema-versions/v2.1.cjs#mapSchemaFields() #mapSchemaFields() - Partial schema fields set 1`] = `
 {
   "contacts": [
     {
@@ -115,25 +108,14 @@ exports[`lib/schemaVersions/v2.cjs#mapSchemaFields() #mapSchemaFields() - Partia
       "type": "email",
     },
   ],
-  "docs": [
-    {
-      "name": "GitHub Actions!",
-      "provider": "Github",
-      "url": "https://github.com/features/actions",
-    },
-  ],
-  "extensions": [
-    {
-      "bar": "bar",
-      "name": "foo",
-    },
-  ],
   "integrations": {
     "opsgenie": {
       "region": "US",
       "service-url": "https://yourorghere.app.opsgenie.com/service/00000000-0000-0000-0000-000000000000",
     },
-    "pagerduty": "https://my-org.pagerduty.com/service-directory/PMyService",
+    "pagerduty": {
+      "service-url": "https://my-org.pagerduty.com/service-directory/PMyService",
+    },
   },
   "links": [
     {
@@ -141,15 +123,18 @@ exports[`lib/schemaVersions/v2.cjs#mapSchemaFields() #mapSchemaFields() - Partia
       "type": "dashboard",
       "url": "https://thisisanentirelyfakeurl.seriouslythisisafakehostname.com/dashboard",
     },
-  ],
-  "repos": [
+    {
+      "name": "GitHub Actions!",
+      "type": "doc",
+      "url": "https://github.com/features/actions",
+    },
     {
       "name": "@actions/toolkit",
-      "provider": "Github",
+      "type": "repo",
       "url": "https://github.com/actions/toolkit",
     },
   ],
-  "schema-version": "v2",
+  "schema-version": "v2.1",
   "tags": [
     "application:GitHub Action Config Test",
     "env:prod",
