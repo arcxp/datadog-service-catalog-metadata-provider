@@ -1,0 +1,62 @@
+---
+name: DataDog Service Catalog
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: DD-service-catalog
+        uses: arcxp/datadog-service-catalog-metadata-provider@v2
+        with:
+          schema-version: v2.1
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          DATADOG_APPLICATION_KEY: ${{ secrets.DATADOG_APPLICATION_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          service-name: unsupported-ami-scanner
+          team: AppSec
+          application: AppSec Scanners
+          description: |
+            This is the unsupported AMI scanner. It scans for AMIs which are unsupported or out-of-date, and makes Jira tickets for them.
+          lifecycle: production
+          tier: p1
+          email: arc-appsec@washpost.com
+          slack-support-channel: 'https://washpost.slack.com/archives/C012H6FK8QN'
+          repo: https://github.com/wpmedia/appsec-scanners
+          tags: |
+            - 'application:Unsupported AMI Scanner'
+            - logical-env:prod
+            - infrastructure:serverless
+            - language:nodejs
+            - division:arc
+            - data-sensitivity:low
+            - component:ack
+          links: |
+            - url: https://github.com/wpmedia/tooling-lib
+              provider: github
+              name: tooling-lib
+              type: repo
+            - name: AMI Version Status Dashboard
+              url: https://arcpublishing.atlassian.net/jira/dashboards/12340
+              type: dashboard
+            - name: Datadog Log Errors Dashboard
+              url: https://washpost.datadoghq.com/monitors/113811817
+              type: dashboard
+            - name: Tooling Lib
+              url: https://wpmedia.github.io/tooling-lib/
+              provider: github
+              type: doc
+            - name: ASP Jira Project
+              url: https://arcpublishing.atlassian.net/jira/software/c/projects/ASP/boards/934
+              provider: jira
+              type: dashboard
+          integrations: |
+            opsgenie:
+              service-url: https://washpost.app.opsgenie.com/teams/dashboard/b01c3a76-8795-47d2-960a-7889180a0c61/main
+              region: US

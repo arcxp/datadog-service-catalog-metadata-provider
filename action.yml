@@ -89,6 +89,11 @@ inputs:
     description: 'A set of CI pipeline fingerprints related to the service'
     required: false
 
+  # Fields which are added in v3
+  components:
+    description: A YAML-formatted string containing a list of components to associate with the application
+    required: false
+
   # These are convenience inputs which are unique to this action.
   email:
     description: 'The email address of the team responsible for the service'
