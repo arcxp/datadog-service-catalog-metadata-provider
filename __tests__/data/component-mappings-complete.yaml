@@ -1,0 +1,14 @@
+- name: PHP Web App
+  kind: service
+  repo: https://github.com/fake+org/php-web-app
+  languages: |
+    - php
+    - sql
+    - javascript
+  tags: |
+    - internet_accessible:true
+- name: MySQL Database
+  kind: datastore
+  repo: https://github.com/fake+org/database-ddl
+  slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000008'
+  languages: sql

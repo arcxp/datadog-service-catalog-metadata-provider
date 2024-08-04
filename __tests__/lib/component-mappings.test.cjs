@@ -1,3 +1,5 @@
+const YAML = require('yaml')
+const core = require('@actions/core')
 const subject = require('../../lib/component-mappings.cjs')
 
 describe('imports', () => {
@@ -17,7 +19,10 @@ describe('imports', () => {
 describe('component metadata', () => {
   // Let's test the entity types
   test('#mapComponentMetadata()', () => {
+    // Empty works
     expect(subject._test.mapComponentMetadata())
+
+    const 
   })
 })
 
