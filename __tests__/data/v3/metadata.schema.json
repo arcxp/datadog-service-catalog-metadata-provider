@@ -14,9 +14,7 @@
     },
     "inheritFrom": {
       "description": "The entity reference from which to inherit metadata",
-      "examples": [
-        "application:default/myapp"
-      ],
+      "examples": ["application:default/myapp"],
       "type": "string"
     },
     "managed": {
@@ -26,13 +24,8 @@
     },
     "owner": {
       "description": "The owner of the entity, usually a team",
-      "additionalProperties": false,
-      "properties": {
-        "name": {
-          "description": "Team name",
-          "type": "string"
-        }
-      }
+      "examples": ["myTeam"],
+      "type": "string"
     },
     "additionalOwners": {
       "description": "The additional owners of the entity, usually a team",
@@ -56,13 +49,6 @@
       "type": "string",
       "description": "Unique name given to an entity under the kind/namespace ",
       "examples": ["myService"],
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "description": "The namespace where the entity is under",
-      "default": "default",
-      "examples": ["default"],
       "minLength": 1
     },
     "description": {
@@ -115,9 +101,6 @@
         "then": {
           "properties": { "contact": { "format": "email" } }
         },
-        "else": {
-          "properties": { "contact": { "format": "uri" } }
-        },
         "required": ["type", "contact"]
       }
     },
@@ -152,11 +135,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "name",
-          "type",
-          "url"
-        ]
+        "required": ["name", "type", "url"]
       }
     }
   }

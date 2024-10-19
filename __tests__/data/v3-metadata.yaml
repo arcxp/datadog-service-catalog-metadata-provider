@@ -1,0 +1,29 @@
+inheritFrom: application:default/myapp
+owner: myTeam
+additionalOwners:
+  - name: additionalTeam1
+    type: support
+  - name: additionalTeam2
+    type: qa
+name: myService
+description: Short description of my service.
+displayName: My Service
+tags:
+  - my:tag
+  - environment:production
+contacts:
+  - name: Oncall Slack
+    type: slack
+    contact: https://my-org.slack.com/archives/my-channel
+  - name: Team Email
+    type: email
+    contact: contact@datadoghq.com
+links:
+  - name: Runbook
+    type: runbook
+    url: https://my-runbook.com
+    provider: Confluence
+  - name: Dashboard
+    type: dashboard
+    url: https://my-dashboard.com
+    provider: Datadog

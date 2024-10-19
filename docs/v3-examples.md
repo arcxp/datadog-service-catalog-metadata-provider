@@ -39,7 +39,7 @@ jobs:
           datadog-hostname: api.us5.datadoghq.com
           datadog-key: ${{ secrets.DATADOG_API_KEY }}
           datadog-app-key: ${{ secrets.DATADOG_APPLICATION_KEY }}
-          application: My PHP Application
+          system: My PHP Application
           # </No Overrides>
           team: Team Sonic
           email: team.sonic@fakehostnamehere.com
@@ -53,7 +53,7 @@ jobs:
             - internet_accessible:true
           components: |
             - name: PHP Web App
-              kind: service
+              kind: application
               repo: https://github.com/fake+org/php-web-app
               languages: |
                 - php

@@ -1,5 +1,6 @@
 /**
- * Tests.
+ * This test covers schema validation for all v2 schema.
+ * All v3 schema validation will take place in separate tests.
  * @jest-environment node
  * @group ci
  * @author Mike Stemle <hello@mikestemle.com>
@@ -13,7 +14,7 @@ const ddSchema_v2 = require('../data/datadog-service-catalog-schema-v2.json')
 const ddSchema_v2_1 = require('../data/datadog-service-catalog-schema-v2.1.json')
 const ddSchema_v2_2 = require('../data/datadog-service-catalog-schema-v2.2.json')
 const validate_v2 = new Ajv({ strict: false, validateFormats: false }).compile(
-  ddSchema_v2,
+  ddSchema_v2
 )
 const validate_v2_1 = new Ajv({
   strict: false,

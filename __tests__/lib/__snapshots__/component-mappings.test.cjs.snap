@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component metadata #mapComponentMetadata() - full 1`] = `
+{
+  "contacts": [
+    {
+      "contact": "https://my-org.slack.com/archives/my-channel",
+      "name": "Oncall Slack",
+      "type": "slack",
+    },
+    {
+      "contact": "contact@datadoghq.com",
+      "name": "Team Email",
+      "type": "email",
+    },
+  ],
+  "description": "Short description of my service.",
+  "links": [
+    {
+      "name": "Runbook",
+      "provider": "Confluence",
+      "type": "runbook",
+      "url": "https://my-runbook.com",
+    },
+    {
+      "name": "Dashboard",
+      "provider": "Datadog",
+      "type": "dashboard",
+      "url": "https://my-dashboard.com",
+    },
+  ],
+  "name": "myService",
+  "owner": "myTeam",
+  "tags": [
+    "my:tag",
+    "environment:production",
+  ],
+}
+`;
