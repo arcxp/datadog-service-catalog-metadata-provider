@@ -1,5 +1,7 @@
-- name: PHP Web App
-  kind: service
+- name: php-web-app
+  display-name: PHP Web App
+  id: abc123
+  kind: application
   repo: https://github.com/fake+org/php-web-app
   languages: |
     - php
@@ -7,8 +9,16 @@
     - javascript
   tags: |
     - internet_accessible:true
-- name: MySQL Database
+- display-name: Production MySQL Database
   kind: datastore
   repo: https://github.com/fake+org/database-ddl
   slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000008'
   languages: sql
+- display-name: Development MySQL Database
+  name: mysql-database
+  env: 
+  kind: datastore
+  repo: https://github.com/fake+org/database-ddl
+  slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000008'
+  languages: sql
+  inherit-from: 
