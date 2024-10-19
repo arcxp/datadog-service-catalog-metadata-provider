@@ -1,0 +1,5 @@
+pagerduty:
+  serviceURL: https://pagerduty.example.com/service-url
+opsgenie:
+  serviceURL: https://opsgenie.example.com/service-url
+  region: US

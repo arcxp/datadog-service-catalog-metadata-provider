@@ -10,15 +10,14 @@
   tags: |
     - internet_accessible:true
 - display-name: Production MySQL Database
+  name: mysql-prod
+  description: The MySQL Database used for this environment.
   kind: datastore
   repo: https://github.com/fake+org/database-ddl
   slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000008'
   languages: sql
 - display-name: Development MySQL Database
-  name: mysql-database
-  env: 
+  name: mysql-dev
+  env: dev
   kind: datastore
-  repo: https://github.com/fake+org/database-ddl
-  slack-support-channel: 'https://fakeorg.slack.com/archives/A0000000008'
-  languages: sql
-  inherit-from: 
+  inherit-from: datastore:mysql-prod

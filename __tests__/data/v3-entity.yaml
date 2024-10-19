@@ -1,0 +1,37 @@
+---
+api-version: v3
+kind: system
+metadata:
+  name: shopping-cart
+  owner: shopping-team
+  additional-owners:
+    - name: sre-team
+      type: operator
+  description: A service for handling shopping cart interactions
+  display-name: Shopping Cart Service
+  tags:
+    - e-commerce
+    - cart
+  contacts:
+    - name: Oncall Slack
+      type: slack
+      contact: https://my-org.slack.com/archives/oncall
+  links:
+    - name: Runbook
+      type: runbook
+      url: https://my-runbook.com
+      provider: Confluence
+# While the spec does have a shape definition for specific resource
+# types, the `entity` schema does not define any particular shape.
+spec:
+  foo: bar
+  baz:
+    - 1
+    - 2
+    - 3
+integrations:
+  pagerduty:
+    serviceURL: https://pagerduty.example.com/service-url
+  opsgenie:
+    serviceURL: https://opsgenie.example.com/service-url
+    region: US

@@ -1,7 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`component metadata #mapComponentMetadata() - full 1`] = `
+exports[`entity - mapEntityComponent() - v3-entity.yaml #mapEntityComponent() - full 1`] = `
 {
+  "apiVersion": "v3",
+  "integrations": {
+    "opsgenie": {
+      "region": "US",
+      "serviceURL": "https://opsgenie.example.com/service-url",
+    },
+    "pagerduty": {
+      "serviceURL": "https://pagerduty.example.com/service-url",
+    },
+  },
+  "kind": "system",
+  "metadata": {
+    "additionalOwners": [
+      {
+        "name": "sre-team",
+        "type": "operator",
+      },
+    ],
+    "contacts": [
+      {
+        "contact": "https://my-org.slack.com/archives/oncall",
+        "name": "Oncall Slack",
+        "type": "slack",
+      },
+    ],
+    "description": "A service for handling shopping cart interactions",
+    "displayName": "Shopping Cart Service",
+    "links": [
+      {
+        "name": "Runbook",
+        "provider": "Confluence",
+        "type": "runbook",
+        "url": "https://my-runbook.com",
+      },
+    ],
+    "name": "shopping-cart",
+    "owner": "shopping-team",
+    "tags": [
+      "e-commerce",
+      "cart",
+    ],
+  },
+}
+`;
+
+exports[`integration - mapIntegration() - v3-integrations.yaml #mapIntegration() - full 1`] = `
+{
+  "opsgenie": {
+    "region": "US",
+    "serviceURL": "https://opsgenie.example.com/service-url",
+  },
+  "pagerduty": {
+    "serviceURL": "https://pagerduty.example.com/service-url",
+  },
+}
+`;
+
+exports[`metadata - mapComponentMetadata() - v3-metadata.yaml #mapComponentMetadata() - full 1`] = `
+{
+  "additionalOwners": [
+    {
+      "name": "additionalTeam1",
+      "type": "support",
+    },
+    {
+      "name": "additionalTeam2",
+      "type": "qa",
+    },
+  ],
   "contacts": [
     {
       "contact": "https://my-org.slack.com/archives/my-channel",
@@ -15,6 +84,8 @@ exports[`component metadata #mapComponentMetadata() - full 1`] = `
     },
   ],
   "description": "Short description of my service.",
+  "displayName": "My Service",
+  "inheritFrom": "application:default/myapp",
   "links": [
     {
       "name": "Runbook",

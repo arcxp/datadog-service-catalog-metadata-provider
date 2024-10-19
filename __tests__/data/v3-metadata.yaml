@@ -1,13 +1,13 @@
-inheritFrom: application:default/myapp
+inherit-from: application:default/myapp
 owner: myTeam
-additionalOwners:
+additional-owners:
   - name: additionalTeam1
     type: support
   - name: additionalTeam2
     type: qa
 name: myService
 description: Short description of my service.
-displayName: My Service
+display-name: My Service
 tags:
   - my:tag
   - environment:production

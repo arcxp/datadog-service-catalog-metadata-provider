@@ -7,6 +7,18 @@ const { readFileSync } = require('node:fs')
 const Ajv = require('ajv')
 const schema = new Ajv({ strict: false, validateFormats: false })
 schema.addSchema(require('../data/v3/metadata.schema.json'), 'metadata')
+schema.addSchema(require('../data/v3/entity.schema.json'), 'entity')
+schema.addSchema(require('../data/v3/integration.schema.json'), 'integration')
+
+// Adding refs
+schema.addSchema(
+  require('../data/v3/integration_opsgenie.schema.json'),
+  'integration_opsgenie.schema.json'
+)
+schema.addSchema(
+  require('../data/v3/integration_pagerduty.schema.json'),
+  'integration_pagerduty.schema.json'
+)
 
 describe('imports', () => {
   test('verify imports', () => {
@@ -22,26 +34,44 @@ describe('imports', () => {
   })
 })
 
-describe('component metadata', () => {
-  const validate = schema.getSchema('metadata')
+// Test the various schema individually and collectively
+describe.each([
+  {
+    label: 'metadata',
+    func: subject._test.mapComponentMetadata,
+    funcName: 'mapComponentMetadata',
+    sample: 'v3-metadata.yaml',
+  },
+  {
+    label: 'entity',
+    func: subject._test.mapEntityComponent,
+    funcName: 'mapEntityComponent',
+    sample: 'v3-entity.yaml',
+  },
+  {
+    label: 'integration',
+    func: subject._test.mapIntegration,
+    funcName: 'mapIntegration',
+    sample: 'v3-integrations.yaml',
+  },
+])('$label - $funcName() - $sample', ({ label, func, funcName, sample }) => {
+  const validate = schema.getSchema(label)
 
   // Let's test the entity types
-  test('#mapComponentMetadata() - empty', () => {
+  test(`#${funcName}() - empty`, () => {
     // Empty works
-    expect(subject._test.mapComponentMetadata()).toMatchObject({})
+    expect(func()).toBeUndefined()
   })
 
-  test('#mapComponentMetadata() - full', () => {
-    const testInput = readFileSync('__tests__/data/v3-metadata.yaml', {
-      encoding: 'utf8',
-    })
-    const parsedTestInput = YAML.parse(testInput)
-    const metadataOutput = subject._test.mapComponentMetadata(
-      core,
-      parsedTestInput
+  test(`#${funcName}() - full`, () => {
+    const parsedTestInput = YAML.parse(
+      readFileSync(`__tests__/data/${sample}`, {
+        encoding: 'utf8',
+      })
     )
-    expect(metadataOutput).toMatchSnapshot()
-    const doesItValidate = validate(metadataOutput)
+    const output = func(core, parsedTestInput)
+    expect(output).toMatchSnapshot()
+    const doesItValidate = validate(output)
     if (validate.errors) {
       console.debug(validate.errors)
     }
@@ -49,20 +79,3 @@ describe('component metadata', () => {
     expect(validate.errors).toBeNull()
   })
 })
-
-/*
-describe('entity types', () => {
-  // Let's test the entity types
-})
-
-describe('service types', () => {
-  // Let's test the service types
-})
-
-describe('datastore types', () => {
-  // Let's test the datastore types
-})
-
-describe('handle the full list of components', () => {
-  // Let's test the full list of components
-})*/

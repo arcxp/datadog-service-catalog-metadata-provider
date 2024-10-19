@@ -17,13 +17,10 @@
       "type": "string",
       "description": "Kind describes the type of entity",
       "minLength": 1,
-      "examples": [
-        "application",
-        "service"
-      ]
+      "examples": ["application", "service"]
     },
     "metadata": {
-      "$ref": "DataDog/schema/main/service-catalog/v3/metadata.schema.json#"
+      "$ref": "metadata.schema.json"
     },
     "spec": {
       "type": "object",
