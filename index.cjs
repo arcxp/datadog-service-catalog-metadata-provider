@@ -14,7 +14,7 @@ const { fetchAndApplyOrgRules } = require('./lib/org-rules')
 const registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
   DatadogPostGovernor.increment()
 
-  core.debug(`JSON: ${configJsonStr}`)
+  core.debug(`JSON: «${configJsonStr}»`)
   // Prep the auth
   const client = new HttpClient(
     'nodejs - GitHub Actions - arcxp/datadog-service-catalog-metadata-provider',

@@ -35930,7 +35930,7 @@ var { validateDatadogHostname } = require_input_validation();
 var { fetchAndApplyOrgRules } = require_org_rules();
 var registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
   DatadogPostGovernor.increment();
-  core.debug(`JSON: ${configJsonStr}`);
+  core.debug(`JSON: \xAB${configJsonStr}\xBB`);
   const client = new HttpClient(
     "nodejs - GitHub Actions - arcxp/datadog-service-catalog-metadata-provider"
   );
