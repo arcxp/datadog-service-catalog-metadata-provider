@@ -32033,7 +32033,7 @@ var require_input_expander = __commonJS({
         ":"
       ) : entry
     );
-    var isNothing = (testValue) => !_.isDate(testValue) && (_.isObject(testValue) || _.isArray(testValue)) ? _.isEmpty(testValue) : _.isNil(testValue);
+    var isNothing = (testValue) => !_.isDate(testValue) && (_.isObject(testValue) || _.isArray(testValue) || _.isString(testValue)) ? _.isEmpty(testValue) : _.isNil(testValue);
     var combineValues = (value, key, target) => {
       if (isNothing(value)) {
         return target;
@@ -36832,7 +36832,7 @@ var { validateDatadogHostname } = require_input_validation();
 var { fetchAndApplyOrgRules } = require_org_rules();
 var registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
   DatadogPostGovernor.increment();
-  core.debug(`JSON: ${configJsonStr}`);
+  core.debug(`JSON: \xAB${configJsonStr}\xBB`);
   const client = new HttpClient(
     "nodejs - GitHub Actions - arcxp/datadog-service-catalog-metadata-provider"
   );
@@ -36875,7 +36875,7 @@ var run = async (configs) => {
   }
 };
 core.debug("STARTING THE PARSE");
-inputsToRegistryDocument().then((configs) => {
+Promise.resolve().then(() => inputsToRegistryDocument()).then((configs) => {
   core.debug(`Input schema version is \xAB${core.getInput("schema-version")}\xBB`);
   core.debug(
     `Inputs coming off of configs: ${JSON.stringify(configs, void 0, 2)}`

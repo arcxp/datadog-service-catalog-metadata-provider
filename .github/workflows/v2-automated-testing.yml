@@ -14,7 +14,7 @@ jobs:
         run: echo "date=$(date +'%Y-%m-%d -- %s')" >> $GITHUB_OUTPUT
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run CI Tests
         env:

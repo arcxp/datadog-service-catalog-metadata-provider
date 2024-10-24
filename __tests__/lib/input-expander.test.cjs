@@ -140,6 +140,7 @@ describe('input-expander.cjs - utilities', () => {
     { value: 0, outcome: false },
     { value: 1, outcome: false },
     { value: { a: undefined }, outcome: false },
+    { value: '', outcome: true },
   ])('#isNothing($value) should be $outcome', ({ value, outcome }) => {
     expect(isNothing(value)).toBe(outcome)
   })
