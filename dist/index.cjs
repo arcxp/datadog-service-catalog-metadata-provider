@@ -35973,7 +35973,7 @@ var run = async (configs) => {
   }
 };
 core.debug("STARTING THE PARSE");
-inputsToRegistryDocument().then((configs) => {
+Promise.resolve().then(() => inputsToRegistryDocument()).then((configs) => {
   core.debug(`Input schema version is \xAB${core.getInput("schema-version")}\xBB`);
   core.debug(
     `Inputs coming off of configs: ${JSON.stringify(configs, void 0, 2)}`
