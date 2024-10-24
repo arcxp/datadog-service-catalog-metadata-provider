@@ -14,10 +14,10 @@ const { fetchAndApplyOrgRules } = require('./lib/org-rules')
 const registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
   DatadogPostGovernor.increment()
 
-  core.debug(`JSON: ${configJsonStr}`)
+  core.debug(`JSON: «${configJsonStr}»`)
   // Prep the auth
   const client = new HttpClient(
-    'nodejs - GitHub Actions - arcxp/datadog-service-catalog-metadata-provider'
+    'nodejs - GitHub Actions - arcxp/datadog-service-catalog-metadata-provider',
   )
 
   const response = await client.post(
@@ -27,7 +27,7 @@ const registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
       'DD-API-KEY': apiKey,
       'DD-APPLICATION-KEY': appKey,
       'Content-Type': 'application/json',
-    }
+    },
   )
   const statusCode = response.message.statusCode
   const body = await response.readBody()
@@ -35,7 +35,7 @@ const registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
 
   if (statusCode !== 200) {
     core.setFailed(
-      `Failed to register service with DataDog. Status Code: ${statusCode} Body: ${body}`
+      `Failed to register service with DataDog. Status Code: ${statusCode} Body: ${body}`,
     )
   }
 }
@@ -51,7 +51,7 @@ const run = async (configs) => {
 
     if (!apiKey || !appKey) {
       return core.setFailed(
-        'Both `datadog-key` and `datadog-app-key` are required.'
+        'Both `datadog-key` and `datadog-app-key` are required.',
       )
     }
 
@@ -74,11 +74,12 @@ const run = async (configs) => {
 
 // Grab the inputs and then run with them!
 core.debug('STARTING THE PARSE')
-inputsToRegistryDocument()
+Promise.resolve()
+  .then(() => inputsToRegistryDocument())
   .then((configs) => {
     core.debug(`Input schema version is «${core.getInput('schema-version')}»`)
     core.debug(
-      `Inputs coming off of configs: ${JSON.stringify(configs, undefined, 2)}`
+      `Inputs coming off of configs: ${JSON.stringify(configs, undefined, 2)}`,
     )
 
     return configs

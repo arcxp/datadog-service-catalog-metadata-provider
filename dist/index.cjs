@@ -69,14 +69,12 @@ var require_command = __commonJS({
   "node_modules/@actions/core/lib/command.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
       } });
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
@@ -85,13 +83,10 @@ var require_command = __commonJS({
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
+      if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
+        for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
       return result;
@@ -489,14 +484,12 @@ var require_file_command = __commonJS({
   "node_modules/@actions/core/lib/file-command.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
       } });
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
@@ -505,13 +498,10 @@ var require_file_command = __commonJS({
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
+      if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
+        for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
       return result;
@@ -1140,6 +1130,121 @@ var require_errors = __commonJS({
   }
 });
 
+// node_modules/undici/lib/core/constants.js
+var require_constants = __commonJS({
+  "node_modules/undici/lib/core/constants.js"(exports2, module2) {
+    "use strict";
+    var headerNameLowerCasedRecord = {};
+    var wellknownHeaderNames = [
+      "Accept",
+      "Accept-Encoding",
+      "Accept-Language",
+      "Accept-Ranges",
+      "Access-Control-Allow-Credentials",
+      "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Methods",
+      "Access-Control-Allow-Origin",
+      "Access-Control-Expose-Headers",
+      "Access-Control-Max-Age",
+      "Access-Control-Request-Headers",
+      "Access-Control-Request-Method",
+      "Age",
+      "Allow",
+      "Alt-Svc",
+      "Alt-Used",
+      "Authorization",
+      "Cache-Control",
+      "Clear-Site-Data",
+      "Connection",
+      "Content-Disposition",
+      "Content-Encoding",
+      "Content-Language",
+      "Content-Length",
+      "Content-Location",
+      "Content-Range",
+      "Content-Security-Policy",
+      "Content-Security-Policy-Report-Only",
+      "Content-Type",
+      "Cookie",
+      "Cross-Origin-Embedder-Policy",
+      "Cross-Origin-Opener-Policy",
+      "Cross-Origin-Resource-Policy",
+      "Date",
+      "Device-Memory",
+      "Downlink",
+      "ECT",
+      "ETag",
+      "Expect",
+      "Expect-CT",
+      "Expires",
+      "Forwarded",
+      "From",
+      "Host",
+      "If-Match",
+      "If-Modified-Since",
+      "If-None-Match",
+      "If-Range",
+      "If-Unmodified-Since",
+      "Keep-Alive",
+      "Last-Modified",
+      "Link",
+      "Location",
+      "Max-Forwards",
+      "Origin",
+      "Permissions-Policy",
+      "Pragma",
+      "Proxy-Authenticate",
+      "Proxy-Authorization",
+      "RTT",
+      "Range",
+      "Referer",
+      "Referrer-Policy",
+      "Refresh",
+      "Retry-After",
+      "Sec-WebSocket-Accept",
+      "Sec-WebSocket-Extensions",
+      "Sec-WebSocket-Key",
+      "Sec-WebSocket-Protocol",
+      "Sec-WebSocket-Version",
+      "Server",
+      "Server-Timing",
+      "Service-Worker-Allowed",
+      "Service-Worker-Navigation-Preload",
+      "Set-Cookie",
+      "SourceMap",
+      "Strict-Transport-Security",
+      "Supports-Loading-Mode",
+      "TE",
+      "Timing-Allow-Origin",
+      "Trailer",
+      "Transfer-Encoding",
+      "Upgrade",
+      "Upgrade-Insecure-Requests",
+      "User-Agent",
+      "Vary",
+      "Via",
+      "WWW-Authenticate",
+      "X-Content-Type-Options",
+      "X-DNS-Prefetch-Control",
+      "X-Frame-Options",
+      "X-Permitted-Cross-Domain-Policies",
+      "X-Powered-By",
+      "X-Requested-With",
+      "X-XSS-Protection"
+    ];
+    for (let i = 0; i < wellknownHeaderNames.length; ++i) {
+      const key = wellknownHeaderNames[i];
+      const lowerCasedKey = key.toLowerCase();
+      headerNameLowerCasedRecord[key] = headerNameLowerCasedRecord[lowerCasedKey] = lowerCasedKey;
+    }
+    Object.setPrototypeOf(headerNameLowerCasedRecord, null);
+    module2.exports = {
+      wellknownHeaderNames,
+      headerNameLowerCasedRecord
+    };
+  }
+});
+
 // node_modules/undici/lib/core/util.js
 var require_util = __commonJS({
   "node_modules/undici/lib/core/util.js"(exports2, module2) {
@@ -1153,6 +1258,7 @@ var require_util = __commonJS({
     var { Blob: Blob2 } = require("buffer");
     var nodeUtil = require("util");
     var { stringify: stringify2 } = require("querystring");
+    var { headerNameLowerCasedRecord } = require_constants();
     var [nodeMajor, nodeMinor] = process.versions.node.split(".").map((v) => Number(v));
     function nop() {
     }
@@ -1229,8 +1335,7 @@ var require_util = __commonJS({
         return host.substring(1, idx2);
       }
       const idx = host.indexOf(":");
-      if (idx === -1)
-        return host;
+      if (idx === -1) return host;
       return host.substring(0, idx);
     }
     function getServerName(host) {
@@ -1296,9 +1401,11 @@ var require_util = __commonJS({
       const m = val.toString().match(KEEPALIVE_TIMEOUT_EXPR);
       return m ? parseInt(m[1], 10) * 1e3 : null;
     }
+    function headerNameToString(value) {
+      return headerNameLowerCasedRecord[value] || value.toLowerCase();
+    }
     function parseHeaders(headers, obj = {}) {
-      if (!Array.isArray(headers))
-        return headers;
+      if (!Array.isArray(headers)) return headers;
       for (let i = 0; i < headers.length; i += 2) {
         const key = headers[i].toString().toLowerCase();
         let val = obj[key];
@@ -1472,8 +1579,7 @@ var require_util = __commonJS({
       return `${val}`;
     }
     function parseRangeHeader(range) {
-      if (range == null || range === "")
-        return { start: 0, end: null, size: null };
+      if (range == null || range === "") return { start: 0, end: null, size: null };
       const m = range ? range.match(/^bytes (\d+)-(\d+)\/(\d+)?$/) : null;
       return m ? {
         start: parseInt(m[1]),
@@ -1499,6 +1605,7 @@ var require_util = __commonJS({
       isIterable,
       isAsyncIterable,
       isDestroyed,
+      headerNameToString,
       parseRawHeaders,
       parseHeaders,
       parseKeepAliveTimeout,
@@ -3029,7 +3136,7 @@ var require_main = __commonJS({
 });
 
 // node_modules/undici/lib/fetch/constants.js
-var require_constants = __commonJS({
+var require_constants2 = __commonJS({
   "node_modules/undici/lib/fetch/constants.js"(exports2, module2) {
     "use strict";
     var { MessageChannel, receiveMessageOnPort } = require("worker_threads");
@@ -3267,15 +3374,18 @@ var require_global = __commonJS({
 var require_util2 = __commonJS({
   "node_modules/undici/lib/fetch/util.js"(exports2, module2) {
     "use strict";
-    var { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = require_constants();
+    var { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = require_constants2();
     var { getGlobalOrigin } = require_global();
     var { performance: performance2 } = require("perf_hooks");
     var { isBlobLike, toUSVString, ReadableStreamFrom } = require_util();
     var assert = require("assert");
     var { isUint8Array } = require("util/types");
+    var supportedHashes = [];
     var crypto4;
     try {
       crypto4 = require("crypto");
+      const possibleRelevantHashes = ["sha256", "sha384", "sha512"];
+      supportedHashes = crypto4.getHashes().filter((hash) => possibleRelevantHashes.includes(hash));
     } catch {
     }
     function responseURL(response) {
@@ -3522,14 +3632,11 @@ var require_util2 = __commonJS({
       if (url.href === "about:blank" || url.href === "about:srcdoc") {
         return true;
       }
-      if (url.protocol === "data:")
-        return true;
-      if (url.protocol === "file:")
-        return true;
+      if (url.protocol === "data:") return true;
+      if (url.protocol === "file:") return true;
       return isOriginPotentiallyTrustworthy(url.origin);
       function isOriginPotentiallyTrustworthy(origin) {
-        if (origin == null || origin === "null")
-          return false;
+        if (origin == null || origin === "null") return false;
         const originAsURL = new URL(origin);
         if (originAsURL.protocol === "https:" || originAsURL.protocol === "wss:") {
           return true;
@@ -3551,45 +3658,37 @@ var require_util2 = __commonJS({
       if (parsedMetadata.length === 0) {
         return true;
       }
-      const list = parsedMetadata.sort((c, d) => d.algo.localeCompare(c.algo));
-      const strongest = list[0].algo;
-      const metadata = list.filter((item) => item.algo === strongest);
+      const strongest = getStrongestMetadata(parsedMetadata);
+      const metadata = filterMetadataListByAlgorithm(parsedMetadata, strongest);
       for (const item of metadata) {
         const algorithm = item.algo;
-        let expectedValue = item.hash;
-        if (expectedValue.endsWith("==")) {
-          expectedValue = expectedValue.slice(0, -2);
-        }
+        const expectedValue = item.hash;
         let actualValue = crypto4.createHash(algorithm).update(bytes).digest("base64");
-        if (actualValue.endsWith("==")) {
-          actualValue = actualValue.slice(0, -2);
+        if (actualValue[actualValue.length - 1] === "=") {
+          if (actualValue[actualValue.length - 2] === "=") {
+            actualValue = actualValue.slice(0, -2);
+          } else {
+            actualValue = actualValue.slice(0, -1);
+          }
         }
-        if (actualValue === expectedValue) {
-          return true;
-        }
-        let actualBase64URL = crypto4.createHash(algorithm).update(bytes).digest("base64url");
-        if (actualBase64URL.endsWith("==")) {
-          actualBase64URL = actualBase64URL.slice(0, -2);
-        }
-        if (actualBase64URL === expectedValue) {
+        if (compareBase64Mixed(actualValue, expectedValue)) {
           return true;
         }
       }
       return false;
     }
-    var parseHashWithOptions = /((?<algo>sha256|sha384|sha512)-(?<hash>[A-z0-9+/]{1}.*={0,2}))( +[\x21-\x7e]?)?/i;
+    var parseHashWithOptions = /(?<algo>sha256|sha384|sha512)-((?<hash>[A-Za-z0-9+/]+|[A-Za-z0-9_-]+)={0,2}(?:\s|$)( +[!-~]*)?)?/i;
     function parseMetadata(metadata) {
       const result = [];
       let empty = true;
-      const supportedHashes = crypto4.getHashes();
       for (const token of metadata.split(" ")) {
         empty = false;
         const parsedToken = parseHashWithOptions.exec(token);
-        if (parsedToken === null || parsedToken.groups === void 0) {
+        if (parsedToken === null || parsedToken.groups === void 0 || parsedToken.groups.algo === void 0) {
           continue;
         }
-        const algorithm = parsedToken.groups.algo;
-        if (supportedHashes.includes(algorithm.toLowerCase())) {
+        const algorithm = parsedToken.groups.algo.toLowerCase();
+        if (supportedHashes.includes(algorithm)) {
           result.push(parsedToken.groups);
         }
       }
@@ -3597,6 +3696,51 @@ var require_util2 = __commonJS({
         return "no metadata";
       }
       return result;
+    }
+    function getStrongestMetadata(metadataList) {
+      let algorithm = metadataList[0].algo;
+      if (algorithm[3] === "5") {
+        return algorithm;
+      }
+      for (let i = 1; i < metadataList.length; ++i) {
+        const metadata = metadataList[i];
+        if (metadata.algo[3] === "5") {
+          algorithm = "sha512";
+          break;
+        } else if (algorithm[3] === "3") {
+          continue;
+        } else if (metadata.algo[3] === "3") {
+          algorithm = "sha384";
+        }
+      }
+      return algorithm;
+    }
+    function filterMetadataListByAlgorithm(metadataList, algorithm) {
+      if (metadataList.length === 1) {
+        return metadataList;
+      }
+      let pos = 0;
+      for (let i = 0; i < metadataList.length; ++i) {
+        if (metadataList[i].algo === algorithm) {
+          metadataList[pos++] = metadataList[i];
+        }
+      }
+      metadataList.length = pos;
+      return metadataList;
+    }
+    function compareBase64Mixed(actualValue, expectedValue) {
+      if (actualValue.length !== expectedValue.length) {
+        return false;
+      }
+      for (let i = 0; i < actualValue.length; ++i) {
+        if (actualValue[i] !== expectedValue[i]) {
+          if (actualValue[i] === "+" && expectedValue[i] === "-" || actualValue[i] === "/" && expectedValue[i] === "_") {
+            continue;
+          }
+          return false;
+        }
+      }
+      return true;
     }
     function tryUpgradeRequestToAPotentiallyTrustworthyURL(request) {
     }
@@ -3821,7 +3965,8 @@ var require_util2 = __commonJS({
       urlHasHttpsScheme,
       urlIsHttpHttpsScheme,
       readAllBytes,
-      normalizeMethodRecord
+      normalizeMethodRecord,
+      parseMetadata
     };
   }
 });
@@ -4461,12 +4606,10 @@ var require_dataURL = __commonJS({
       let lead = 0;
       let trail = str.length - 1;
       if (leading) {
-        for (; lead < str.length && isHTTPWhiteSpace(str[lead]); lead++)
-          ;
+        for (; lead < str.length && isHTTPWhiteSpace(str[lead]); lead++) ;
       }
       if (trailing) {
-        for (; trail > 0 && isHTTPWhiteSpace(str[trail]); trail--)
-          ;
+        for (; trail > 0 && isHTTPWhiteSpace(str[trail]); trail--) ;
       }
       return str.slice(lead, trail + 1);
     }
@@ -4477,12 +4620,10 @@ var require_dataURL = __commonJS({
       let lead = 0;
       let trail = str.length - 1;
       if (leading) {
-        for (; lead < str.length && isASCIIWhitespace(str[lead]); lead++)
-          ;
+        for (; lead < str.length && isASCIIWhitespace(str[lead]); lead++) ;
       }
       if (trailing) {
-        for (; trail > 0 && isASCIIWhitespace(str[trail]); trail--)
-          ;
+        for (; trail > 0 && isASCIIWhitespace(str[trail]); trail--) ;
       }
       return str.slice(lead, trail + 1);
     }
@@ -4858,7 +4999,7 @@ var require_body = __commonJS({
     var { FormData } = require_formdata();
     var { kState } = require_symbols2();
     var { webidl } = require_webidl();
-    var { DOMException: DOMException2, structuredClone } = require_constants();
+    var { DOMException: DOMException2, structuredClone } = require_constants2();
     var { Blob: Blob2, File: NativeFile } = require("buffer");
     var { kBodyUsed } = require_symbols();
     var assert = require("assert");
@@ -5076,8 +5217,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r
           const contentType = this.headers.get("Content-Type");
           if (/multipart\/form-data/.test(contentType)) {
             const headers = {};
-            for (const [key, value] of this.headers)
-              headers[key.toLowerCase()] = value;
+            for (const [key, value] of this.headers) headers[key.toLowerCase()] = value;
             const responseFormData = new FormData();
             let busboy;
             try {
@@ -5118,9 +5258,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r
               busboy.on("finish", resolve);
               busboy.on("error", (err) => reject(new TypeError(err)));
             });
-            if (this.body !== null)
-              for await (const chunk of consumeBody(this[kState].body))
-                busboy.write(chunk);
+            if (this.body !== null) for await (const chunk of consumeBody(this[kState].body)) busboy.write(chunk);
             busboy.end();
             await busboyResolve;
             return responseFormData;
@@ -5510,12 +5648,9 @@ var require_request = __commonJS({
         const headers = {};
         for (const header of rawHeaders) {
           const [key, value] = header.split(": ");
-          if (value == null || value.length === 0)
-            continue;
-          if (headers[key])
-            headers[key] += `,${value}`;
-          else
-            headers[key] = value;
+          if (value == null || value.length === 0) continue;
+          if (headers[key]) headers[key] += `,${value}`;
+          else headers[key] = value;
         }
         return headers;
       }
@@ -5549,10 +5684,8 @@ var require_request = __commonJS({
         }
       } else if (request.contentType === null && key.length === 12 && key.toLowerCase() === "content-type") {
         request.contentType = val;
-        if (skipAppend)
-          request.headers[key] = processHeaderValue(key, val, skipAppend);
-        else
-          request.headers += processHeaderValue(key, val);
+        if (skipAppend) request.headers[key] = processHeaderValue(key, val, skipAppend);
+        else request.headers += processHeaderValue(key, val);
       } else if (key.length === 17 && key.toLowerCase() === "transfer-encoding") {
         throw new InvalidArgumentError("invalid transfer-encoding header");
       } else if (key.length === 10 && key.toLowerCase() === "connection") {
@@ -5574,19 +5707,15 @@ var require_request = __commonJS({
         if (Array.isArray(val)) {
           for (let i = 0; i < val.length; i++) {
             if (skipAppend) {
-              if (request.headers[key])
-                request.headers[key] += `,${processHeaderValue(key, val[i], skipAppend)}`;
-              else
-                request.headers[key] = processHeaderValue(key, val[i], skipAppend);
+              if (request.headers[key]) request.headers[key] += `,${processHeaderValue(key, val[i], skipAppend)}`;
+              else request.headers[key] = processHeaderValue(key, val[i], skipAppend);
             } else {
               request.headers += processHeaderValue(key, val[i]);
             }
           }
         } else {
-          if (skipAppend)
-            request.headers[key] = processHeaderValue(key, val, skipAppend);
-          else
-            request.headers += processHeaderValue(key, val);
+          if (skipAppend) request.headers[key] = processHeaderValue(key, val, skipAppend);
+          else request.headers += processHeaderValue(key, val);
         }
       }
     }
@@ -5954,7 +6083,7 @@ var require_utils2 = __commonJS({
 });
 
 // node_modules/undici/lib/llhttp/constants.js
-var require_constants2 = __commonJS({
+var require_constants3 = __commonJS({
   "node_modules/undici/lib/llhttp/constants.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -6389,7 +6518,17 @@ var require_RedirectHandler = __commonJS({
       }
     }
     function shouldRemoveHeader(header, removeContent, unknownOrigin) {
-      return header.length === 4 && header.toString().toLowerCase() === "host" || removeContent && header.toString().toLowerCase().indexOf("content-") === 0 || unknownOrigin && header.length === 13 && header.toString().toLowerCase() === "authorization" || unknownOrigin && header.length === 6 && header.toString().toLowerCase() === "cookie";
+      if (header.length === 4) {
+        return util.headerNameToString(header) === "host";
+      }
+      if (removeContent && util.headerNameToString(header).startsWith("content-")) {
+        return true;
+      }
+      if (unknownOrigin && (header.length === 13 || header.length === 6 || header.length === 19)) {
+        const name = util.headerNameToString(header);
+        return name === "authorization" || name === "cookie" || name === "proxy-authorization";
+      }
+      return false;
     }
     function cleanRequestHeaders(headers, removeContent, unknownOrigin) {
       const ret = [];
@@ -6834,7 +6973,7 @@ var require_client = __commonJS({
       );
       resume(client);
     }
-    var constants = require_constants2();
+    var constants = require_constants3();
     var createRedirectInterceptor = require_redirectInterceptor();
     var EMPTY_BUF = Buffer.alloc(0);
     async function lazyllhttp() {
@@ -7693,10 +7832,8 @@ upgrade: ${upgrade}\r
     function writeH2(client, session, request) {
       const { body, method, path, host, upgrade, expectContinue, signal, headers: reqHeaders } = request;
       let headers;
-      if (typeof reqHeaders === "string")
-        headers = Request[kHTTP2CopyHeaders](reqHeaders.trim());
-      else
-        headers = reqHeaders;
+      if (typeof reqHeaders === "string") headers = Request[kHTTP2CopyHeaders](reqHeaders.trim());
+      else headers = reqHeaders;
       if (upgrade) {
         errorRequest(client, request, new Error("Upgrade not supported for H2"));
         return false;
@@ -7732,8 +7869,7 @@ upgrade: ${upgrade}\r
         }
         stream.once("close", () => {
           h2State.openStreams -= 1;
-          if (h2State.openStreams === 0)
-            session.unref();
+          if (h2State.openStreams === 0) session.unref();
         });
         return true;
       }
@@ -8514,8 +8650,7 @@ var require_balanced_pool = __commonJS({
     var kMaxWeightPerServer = Symbol("kMaxWeightPerServer");
     var kErrorPenalty = Symbol("kErrorPenalty");
     function getGreatestCommonDivisor(a, b) {
-      if (b === 0)
-        return a;
+      if (b === 0) return a;
       return getGreatestCommonDivisor(b, a % b);
     }
     function defaultFactory(origin, opts) {
@@ -10887,8 +11022,7 @@ var require_RetryHandler = __commonJS({
         }
       }
       onBodySent(chunk) {
-        if (this.handler.onBodySent)
-          return this.handler.onBodySent(chunk);
+        if (this.handler.onBodySent) return this.handler.onBodySent(chunk);
       }
       static [kRetryHandlerDefaultRetry](err, { state, opts }, cb) {
         const { statusCode, code, headers } = err;
@@ -11151,10 +11285,8 @@ var require_headers = __commonJS({
     function headerValueNormalize(potentialValue) {
       let i = 0;
       let j = potentialValue.length;
-      while (j > i && isHTTPWhiteSpaceCharCode(potentialValue.charCodeAt(j - 1)))
-        --j;
-      while (j > i && isHTTPWhiteSpaceCharCode(potentialValue.charCodeAt(i)))
-        ++i;
+      while (j > i && isHTTPWhiteSpaceCharCode(potentialValue.charCodeAt(j - 1))) --j;
+      while (j > i && isHTTPWhiteSpaceCharCode(potentialValue.charCodeAt(i))) ++i;
       return i === 0 && j === potentialValue.length ? potentialValue : potentialValue.substring(i, j);
     }
     function fill(headers, object) {
@@ -11538,7 +11670,7 @@ var require_response = __commonJS({
       redirectStatusSet,
       nullBodyStatus,
       DOMException: DOMException2
-    } = require_constants();
+    } = require_constants2();
     var { kState, kHeaders, kGuard, kRealm } = require_symbols2();
     var { webidl } = require_webidl();
     var { FormData } = require_formdata();
@@ -11920,7 +12052,7 @@ var require_request2 = __commonJS({
       requestCredentials,
       requestCache,
       requestDuplex
-    } = require_constants();
+    } = require_constants2();
     var { kEnumerableProperty } = util;
     var { kHeaders, kSignal, kState, kGuard, kRealm } = require_symbols2();
     var { webidl } = require_webidl();
@@ -12589,7 +12721,7 @@ var require_fetch = __commonJS({
       requestBodyHeader,
       subresourceSet,
       DOMException: DOMException2
-    } = require_constants();
+    } = require_constants2();
     var { kHeadersList } = require_symbols();
     var EE = require("events");
     var { Readable, pipeline } = require("stream");
@@ -13953,7 +14085,7 @@ var require_util4 = __commonJS({
     } = require_symbols3();
     var { ProgressEvent } = require_progressevent();
     var { getEncoding } = require_encoding();
-    var { DOMException: DOMException2 } = require_constants();
+    var { DOMException: DOMException2 } = require_constants2();
     var { serializeAMimeType, parseMIMEType } = require_dataURL();
     var { types } = require("util");
     var { StringDecoder } = require("string_decoder");
@@ -14469,8 +14601,7 @@ var require_cache = __commonJS({
       }
       async matchAll(request = void 0, options = {}) {
         webidl.brandCheck(this, _Cache);
-        if (request !== void 0)
-          request = webidl.converters.RequestInfo(request);
+        if (request !== void 0) request = webidl.converters.RequestInfo(request);
         options = webidl.converters.CacheQueryOptions(options);
         let r = null;
         if (request !== void 0) {
@@ -14739,8 +14870,7 @@ var require_cache = __commonJS({
        */
       async keys(request = void 0, options = {}) {
         webidl.brandCheck(this, _Cache);
-        if (request !== void 0)
-          request = webidl.converters.RequestInfo(request);
+        if (request !== void 0) request = webidl.converters.RequestInfo(request);
         options = webidl.converters.CacheQueryOptions(options);
         let r = null;
         if (request !== void 0) {
@@ -15069,7 +15199,7 @@ var require_cachestorage = __commonJS({
 });
 
 // node_modules/undici/lib/cookies/constants.js
-var require_constants3 = __commonJS({
+var require_constants4 = __commonJS({
   "node_modules/undici/lib/cookies/constants.js"(exports2, module2) {
     "use strict";
     var maxAttributeValueSize = 1024;
@@ -15244,7 +15374,7 @@ var require_util6 = __commonJS({
 var require_parse = __commonJS({
   "node_modules/undici/lib/cookies/parse.js"(exports2, module2) {
     "use strict";
-    var { maxNameValuePairSize, maxAttributeValueSize } = require_constants3();
+    var { maxNameValuePairSize, maxAttributeValueSize } = require_constants4();
     var { isCTLExcludingHtab } = require_util6();
     var { collectASequenceOfCodePointsFast } = require_dataURL();
     var assert = require("assert");
@@ -15509,7 +15639,7 @@ var require_cookies = __commonJS({
 });
 
 // node_modules/undici/lib/websocket/constants.js
-var require_constants4 = __commonJS({
+var require_constants5 = __commonJS({
   "node_modules/undici/lib/websocket/constants.js"(exports2, module2) {
     "use strict";
     var uid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
@@ -15817,7 +15947,7 @@ var require_util7 = __commonJS({
   "node_modules/undici/lib/websocket/util.js"(exports2, module2) {
     "use strict";
     var { kReadyState, kController, kResponse, kBinaryType, kWebSocketURL } = require_symbols5();
-    var { states, opcodes } = require_constants4();
+    var { states, opcodes } = require_constants5();
     var { MessageEvent, ErrorEvent } = require_events();
     function isEstablished(ws) {
       return ws[kReadyState] === states.OPEN;
@@ -15907,7 +16037,7 @@ var require_connection = __commonJS({
   "node_modules/undici/lib/websocket/connection.js"(exports2, module2) {
     "use strict";
     var diagnosticsChannel = require("diagnostics_channel");
-    var { uid, states } = require_constants4();
+    var { uid, states } = require_constants5();
     var {
       kReadyState,
       kSentClose,
@@ -16054,7 +16184,7 @@ var require_connection = __commonJS({
 var require_frame = __commonJS({
   "node_modules/undici/lib/websocket/frame.js"(exports2, module2) {
     "use strict";
-    var { maxUnsigned16Bit } = require_constants4();
+    var { maxUnsigned16Bit } = require_constants5();
     var crypto4;
     try {
       crypto4 = require("crypto");
@@ -16113,7 +16243,7 @@ var require_receiver = __commonJS({
     "use strict";
     var { Writable } = require("stream");
     var diagnosticsChannel = require("diagnostics_channel");
-    var { parserStates, opcodes, states, emptyBuffer } = require_constants4();
+    var { parserStates, opcodes, states, emptyBuffer } = require_constants5();
     var { kReadyState, kSentClose, kResponse, kReceivedClose } = require_symbols5();
     var { isValidStatusCode, failWebsocketConnection, websocketMessageReceived } = require_util7();
     var { WebsocketFrameSend } = require_frame();
@@ -16348,10 +16478,10 @@ var require_websocket = __commonJS({
   "node_modules/undici/lib/websocket/websocket.js"(exports2, module2) {
     "use strict";
     var { webidl } = require_webidl();
-    var { DOMException: DOMException2 } = require_constants();
+    var { DOMException: DOMException2 } = require_constants2();
     var { URLSerializer } = require_dataURL();
     var { getGlobalOrigin } = require_global();
-    var { staticPropertyDescriptors, states, opcodes, emptyBuffer } = require_constants4();
+    var { staticPropertyDescriptors, states, opcodes, emptyBuffer } = require_constants5();
     var {
       kWebSocketURL,
       kReadyState,
@@ -16892,8 +17022,7 @@ var require_lib = __commonJS({
   "node_modules/@actions/http-client/lib/index.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -16902,8 +17031,7 @@ var require_lib = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
@@ -16912,13 +17040,10 @@ var require_lib = __commonJS({
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
+      if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
+        for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
       return result;
@@ -18012,14 +18137,12 @@ var require_path_utils = __commonJS({
   "node_modules/@actions/core/lib/path-utils.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
       } });
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
@@ -18028,13 +18151,10 @@ var require_path_utils = __commonJS({
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
+      if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
+        for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
       return result;
@@ -18062,14 +18182,12 @@ var require_core = __commonJS({
   "node_modules/@actions/core/lib/core.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
       } });
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
@@ -18078,13 +18196,10 @@ var require_core = __commonJS({
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
+      if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
+        for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
       return result;
@@ -24713,7 +24828,6 @@ var require_Collection = __commonJS({
         }
       }
     };
-    Collection.maxFlowStringSingleLineLength = 60;
     exports2.Collection = Collection;
     exports2.collectionFromPath = collectionFromPath;
     exports2.isEmptyPath = isEmptyPath;
@@ -24747,6 +24861,8 @@ var require_foldFlowLines = __commonJS({
     function foldFlowLines(text, indent, mode = "flow", { indentAtStart, lineWidth = 80, minContentWidth = 20, onFold, onOverflow } = {}) {
       if (!lineWidth || lineWidth < 0)
         return text;
+      if (lineWidth < minContentWidth)
+        minContentWidth = 0;
       const endStep = Math.max(1 + minContentWidth, 1 + lineWidth - indent.length);
       if (text.length <= endStep)
         return text;
@@ -25280,7 +25396,7 @@ var require_stringifyPair = __commonJS({
         if (keyComment) {
           throw new Error("With simple keys, key nodes cannot have comments");
         }
-        if (identity.isCollection(key)) {
+        if (identity.isCollection(key) || !identity.isNode(key) && typeof key === "object") {
           const msg = "With simple keys, collection cannot be used as a key value";
           throw new Error(msg);
         }
@@ -26099,7 +26215,7 @@ var require_float = __commonJS({
       identify: (value) => typeof value === "number",
       default: true,
       tag: "tag:yaml.org,2002:float",
-      test: /^(?:[-+]?\.(?:inf|Inf|INF|nan|NaN|NAN))$/,
+      test: /^(?:[-+]?\.(?:inf|Inf|INF)|\.nan|\.NaN|\.NAN)$/,
       resolve: (str) => str.slice(-3).toLowerCase() === "nan" ? NaN : str[0] === "-" ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY,
       stringify: stringifyNumber.stringifyNumber
     };
@@ -26518,7 +26634,7 @@ var require_bool2 = __commonJS({
       identify: (value) => value === false,
       default: true,
       tag: "tag:yaml.org,2002:bool",
-      test: /^(?:N|n|[Nn]o|NO|[Ff]alse|FALSE|[Oo]ff|OFF)$/i,
+      test: /^(?:N|n|[Nn]o|NO|[Ff]alse|FALSE|[Oo]ff|OFF)$/,
       resolve: () => new Scalar.Scalar(false),
       stringify: boolStringify
     };
@@ -26537,7 +26653,7 @@ var require_float2 = __commonJS({
       identify: (value) => typeof value === "number",
       default: true,
       tag: "tag:yaml.org,2002:float",
-      test: /^[-+]?\.(?:inf|Inf|INF|nan|NaN|NAN)$/,
+      test: /^(?:[-+]?\.(?:inf|Inf|INF)|\.nan|\.NaN|\.NAN)$/,
       resolve: (str) => str.slice(-3).toLowerCase() === "nan" ? NaN : str[0] === "-" ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY,
       stringify: stringifyNumber.stringifyNumber
     };
@@ -27447,17 +27563,18 @@ ${pointer}
 var require_resolve_props = __commonJS({
   "node_modules/yaml/dist/compose/resolve-props.js"(exports2) {
     "use strict";
-    function resolveProps(tokens, { flow, indicator, next, offset, onError, startOnNewline }) {
+    function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIndent, startOnNewline }) {
       let spaceBefore = false;
       let atNewline = startOnNewline;
       let hasSpace = startOnNewline;
       let comment = "";
       let commentSep = "";
       let hasNewline = false;
-      let hasNewlineAfterProp = false;
       let reqSpace = false;
+      let tab = null;
       let anchor = null;
       let tag = null;
+      let newlineAfterProp = null;
       let comma = null;
       let found = null;
       let start = null;
@@ -27467,10 +27584,17 @@ var require_resolve_props = __commonJS({
             onError(token.offset, "MISSING_CHAR", "Tags and anchors must be separated from the next token by white space");
           reqSpace = false;
         }
+        if (tab) {
+          if (atNewline && token.type !== "comment" && token.type !== "newline") {
+            onError(tab, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
+          }
+          tab = null;
+        }
         switch (token.type) {
           case "space":
-            if (!flow && atNewline && indicator !== "doc-start" && token.source[0] === "	")
-              onError(token, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
+            if (!flow && (indicator !== "doc-start" || next?.type !== "flow-collection") && token.source.includes("	")) {
+              tab = token;
+            }
             hasSpace = true;
             break;
           case "comment": {
@@ -27496,7 +27620,7 @@ var require_resolve_props = __commonJS({
             atNewline = true;
             hasNewline = true;
             if (anchor || tag)
-              hasNewlineAfterProp = true;
+              newlineAfterProp = token;
             hasSpace = true;
             break;
           case "anchor":
@@ -27528,7 +27652,7 @@ var require_resolve_props = __commonJS({
             if (found)
               onError(token, "UNEXPECTED_TOKEN", `Unexpected ${token.source} in ${flow ?? "collection"}`);
             found = token;
-            atNewline = false;
+            atNewline = indicator === "seq-item-ind" || indicator === "explicit-key-ind";
             hasSpace = false;
             break;
           case "comma":
@@ -27548,17 +27672,20 @@ var require_resolve_props = __commonJS({
       }
       const last = tokens[tokens.length - 1];
       const end = last ? last.offset + last.source.length : offset;
-      if (reqSpace && next && next.type !== "space" && next.type !== "newline" && next.type !== "comma" && (next.type !== "scalar" || next.source !== ""))
+      if (reqSpace && next && next.type !== "space" && next.type !== "newline" && next.type !== "comma" && (next.type !== "scalar" || next.source !== "")) {
         onError(next.offset, "MISSING_CHAR", "Tags and anchors must be separated from the next token by white space");
+      }
+      if (tab && (atNewline && tab.indent <= parentIndent || next?.type === "block-map" || next?.type === "block-seq"))
+        onError(tab, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
       return {
         comma,
         found,
         spaceBefore,
         comment,
         hasNewline,
-        hasNewlineAfterProp,
         anchor,
         tag,
+        newlineAfterProp,
         end,
         start: start ?? end
       };
@@ -27668,6 +27795,7 @@ var require_resolve_block_map = __commonJS({
           next: key ?? sep?.[0],
           offset,
           onError,
+          parentIndent: bm.indent,
           startOnNewline: true
         });
         const implicitKey = !keyProps.found;
@@ -27688,7 +27816,7 @@ var require_resolve_block_map = __commonJS({
             }
             continue;
           }
-          if (keyProps.hasNewlineAfterProp || utilContainsNewline.containsNewline(key)) {
+          if (keyProps.newlineAfterProp || utilContainsNewline.containsNewline(key)) {
             onError(key ?? start[start.length - 1], "MULTILINE_IMPLICIT_KEY", "Implicit keys need to be on a single line");
           }
         } else if (keyProps.found?.indent !== bm.indent) {
@@ -27705,6 +27833,7 @@ var require_resolve_block_map = __commonJS({
           next: value,
           offset: keyNode.range[2],
           onError,
+          parentIndent: bm.indent,
           startOnNewline: !key || key.type === "block-scalar"
         });
         offset = valueProps.end;
@@ -27767,6 +27896,7 @@ var require_resolve_block_seq = __commonJS({
           next: value,
           offset,
           onError,
+          parentIndent: bs.indent,
           startOnNewline: true
         });
         if (!props.found) {
@@ -27871,6 +28001,7 @@ var require_resolve_flow_collection = __commonJS({
           next: key ?? sep?.[0],
           offset,
           onError,
+          parentIndent: fc.indent,
           startOnNewline: false
         });
         if (!props.found) {
@@ -27904,19 +28035,18 @@ var require_resolve_flow_collection = __commonJS({
             onError(props.start, "MISSING_CHAR", `Missing , between ${fcName} items`);
           if (props.comment) {
             let prevItemComment = "";
-            loop:
-              for (const st of start) {
-                switch (st.type) {
-                  case "comma":
-                  case "space":
-                    break;
-                  case "comment":
-                    prevItemComment = st.source.substring(1);
-                    break loop;
-                  default:
-                    break loop;
-                }
+            loop: for (const st of start) {
+              switch (st.type) {
+                case "comma":
+                case "space":
+                  break;
+                case "comment":
+                  prevItemComment = st.source.substring(1);
+                  break loop;
+                default:
+                  break loop;
               }
+            }
             if (prevItemComment) {
               let prev = coll.items[coll.items.length - 1];
               if (identity.isPair(prev))
@@ -27946,6 +28076,7 @@ var require_resolve_flow_collection = __commonJS({
             next: value,
             offset: keyNode.range[2],
             onError,
+            parentIndent: fc.indent,
             startOnNewline: false
           });
           if (valueProps.found) {
@@ -28047,10 +28178,19 @@ var require_compose_collection = __commonJS({
         coll.tag = tagName;
       return coll;
     }
-    function composeCollection(CN, ctx, token, tagToken, onError) {
+    function composeCollection(CN, ctx, token, props, onError) {
+      const tagToken = props.tag;
       const tagName = !tagToken ? null : ctx.directives.tagName(tagToken.source, (msg) => onError(tagToken, "TAG_RESOLVE_FAILED", msg));
+      if (token.type === "block-seq") {
+        const { anchor, newlineAfterProp: nl } = props;
+        const lastProp = anchor && tagToken ? anchor.offset > tagToken.offset ? anchor : tagToken : anchor ?? tagToken;
+        if (lastProp && (!nl || nl.offset < lastProp.offset)) {
+          const message = "Missing newline after block sequence props";
+          onError(lastProp, "MISSING_CHAR", message);
+        }
+      }
       const expType = token.type === "block-map" ? "map" : token.type === "block-seq" ? "seq" : token.start.source === "{" ? "map" : "seq";
-      if (!tagToken || !tagName || tagName === "!" || tagName === YAMLMap.YAMLMap.tagName && expType === "map" || tagName === YAMLSeq.YAMLSeq.tagName && expType === "seq" || !expType) {
+      if (!tagToken || !tagName || tagName === "!" || tagName === YAMLMap.YAMLMap.tagName && expType === "map" || tagName === YAMLSeq.YAMLSeq.tagName && expType === "seq") {
         return resolveCollection(CN, ctx, token, onError, tagName);
       }
       let tag = ctx.schema.tags.find((t) => t.tag === tagName && t.collection === expType);
@@ -28086,9 +28226,9 @@ var require_resolve_block_scalar = __commonJS({
   "node_modules/yaml/dist/compose/resolve-block-scalar.js"(exports2) {
     "use strict";
     var Scalar = require_Scalar();
-    function resolveBlockScalar(scalar, strict, onError) {
+    function resolveBlockScalar(ctx, scalar, onError) {
       const start = scalar.offset;
-      const header = parseBlockScalarHeader(scalar, strict, onError);
+      const header = parseBlockScalarHeader(scalar, ctx.options.strict, onError);
       if (!header)
         return { value: "", type: null, comment: "", range: [start, start, start] };
       const type = header.mode === ">" ? Scalar.Scalar.BLOCK_FOLDED : Scalar.Scalar.BLOCK_LITERAL;
@@ -28124,6 +28264,10 @@ var require_resolve_block_scalar = __commonJS({
           if (header.indent === 0)
             trimIndent = indent.length;
           contentStart = i;
+          if (trimIndent === 0 && !ctx.atRoot) {
+            const message = "Block scalar values in collections must be indented";
+            onError(offset, "BAD_INDENT", message);
+          }
           break;
         }
         offset += indent.length + content.length + 1;
@@ -28484,7 +28628,7 @@ var require_compose_scalar = __commonJS({
     var resolveBlockScalar = require_resolve_block_scalar();
     var resolveFlowScalar = require_resolve_flow_scalar();
     function composeScalar(ctx, token, tagToken, onError) {
-      const { value, type, comment, range } = token.type === "block-scalar" ? resolveBlockScalar.resolveBlockScalar(token, ctx.options.strict, onError) : resolveFlowScalar.resolveFlowScalar(token, ctx.options.strict, onError);
+      const { value, type, comment, range } = token.type === "block-scalar" ? resolveBlockScalar.resolveBlockScalar(ctx, token, onError) : resolveFlowScalar.resolveFlowScalar(token, ctx.options.strict, onError);
       const tagName = tagToken ? ctx.directives.tagName(tagToken.source, (msg) => onError(tagToken, "TAG_RESOLVE_FAILED", msg)) : null;
       const tag = tagToken && tagName ? findScalarTagByName(ctx.schema, value, tagName, tagToken, onError) : token.type === "scalar" ? findScalarTagByTest(ctx, value, token, onError) : ctx.schema[identity.SCALAR];
       let scalar;
@@ -28610,7 +28754,7 @@ var require_compose_node = __commonJS({
         case "block-map":
         case "block-seq":
         case "flow-collection":
-          node = composeCollection.composeCollection(CN, ctx, token, tag, onError);
+          node = composeCollection.composeCollection(CN, ctx, token, props, onError);
           if (anchor)
             node.anchor = anchor.source.substring(1);
           break;
@@ -28696,6 +28840,7 @@ var require_compose_doc = __commonJS({
         next: value ?? end?.[0],
         offset,
         onError,
+        parentIndent: 0,
         startOnNewline: true
       });
       if (props.found) {
@@ -28943,7 +29088,7 @@ var require_cst_scalar = __commonJS({
           case "double-quoted-scalar":
             return resolveFlowScalar.resolveFlowScalar(token, strict, _onError);
           case "block-scalar":
-            return resolveBlockScalar.resolveBlockScalar(token, strict, _onError);
+            return resolveBlockScalar.resolveBlockScalar({ options: { strict } }, token, _onError);
         }
       }
       return null;
@@ -29347,11 +29492,11 @@ var require_lexer = __commonJS({
           return false;
       }
     }
-    var hexDigits = "0123456789ABCDEFabcdef".split("");
-    var tagChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-#;/?:@&=+$_.!~*'()".split("");
-    var invalidFlowScalarChars = ",[]{}".split("");
-    var invalidAnchorChars = " ,[]{}\n\r	".split("");
-    var isNotAnchorChar = (ch) => !ch || invalidAnchorChars.includes(ch);
+    var hexDigits = new Set("0123456789ABCDEFabcdef");
+    var tagChars = new Set("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-#;/?:@&=+$_.!~*'()");
+    var flowIndicatorChars = new Set(",[]{}");
+    var invalidAnchorChars = new Set(" ,[]{}\n\r	");
+    var isNotAnchorChar = (ch) => !ch || invalidAnchorChars.has(ch);
     var Lexer = class {
       constructor() {
         this.atEnd = false;
@@ -29374,6 +29519,8 @@ var require_lexer = __commonJS({
        */
       *lex(source, incomplete = false) {
         if (source) {
+          if (typeof source !== "string")
+            throw TypeError("source is not a string");
           this.buffer = this.buffer ? this.buffer + source : source;
           this.lineEndPos = null;
         }
@@ -29471,11 +29618,15 @@ var require_lexer = __commonJS({
         }
         if (line[0] === "%") {
           let dirEnd = line.length;
-          const cs = line.indexOf("#");
-          if (cs !== -1) {
+          let cs = line.indexOf("#");
+          while (cs !== -1) {
             const ch = line[cs - 1];
-            if (ch === " " || ch === "	")
+            if (ch === " " || ch === "	") {
               dirEnd = cs - 1;
+              break;
+            } else {
+              cs = line.indexOf("#", cs + 1);
+            }
           }
           while (true) {
             const ch = line[dirEnd - 1];
@@ -29506,14 +29657,11 @@ var require_lexer = __commonJS({
           if (!this.atEnd && !this.hasChars(4))
             return this.setNext("line-start");
           const s = this.peek(3);
-          if (s === "---" && isEmpty(this.charAt(3))) {
+          if ((s === "---" || s === "...") && isEmpty(this.charAt(3))) {
             yield* this.pushCount(3);
             this.indentValue = 0;
             this.indentNext = 0;
-            return "doc";
-          } else if (s === "..." && isEmpty(this.charAt(3))) {
-            yield* this.pushCount(3);
-            return "stream";
+            return s === "---" ? "doc" : "stream";
           }
         }
         this.indentValue = yield* this.pushSpaces(false);
@@ -29698,34 +29846,34 @@ var require_lexer = __commonJS({
         let nl = this.pos - 1;
         let indent = 0;
         let ch;
-        loop:
-          for (let i = this.pos; ch = this.buffer[i]; ++i) {
-            switch (ch) {
-              case " ":
-                indent += 1;
+        loop: for (let i2 = this.pos; ch = this.buffer[i2]; ++i2) {
+          switch (ch) {
+            case " ":
+              indent += 1;
+              break;
+            case "\n":
+              nl = i2;
+              indent = 0;
+              break;
+            case "\r": {
+              const next = this.buffer[i2 + 1];
+              if (!next && !this.atEnd)
+                return this.setNext("block-scalar");
+              if (next === "\n")
                 break;
-              case "\n":
-                nl = i;
-                indent = 0;
-                break;
-              case "\r": {
-                const next = this.buffer[i + 1];
-                if (!next && !this.atEnd)
-                  return this.setNext("block-scalar");
-                if (next === "\n")
-                  break;
-              }
-              default:
-                break loop;
             }
+            default:
+              break loop;
           }
+        }
         if (!ch && !this.atEnd)
           return this.setNext("block-scalar");
         if (indent >= this.indentNext) {
           if (this.blockScalarIndent === -1)
             this.indentNext = indent;
-          else
-            this.indentNext += this.blockScalarIndent;
+          else {
+            this.indentNext = this.blockScalarIndent + (this.indentNext === 0 ? 1 : this.indentNext);
+          }
           do {
             const cs = this.continueScalar(nl + 1);
             if (cs === -1)
@@ -29738,17 +29886,25 @@ var require_lexer = __commonJS({
             nl = this.buffer.length;
           }
         }
-        if (!this.blockScalarKeep) {
+        let i = nl + 1;
+        ch = this.buffer[i];
+        while (ch === " ")
+          ch = this.buffer[++i];
+        if (ch === "	") {
+          while (ch === "	" || ch === " " || ch === "\r" || ch === "\n")
+            ch = this.buffer[++i];
+          nl = i - 1;
+        } else if (!this.blockScalarKeep) {
           do {
-            let i = nl - 1;
-            let ch2 = this.buffer[i];
+            let i2 = nl - 1;
+            let ch2 = this.buffer[i2];
             if (ch2 === "\r")
-              ch2 = this.buffer[--i];
-            const lastChar = i;
-            while (ch2 === " " || ch2 === "	")
-              ch2 = this.buffer[--i];
-            if (ch2 === "\n" && i >= this.pos && i + 1 + indent > lastChar)
-              nl = i;
+              ch2 = this.buffer[--i2];
+            const lastChar = i2;
+            while (ch2 === " ")
+              ch2 = this.buffer[--i2];
+            if (ch2 === "\n" && i2 >= this.pos && i2 + 1 + indent > lastChar)
+              nl = i2;
             else
               break;
           } while (true);
@@ -29765,7 +29921,7 @@ var require_lexer = __commonJS({
         while (ch = this.buffer[++i]) {
           if (ch === ":") {
             const next = this.buffer[i + 1];
-            if (isEmpty(next) || inFlow && next === ",")
+            if (isEmpty(next) || inFlow && flowIndicatorChars.has(next))
               break;
             end = i;
           } else if (isEmpty(ch)) {
@@ -29778,7 +29934,7 @@ var require_lexer = __commonJS({
               } else
                 end = i;
             }
-            if (next === "#" || inFlow && invalidFlowScalarChars.includes(next))
+            if (next === "#" || inFlow && flowIndicatorChars.has(next))
               break;
             if (ch === "\n") {
               const cs = this.continueScalar(i + 1);
@@ -29787,7 +29943,7 @@ var require_lexer = __commonJS({
               i = Math.max(i, cs - 2);
             }
           } else {
-            if (inFlow && invalidFlowScalarChars.includes(ch))
+            if (inFlow && flowIndicatorChars.has(ch))
               break;
             end = i;
           }
@@ -29827,7 +29983,7 @@ var require_lexer = __commonJS({
           case ":": {
             const inFlow = this.flowLevel > 0;
             const ch1 = this.charAt(1);
-            if (isEmpty(ch1) || inFlow && invalidFlowScalarChars.includes(ch1)) {
+            if (isEmpty(ch1) || inFlow && flowIndicatorChars.has(ch1)) {
               if (!inFlow)
                 this.indentNext = this.indentValue + 1;
               else if (this.flowKey)
@@ -29849,9 +30005,9 @@ var require_lexer = __commonJS({
           let i = this.pos + 1;
           let ch = this.buffer[i];
           while (ch) {
-            if (tagChars.includes(ch))
+            if (tagChars.has(ch))
               ch = this.buffer[++i];
-            else if (ch === "%" && hexDigits.includes(this.buffer[i + 1]) && hexDigits.includes(this.buffer[i + 2])) {
+            else if (ch === "%" && hexDigits.has(this.buffer[i + 1]) && hexDigits.has(this.buffer[i + 2])) {
               ch = this.buffer[i += 3];
             } else
               break;
@@ -29979,17 +30135,16 @@ var require_parser = __commonJS({
       if (prev.length === 0)
         return [];
       let i = prev.length;
-      loop:
-        while (--i >= 0) {
-          switch (prev[i].type) {
-            case "doc-start":
-            case "explicit-key-ind":
-            case "map-value-ind":
-            case "seq-item-ind":
-            case "newline":
-              break loop;
-          }
+      loop: while (--i >= 0) {
+        switch (prev[i].type) {
+          case "doc-start":
+          case "explicit-key-ind":
+          case "map-value-ind":
+          case "seq-item-ind":
+          case "newline":
+            break loop;
         }
+      }
       while (prev[++i]?.type === "space") {
       }
       return prev.splice(i, prev.length);
@@ -30182,7 +30337,7 @@ var require_parser = __commonJS({
                 it.value = token;
               } else {
                 Object.assign(it, { key: token, sep: [] });
-                this.onKeyLine = !includesToken(it.start, "explicit-key-ind");
+                this.onKeyLine = !it.explicitKey;
                 return;
               }
               break;
@@ -30371,7 +30526,8 @@ var require_parser = __commonJS({
             return;
         }
         if (this.indent >= map.indent) {
-          const atNextItem = !this.onKeyLine && this.indent === map.indent && it.sep && this.type !== "seq-item-ind";
+          const atMapIndent = !this.onKeyLine && this.indent === map.indent;
+          const atNextItem = atMapIndent && (it.sep || it.explicitKey) && this.type !== "seq-item-ind";
           let start = [];
           if (atNextItem && it.sep && !it.value) {
             const nl = [];
@@ -30408,23 +30564,24 @@ var require_parser = __commonJS({
               }
               return;
             case "explicit-key-ind":
-              if (!it.sep && !includesToken(it.start, "explicit-key-ind")) {
+              if (!it.sep && !it.explicitKey) {
                 it.start.push(this.sourceToken);
+                it.explicitKey = true;
               } else if (atNextItem || it.value) {
                 start.push(this.sourceToken);
-                map.items.push({ start });
+                map.items.push({ start, explicitKey: true });
               } else {
                 this.stack.push({
                   type: "block-map",
                   offset: this.offset,
                   indent: this.indent,
-                  items: [{ start: [this.sourceToken] }]
+                  items: [{ start: [this.sourceToken], explicitKey: true }]
                 });
               }
               this.onKeyLine = true;
               return;
             case "map-value-ind":
-              if (includesToken(it.start, "explicit-key-ind")) {
+              if (it.explicitKey) {
                 if (!it.sep) {
                   if (includesToken(it.start, "newline")) {
                     Object.assign(it, { key: null, sep: [this.sourceToken] });
@@ -30500,7 +30657,7 @@ var require_parser = __commonJS({
             default: {
               const bv = this.startBlockValue(map);
               if (bv) {
-                if (atNextItem && bv.type !== "block-seq" && includesToken(it.start, "explicit-key-ind")) {
+                if (atMapIndent && bv.type !== "block-seq") {
                   map.items.push({ start });
                 }
                 this.stack.push(bv);
@@ -30711,7 +30868,7 @@ var require_parser = __commonJS({
               type: "block-map",
               offset: this.offset,
               indent: this.indent,
-              items: [{ start }]
+              items: [{ start, explicitKey: true }]
             };
           }
           case "map-value-ind": {
@@ -30974,7 +31131,7 @@ var require_input_expander = __commonJS({
         ":"
       ) : entry
     );
-    var isNothing = (testValue) => !_.isDate(testValue) && (_.isObject(testValue) || _.isArray(testValue)) ? _.isEmpty(testValue) : _.isNil(testValue);
+    var isNothing = (testValue) => !_.isDate(testValue) && (_.isObject(testValue) || _.isArray(testValue) || _.isString(testValue)) ? _.isEmpty(testValue) : _.isNil(testValue);
     var combineValues = (value, key, target) => {
       if (isNothing(value)) {
         return target;
@@ -31068,8 +31225,7 @@ var require_v2 = __commonJS({
       const convenienceValues = getConvenienceFieldValues(core2);
       const hasValuesForConvenienceKeys = (listOfKeys) => {
         for (const key of listOfKeys) {
-          if (!!convenienceValues[key])
-            return true;
+          if (!!convenienceValues[key]) return true;
         }
         return false;
       };
@@ -31161,8 +31317,7 @@ var require_v2_1 = __commonJS({
       const convenienceValues = getConvenienceFieldValues(core2);
       const hasValuesForConvenienceKeys = (listOfKeys) => {
         for (const key of listOfKeys) {
-          if (!!convenienceValues[key])
-            return true;
+          if (!!convenienceValues[key]) return true;
         }
         return false;
       };
@@ -31264,8 +31419,7 @@ var require_v2_2 = __commonJS({
       const convenienceValues = getConvenienceFieldValues(core2);
       const hasValuesForConvenienceKeys = (listOfKeys) => {
         for (const key of listOfKeys) {
-          if (!!convenienceValues[key])
-            return true;
+          if (!!convenienceValues[key]) return true;
         }
         return false;
       };
@@ -31432,8 +31586,7 @@ var require_utils3 = __commonJS({
   "node_modules/@actions/github/lib/internal/utils.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -31442,8 +31595,7 @@ var require_utils3 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
@@ -31452,13 +31604,10 @@ var require_utils3 = __commonJS({
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
+      if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
+        for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
       return result;
@@ -31699,14 +31848,11 @@ var require_is_plain_object = __commonJS({
     }
     function isPlainObject(o) {
       var ctor, prot;
-      if (isObject(o) === false)
-        return false;
+      if (isObject(o) === false) return false;
       ctor = o.constructor;
-      if (ctor === void 0)
-        return true;
+      if (ctor === void 0) return true;
       prot = ctor.prototype;
-      if (isObject(prot) === false)
-        return false;
+      if (isObject(prot) === false) return false;
       if (prot.hasOwnProperty("isPrototypeOf") === false) {
         return false;
       }
@@ -32067,8 +32213,7 @@ var require_wrappy = __commonJS({
   "node_modules/wrappy/wrappy.js"(exports2, module2) {
     module2.exports = wrappy;
     function wrappy(fn, cb) {
-      if (fn && cb)
-        return wrappy(fn)(cb);
+      if (fn && cb) return wrappy(fn)(cb);
       if (typeof fn !== "function")
         throw new TypeError("need wrapper function");
       Object.keys(fn).forEach(function(k) {
@@ -32115,8 +32260,7 @@ var require_once = __commonJS({
     });
     function once(fn) {
       var f = function() {
-        if (f.called)
-          return f.value;
+        if (f.called) return f.value;
         f.called = true;
         return f.value = fn.apply(this, arguments);
       };
@@ -35331,8 +35475,7 @@ var require_utils4 = __commonJS({
   "node_modules/@actions/github/lib/utils.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -35341,8 +35484,7 @@ var require_utils4 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
@@ -35351,13 +35493,10 @@ var require_utils4 = __commonJS({
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
+      if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
+        for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
       return result;
@@ -35396,8 +35535,7 @@ var require_github = __commonJS({
   "node_modules/@actions/github/lib/github.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -35406,8 +35544,7 @@ var require_github = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
@@ -35416,13 +35553,10 @@ var require_github = __commonJS({
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
+      if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
+        for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
       return result;
@@ -35566,10 +35700,8 @@ var require_org_rules = __commonJS({
         lifecycle: caseSensitiveFieldListMatch("lifecycle")
       };
       const selectableFields = Object.keys(selectionCheckers);
-      if (!selectionCriteria)
-        return false;
-      if (`${selectionCriteria}`.toLocaleLowerCase() === "all")
-        return true;
+      if (!selectionCriteria) return false;
+      if (`${selectionCriteria}`.toLocaleLowerCase() === "all") return true;
       const failingCriteria = _.filter(selectionCriteria, (value, key) => {
         if (!selectionCheckers[key]) {
           throw new Error(
@@ -35588,12 +35720,9 @@ var require_org_rules = __commonJS({
       return (requirement, serviceDefinition) => {
         const req_count = countField_req(requirement);
         const sd_count = countField_sd(serviceDefinition);
-        if (req_count === void 0)
-          return true;
-        if (sd_count === void 0)
-          return false;
-        if (sd_count < req_count)
-          return false;
+        if (req_count === void 0) return true;
+        if (sd_count === void 0) return false;
+        if (sd_count < req_count) return false;
         return true;
       };
     };
@@ -35608,13 +35737,10 @@ var require_org_rules = __commonJS({
       return (requirement, serviceDefinition) => {
         const req_match = matchField_req(requirement);
         const sd_list = matchList_sd(serviceDefinition);
-        if (!countEnforcer(requirement, serviceDefinition))
-          return false;
+        if (!countEnforcer(requirement, serviceDefinition)) return false;
         const permittedValues = Array.isArray(req_match) ? req_match : [req_match];
-        if (req_match === void 0)
-          return true;
-        if (sd_list === void 0)
-          return false;
+        if (req_match === void 0) return true;
+        if (sd_list === void 0) return false;
         if (permittedValues.length && !sd_list.find(
           (value) => _.includes(permittedValues, matchField_sd(value).toLocaleLowerCase())
         )) {
@@ -35624,10 +35750,8 @@ var require_org_rules = __commonJS({
       };
     };
     var makeSimpleStringFieldComplianceChecker = (fieldName) => (requirement, serviceDefinition) => {
-      if (!requirement || _.isEmpty(requirement))
-        return true;
-      if (!serviceDefinition || _.isEmpty(serviceDefinition))
-        return false;
+      if (!requirement || _.isEmpty(requirement)) return true;
+      if (!serviceDefinition || _.isEmpty(serviceDefinition)) return false;
       if (!Array.isArray(requirement) && requirement.toLocaleLowerCase() === "any") {
         return !!_.get(serviceDefinition, fieldName, void 0);
       }
@@ -35636,11 +35760,9 @@ var require_org_rules = __commonJS({
       return req_list.includes(sd_value);
     };
     var checkTagsCompliance = (requirement, serviceDescription) => {
-      if (!requirement || _.isEmpty(requirement))
-        return true;
+      if (!requirement || _.isEmpty(requirement)) return true;
       const requiredTags = _.map(requirement, (tagValue, tagName) => {
-        if (typeof tagValue === "object")
-          return tagValue;
+        if (typeof tagValue === "object") return tagValue;
         if (typeof tagValue === "string" && typeof tagName === "number") {
           const [parsedTagKey, parsedTagValue] = tagValue.toLocaleLowerCase().split(/\s*?:\s*?/);
           return { [parsedTagKey]: parsedTagValue };
@@ -35808,7 +35930,7 @@ var { validateDatadogHostname } = require_input_validation();
 var { fetchAndApplyOrgRules } = require_org_rules();
 var registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
   DatadogPostGovernor.increment();
-  core.debug(`JSON: ${configJsonStr}`);
+  core.debug(`JSON: \xAB${configJsonStr}\xBB`);
   const client = new HttpClient(
     "nodejs - GitHub Actions - arcxp/datadog-service-catalog-metadata-provider"
   );
@@ -35851,7 +35973,7 @@ var run = async (configs) => {
   }
 };
 core.debug("STARTING THE PARSE");
-inputsToRegistryDocument().then((configs) => {
+Promise.resolve().then(() => inputsToRegistryDocument()).then((configs) => {
   core.debug(`Input schema version is \xAB${core.getInput("schema-version")}\xBB`);
   core.debug(
     `Inputs coming off of configs: ${JSON.stringify(configs, void 0, 2)}`
