@@ -31131,7 +31131,7 @@ var require_input_expander = __commonJS({
         ":"
       ) : entry
     );
-    var isNothing = (testValue) => !_.isDate(testValue) && (_.isObject(testValue) || _.isArray(testValue)) ? _.isEmpty(testValue) : _.isNil(testValue);
+    var isNothing = (testValue) => !_.isDate(testValue) && (_.isObject(testValue) || _.isArray(testValue) || _.isString(testValue)) ? _.isEmpty(testValue) : _.isNil(testValue);
     var combineValues = (value, key, target) => {
       if (isNothing(value)) {
         return target;
