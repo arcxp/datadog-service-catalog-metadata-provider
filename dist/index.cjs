@@ -35946,7 +35946,6 @@ var registerWithDataDog = async (apiKey, appKey, ddHost, configJsonStr) => {
   const statusCode = response.message.statusCode;
   const body = await response.readBody();
   core.debug(`Response status code: ${statusCode}, with body: ${body}`);
-  console.log(JSON.stringify({ response, configJsonStr }, void 0, 2));
   if (statusCode !== 200) {
     core.setFailed(
       `Failed to register service with DataDog. Status Code: ${statusCode} Body: ${body}`
