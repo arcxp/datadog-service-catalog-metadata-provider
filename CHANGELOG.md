@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+*THIS IS A LONG-TERM SUPPORT BRANCH! V3 IS COMING*
+
+## [2.3.2] - 2025-03-04
+
+### Changed
+
+- Updated dependencies
+
 ## [2.3.1] - 2024-04-19
 
 ### Fixed
