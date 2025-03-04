@@ -13,7 +13,12 @@
     "type": "git",
     "url": "git+https://github.com/arcxp/datadog-service-catalog-metadata-provider.git"
   },
-  "keywords": ["github", "action", "datadog", "service-catalog"],
+  "keywords": [
+    "github",
+    "action",
+    "datadog",
+    "service-catalog"
+  ],
   "author": "Mike Stemle <mike.stemle@washpost.com>",
   "license": "MIT",
   "bugs": {
@@ -24,16 +29,16 @@
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0",
     "@actions/http-client": "^2.2.3",
-    "@octokit/rest": "^21.0.2",
+    "@octokit/rest": "^21.1.1",
     "lodash": "^4.17.21",
-    "uuid": "^10.0.0",
-    "yaml": "^2.6.0"
+    "uuid": "^11.1.0",
+    "yaml": "^2.7.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "ajv": "^8.17.1",
-    "esbuild": "0.24.0",
+    "esbuild": "0.25.0",
     "jest": "^29.7.0",
-    "prettier": "^3.3.3"
+    "prettier": "^3.5.3"
   }
 }

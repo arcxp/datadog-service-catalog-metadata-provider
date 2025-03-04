@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+For all 2.x branch changes, please see `v2-lts` branch.
+
 ## [3.0.0] - unreleased
 
 > [!WARNING]
@@ -23,6 +25,7 @@ and this project adheres to [Semantic Versioning].
   - This will make it easier to add new schema version support without risking breakage to existing versions
   - This makes it much easier to test convenience functionality independently from the schema fields
 - So... many... tests...
+- Dependencies also updated
 
 ## [2.3.0] - 2024-02-07
 
