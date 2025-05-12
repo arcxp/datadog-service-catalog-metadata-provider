@@ -27,7 +27,7 @@
   "homepage": "https://github.com/arcxp/datadog-service-catalog-metadata-provider#readme",
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0",
+    "@actions/github": "^6.0.1",
     "@actions/http-client": "^2.2.3",
     "@octokit/rest": "^21.1.1",
     "lodash": "^4.17.21",
